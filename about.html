@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Ahmed Amin</title>
+<meta name="description" content="Ahmed Amin: AI Engineer at Takhail, Google DeepMind Scholar, IEEE published. Communications and Information Engineering, Zewail City, Cum Laude.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ===== INTRO ===== -->
+  <section class="section" id="intro">
+    <div class="wrap">
+      <div class="section-head reveal in">
+        <span class="eyebrow">About</span>
+        <h2>Hi, I'm Amin</h2>
+      </div>
+      <div class="grid g2">
+        <div class="reveal in">
+          <p class="lede" style="margin-top:0">
+            I am an AI Engineer at Takhail in Giza, where I build Arabic RAG pipelines
+            and LLM voice agents, and lead a small team of two engineers.
+          </p>
+          <p class="lede">
+            My interest is resource efficiency. A model that needs a cluster to answer
+            one question is a demo, not a product. The work I am proudest of is the
+            opposite: fifteen adapters on one quantized 8B model that beat GPT-4o on
+            finance exams, and offline Arabic speech recognition running on a Raspberry
+            Pi in a wheelchair.
+          </p>
+          <p class="lede">
+            In September 2026 I start an MSc in AI for Science at AIMS South Africa,
+            fully funded by a Google DeepMind scholarship.
+          </p>
+        </div>
+
+        <div class="card reveal in" data-delay=".12">
+          <h3 style="margin-bottom:14px">Quick facts</h3>
+          <div style="display:grid;gap:11px;font-size:.92rem">
+            <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--muted)">Role</span><b>AI Engineer, Takhail</b></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--muted)">Based in</span><b>Giza, Egypt</b></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--muted)">Degree</span><b>BSc CIE, Cum Laude</b></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--muted)">GPA</span><b>3.64 / 4.00</b></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--muted)">Languages</span><b>Arabic, English</b></div>
+            <div style="display:flex;justify-content:space-between;gap:12px">
+              <span style="color:var(--muted)">Next</span><b>MSc, AIMS South Africa</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TIMELINE ===== -->
+  <section class="section" id="journey" style="background:var(--surface-2)">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Journey</span>
+        <h2>How I got here</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item reveal" style="--t:var(--violet)">
+          <div class="when">Sept 2026 → July 2027</div>
+          <div class="what">MSc Mathematical Sciences, AI for Science</div>
+          <div class="where">AIMS South Africa · registered at University of Cape Town</div>
+          <ul><li>Fully funded by a Google DeepMind scholarship, covering tuition, housing, flights, stipend and research compute.</li></ul>
+        </div>
+
+        <div class="tl-item reveal" data-delay=".08" style="--t:var(--pink)">
+          <div class="when">Dec 2025 → now</div>
+          <div class="what">AI Engineer</div>
+          <div class="where">Takhail · Giza, Egypt</div>
+          <ul>
+            <li>Cut inference cost on an Arabic voice assistant by roughly 5× through retrieval and embedding changes.</li>
+            <li>Built RAG pipelines over ~100 classical texts with hybrid BM25 and vector search.</li>
+            <li>Designed an async architecture so voice and text conversations run at the same time.</li>
+            <li>Lead a two-person engineering team and report progress monthly.</li>
+          </ul>
+        </div>
+
+        <div class="tl-item reveal" data-delay=".16" style="--t:var(--mint)">
+          <div class="when">2025 → 2026</div>
+          <div class="what">Rafeeq Smart Wheel Kit</div>
+          <div class="where">Graduation project · Lead AI Architect</div>
+          <ul><li>Won a $1,600 grant from Egypt's Ministry of Higher Education, selected nationally.</li></ul>
+        </div>
+
+        <div class="tl-item reveal" data-delay=".24" style="--t:var(--amber)">
+          <div class="when">2025</div>
+          <div class="what">FinVerse Agent, published at IEEE CSCloud</div>
+          <div class="where">Collaboration with NUST Islamabad</div>
+          <ul><li>First place in FinAI Contest 2025, Task 2. Second author of four.</li></ul>
+        </div>
+
+        <div class="tl-item reveal" data-delay=".32" style="--t:var(--sky)">
+          <div class="when">2021 → June 2026</div>
+          <div class="what">BSc Communications and Information Engineering</div>
+          <div class="where">Zewail City of Science and Technology</div>
+          <ul>
+            <li>GPA 3.64, Cum Laude, 162 credits, ABET accredited.</li>
+            <li>Five-year Full Excellence Scholarship. Provost's Honors Roll, 7 semesters.</li>
+            <li>Elected student representative for four CIE cohorts, 200+ students.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section class="section" id="skills">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Toolkit</span>
+        <h2>What I work with</h2>
+      </div>
+
+      <div class="grid g2">
+        <div class="card reveal">
+          <div class="skillgroup">
+            <h4>Languages</h4>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">C++</span><span class="tag">SQL</span>
+            </div>
+          </div>
+          <div class="skillgroup">
+            <h4>AI and machine learning</h4>
+            <div class="tags">
+              <span class="tag">RAG</span><span class="tag">LoRA / QLoRA</span>
+              <span class="tag">PEFT</span><span class="tag">Quantization</span>
+              <span class="tag">PyTorch</span><span class="tag">Hugging Face</span>
+              <span class="tag">LangChain</span><span class="tag">Unsloth</span>
+              <span class="tag">vLLM</span><span class="tag">Whisper</span>
+            </div>
+          </div>
+          <div class="skillgroup" style="margin-bottom:0">
+            <h4>Retrieval</h4>
+            <div class="tags">
+              <span class="tag">pgvector</span><span class="tag">ChromaDB</span>
+              <span class="tag">FAISS</span><span class="tag">BM25</span>
+              <span class="tag">RRF</span><span class="tag">MMR</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card reveal" data-delay=".1">
+          <div class="skillgroup">
+            <h4>Backend</h4>
+            <div class="tags">
+              <span class="tag">FastAPI</span><span class="tag">PostgreSQL</span>
+              <span class="tag">MongoDB</span><span class="tag">Redis</span>
+              <span class="tag">Celery</span><span class="tag">REST design</span>
+            </div>
+          </div>
+          <div class="skillgroup">
+            <h4>Infrastructure</h4>
+            <div class="tags">
+              <span class="tag">AWS EC2</span><span class="tag">Docker</span>
+              <span class="tag">Docker Swarm</span><span class="tag">Traefik</span>
+              <span class="tag">MinIO</span><span class="tag">Loki</span>
+              <span class="tag">Linux</span><span class="tag">CI/CD</span>
+            </div>
+          </div>
+          <div class="skillgroup" style="margin-bottom:0">
+            <h4>Edge and robotics</h4>
+            <div class="tags">
+              <span class="tag">Raspberry Pi</span><span class="tag">Arduino</span>
+              <span class="tag">STM32</span><span class="tag">ROS 2</span>
+              <span class="tag">SLAM</span><span class="tag">Flutter</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AWARDS ===== -->
+  <section class="section" id="awards" style="background:var(--surface-2)">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Recognition</span>
+        <h2>Awards and honours</h2>
+      </div>
+      <div class="grid g3">
+        <div class="card reveal" style="--t:var(--violet)">
+          <div class="pill" style="--t:var(--violet)">2026</div>
+          <h3 style="margin:12px 0 6px">Google DeepMind Scholarship</h3>
+          <p style="color:var(--ink-2);font-size:.92rem">Full funding for the AI for Science MSc at AIMS South Africa.</p>
+        </div>
+        <div class="card reveal" data-delay=".08" style="--t:var(--amber)">
+          <div class="pill" style="--t:var(--amber)">2025</div>
+          <h3 style="margin:12px 0 6px">1st Place, FinAI Contest</h3>
+          <p style="color:var(--ink-2);font-size:.92rem">Task 2, with 93.07% accuracy on CFA Level I questions.</p>
+        </div>
+        <div class="card reveal" data-delay=".16" style="--t:var(--mint)">
+          <div class="pill" style="--t:var(--mint)">2026</div>
+          <h3 style="margin:12px 0 6px">Ministry of Higher Education grant</h3>
+          <p style="color:var(--ink-2);font-size:.92rem">$1,600 for Rafeeq, selected from projects across all Egyptian universities.</p>
+        </div>
+        <div class="card reveal" data-delay=".24" style="--t:var(--sky)">
+          <div class="pill" style="--t:var(--sky)">2021–26</div>
+          <h3 style="margin:12px 0 6px">Full Excellence Scholarship</h3>
+          <p style="color:var(--ink-2);font-size:.92rem">Five years of full tuition at Zewail City.</p>
+        </div>
+        <div class="card reveal" data-delay=".32" style="--t:var(--pink)">
+          <div class="pill" style="--t:var(--pink)">2021–26</div>
+          <h3 style="margin:12px 0 6px">Provost's Honors Roll</h3>
+          <p style="color:var(--ink-2);font-size:.92rem">Seven semesters, alongside Cum Laude graduation.</p>
+        </div>
+        <div class="card reveal" data-delay=".4" style="--t:var(--coral)">
+          <div class="pill" style="--t:var(--coral)">2025</div>
+          <h3 style="margin:12px 0 6px">IEEE CSCloud publication</h3>
+          <p style="color:var(--ink-2);font-size:.92rem">Second author of four on FinVerse Agent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW I WORK ===== -->
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">How I work</span>
+        <h2>What I check first</h2>
+        <p class="lede">
+          When a RAG answer is wrong, the model is usually the last thing at fault.
+          I work down this list in order.
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="tags" style="gap:8px">
+          <span class="tag">1 · intent</span><span class="tag">2 · query transform</span>
+          <span class="tag">3 · retrieval</span><span class="tag">4 · BM25 matches</span>
+          <span class="tag">5 · vector matches</span><span class="tag">6 · reranking</span>
+          <span class="tag">7 · context passed</span><span class="tag">8 · how the LLM used it</span>
+          <span class="tag">9 · post-processing</span>
+          <span class="tag" style="border-color:var(--violet);color:var(--violet)">10 · only then, the prompt</span>
+        </div>
+        <p style="color:var(--ink-2);font-size:.93rem;margin-top:15px">
+          The same instinct applies to existing code: read it, understand the
+          architecture, make the smallest change that works, then test. I do not
+          rewrite a project because I did not understand it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>

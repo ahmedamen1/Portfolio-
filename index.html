@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ahmed Amin — AI Engineer</title>
+<meta name="description" content="Ahmed Amin, AI Engineer. I build resource-efficient AI and NLP systems that work in the real world: fine-tuned LLMs and production RAG pipelines. IEEE published, Google DeepMind Scholar.">
+<meta property="og:title" content="Ahmed Amin — AI Engineer">
+<meta property="og:description" content="Resource-efficient AI and NLP that works in the real world. IEEE published. Google DeepMind Scholar 2026.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="reveal in">
+          <span class="eyebrow">AI Engineer · Giza, Egypt</span>
+          <h1>I build AI that is<br><span class="grad">small, fast and honest.</span></h1>
+          <div class="typed-wrap">
+            <span id="typed" data-lines='["Production RAG pipelines.","Fine-tuned LLMs on one GPU.","Arabic NLP that really works.","Offline voice on a Raspberry Pi."]'></span><span class="caret"></span>
+          </div>
+          <p class="intro">
+            Big models are easy to demo and expensive to run. I care about the version
+            that ships: cheap enough to afford, fast enough to use, and accurate enough
+            to trust. Most of my work is in Arabic, where that gap is widest.
+          </p>
+          <div class="btnrow">
+            <a class="btn btn-primary" href="projects.html">See my work →</a>
+            <a class="btn btn-ghost" href="contact.html">Get in touch</a>
+          </div>
+        </div>
+
+        <div class="hero-card reveal in" data-delay=".15">
+          <div class="row">
+            <div class="avatar">AA</div>
+            <div>
+              <div style="font-weight:750">Ahmed Mohamed Amin</div>
+              <div style="font-size:.83rem;color:var(--muted)">AI Engineer at Takhail</div>
+            </div>
+          </div>
+          <code>
+<span class="k">focus</span>: <span class="v">"RAG + fine-tuning"</span><br>
+<span class="k">language</span>: <span class="v">"Arabic + English"</span><br>
+<span class="k">next</span>: <span class="v">"MSc, AI for Science"</span><br>
+<span class="k">funded_by</span>: <span class="v">"Google DeepMind"</span><br>
+<span class="k">shipping</span>: <span class="v">true</span>
+          </code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat reveal" style="--t:var(--violet)">
+          <div class="num"><span data-count="93.07" data-dec="2" data-suffix="%">0</span></div>
+          <div class="lbl">CFA Level I, above GPT-4o</div>
+        </div>
+        <div class="stat reveal" data-delay=".08" style="--t:var(--mint)">
+          <div class="num"><span data-count="5" data-prefix="~" data-suffix="×">0</span></div>
+          <div class="lbl">cost cut per message</div>
+        </div>
+        <div class="stat reveal" data-delay=".16" style="--t:var(--amber)">
+          <div class="num"><span data-count="87" data-suffix="%">0</span></div>
+          <div class="lbl">offline Arabic voice accuracy</div>
+        </div>
+        <div class="stat reveal" data-delay=".24" style="--t:var(--sky)">
+          <div class="num"><span data-count="15">0</span></div>
+          <div class="lbl">LoRA adapters, one base model</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT I DO ============ -->
+  <section class="section" id="what">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">What I do</span>
+        <h2>Three things I am good at</h2>
+        <p class="lede">
+          All of it points the same way: making capable AI cheap enough and reliable
+          enough to put in front of real users.
+        </p>
+      </div>
+
+      <div class="grid g3">
+        <article class="card reveal" style="--t:var(--violet)">
+          <div class="pill" style="--t:var(--violet)">Retrieval</div>
+          <h3 style="margin:13px 0 8px">Production RAG</h3>
+          <p style="color:var(--ink-2);font-size:.93rem">
+            Hybrid BM25 and vector search, RRF fusion, MMR reranking, intent routing.
+            I have built this over ~100 classical Arabic books and made it answer
+            reliably in dialect.
+          </p>
+        </article>
+
+        <article class="card reveal" data-delay=".1" style="--t:var(--pink)">
+          <div class="pill" style="--t:var(--pink)">Efficiency</div>
+          <h3 style="margin:13px 0 8px">Fine-tuning LLMs</h3>
+          <p style="color:var(--ink-2);font-size:.93rem">
+            LoRA and QLoRA on quantized models. In FinVerse Agent, 15 adapters over one
+            4-bit LLaMA-3.1-8B beat GPT-4o on CFA exams. Small models, trained well,
+            win more often than people expect.
+          </p>
+        </article>
+
+        <article class="card reveal" data-delay=".2" style="--t:var(--mint)">
+          <div class="pill" style="--t:var(--mint)">Arabic NLP</div>
+          <h3 style="margin:13px 0 8px">Language that fits</h3>
+          <p style="color:var(--ink-2);font-size:.93rem">
+            Egyptian dialect and MSA, RTL formatting, voice in and out. Arabic is my
+            first language, so I can tell when a model is merely fluent and when it is
+            actually right.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED ============ -->
+  <section class="section" id="featured" style="background:var(--surface-2)">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Selected work</span>
+        <h2>Projects worth your time</h2>
+      </div>
+
+      <div class="grid g3">
+        <article class="card pcard reveal" style="--t:var(--violet)">
+          <div class="top">
+            <div>
+              <h3>FinVerse Agent</h3>
+              <div class="sub">IEEE CSCloud 2025</div>
+            </div>
+            <span class="pill" style="--t:var(--violet)">Research</span>
+          </div>
+          <p>15 LoRA adapters on one 4-bit quantized LLaMA-3.1-8B, with a
+             Planner, Executor and Verifier loop that picks the right adapter per query.</p>
+          <div class="result">93.07% on CFA Level I, above GPT-4o's 88.10%</div>
+          <div class="tags"><span class="tag">LoRA</span><span class="tag">PEFT</span><span class="tag">Quantization</span></div>
+          <div class="foot">
+            <a class="link" href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener">Read the paper →</a>
+          </div>
+        </article>
+
+        <article class="card pcard reveal" data-delay=".1" style="--t:var(--mint)">
+          <div class="top">
+            <div>
+              <h3>Rafeeq</h3>
+              <div class="sub">Graduation project</div>
+            </div>
+            <span class="pill" style="--t:var(--mint)">Assistive</span>
+          </div>
+          <p>A retrofit kit that turns any manual wheelchair into a smart one:
+             navigation, health monitoring, and Arabic voice control that runs offline.</p>
+          <div class="result">87% accuracy at 0.9s, fully offline on a Pi 5</div>
+          <div class="tags"><span class="tag">ROS 2</span><span class="tag">Whisper</span><span class="tag">SLAM</span></div>
+          <div class="foot">
+            <a class="link" href="https://ahmedamen1.github.io/Rafeeq-Demo/" target="_blank" rel="noopener">See the demo →</a>
+          </div>
+        </article>
+
+        <article class="card pcard reveal" data-delay=".2" style="--t:var(--pink)">
+          <div class="top">
+            <div>
+              <h3>Dr. Sherine</h3>
+              <div class="sub">Takhail</div>
+            </div>
+            <span class="pill" style="--t:var(--pink)">Production</span>
+          </div>
+          <p>An Arabic counselling voice agent with retrieval over roughly 100 classical
+             texts, tuned to answer warmly and stay grounded in its sources.</p>
+          <div class="result">Cost per message cut from ~5 EGP to ~0.8 EGP</div>
+          <div class="tags"><span class="tag">RAG</span><span class="tag">ElevenLabs</span><span class="tag">Celery</span></div>
+          <div class="foot">
+            <a class="link" href="projects.html">More detail →</a>
+          </div>
+        </article>
+      </div>
+
+      <div style="text-align:center;margin-top:34px" class="reveal">
+        <a class="btn btn-primary" href="projects.html">All projects →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CALLOUT ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="callout reveal">
+        <span class="eyebrow">Why this matters to me</span>
+        <p>
+          Arabic is my first language, and I want AI to work just as well in it.
+          Most tools are built for English first, so Arabic users get the weaker
+          version. That gap is the problem I keep coming back to.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>
