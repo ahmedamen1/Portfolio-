@@ -13,11 +13,13 @@
   var root = document.documentElement;
 
   function readTheme() {
+    // Light is the default look. Dark is opt-in via the toggle, and is
+    // remembered once chosen.
     try {
       var t = localStorage.getItem('amin-theme');
-      if (t) return t;
+      if (t === 'dark' || t === 'light') return t;
     } catch (e) { /* private mode */ }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return 'light';
   }
 
   function applyTheme(t) {

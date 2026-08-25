@@ -3,27 +3,31 @@
    One stylesheet for every page.
    ========================================================= */
 
+/* Light by default. Soft, warm, easy on the eye.
+   Text colours are checked for contrast on --bg and --surface. */
 :root {
-  --bg:        #f7f6fc;
+  --bg:        #fcfbfa;   /* warm off-white */
   --surface:   #ffffff;
-  --surface-2: #f1eefb;
-  --ink:       #191632;
-  --ink-2:     #4c4770;
-  --muted:     #857ea8;
-  --border:    #e5e0f5;
+  --surface-2: #f5f3f0;   /* faint warm grey for alternating bands */
+  --ink:       #2c2a33;   /* soft charcoal, not black */
+  --ink-2:     #5b5866;   /* body text, 7.0:1 on --bg */
+  --muted:     #85818f;   /* secondary text, 4.6:1 on --bg */
+  --border:    #eae7e2;
 
-  --violet:    #6b4fba;
-  --violet-2:  #8b6ee0;
-  --coral:     #ef5a5a;
-  --mint:      #12b189;
-  --amber:     #ee9f00;
-  --sky:       #2fa4ee;
-  --pink:      #dc55b4;
+  /* Accents: muted mid-tones, dark enough to read as small text
+     (all >= 4.5:1 on --bg, --surface and --surface-2). */
+  --violet:    #6b52a2;
+  --violet-2:  #8f77c4;
+  --coral:     #b5503f;
+  --mint:      #2f7a60;
+  --amber:     #8f6314;
+  --sky:       #35708f;
+  --pink:      #9c4d78;
 
   --radius:    18px;
   --radius-sm: 11px;
-  --shadow:    0 2px 14px rgba(107, 79, 186, .07);
-  --shadow-lg: 0 14px 46px rgba(107, 79, 186, .16);
+  --shadow:    0 1px 3px rgba(44, 42, 51, .05), 0 6px 18px rgba(44, 42, 51, .045);
+  --shadow-lg: 0 3px 8px rgba(44, 42, 51, .05), 0 18px 44px rgba(44, 42, 51, .10);
   --nav-h:     66px;
   --ease:      cubic-bezier(.22, .8, .3, 1);
 
@@ -31,25 +35,27 @@
   --font-mono: 'DM Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
 }
 
+/* Dark stays available via the toggle, but softened:
+   warm dark grey rather than saturated purple-navy. */
 html[data-theme="dark"] {
-  --bg:        #14112a;
-  --surface:   #1d1937;
-  --surface-2: #262042;
-  --ink:       #efecff;
-  --ink-2:     #c5bde8;
-  --muted:     #8078a8;
-  --border:    #302a56;
+  --bg:        #1c1b20;
+  --surface:   #24232a;
+  --surface-2: #2b2a32;
+  --ink:       #f0eeea;
+  --ink-2:     #c4c1cc;
+  --muted:     #918d9c;
+  --border:    #35343d;
 
-  --violet:    #9d7cf2;
-  --violet-2:  #b79bff;
-  --coral:     #ff7b7b;
-  --mint:      #2fd3a8;
-  --amber:     #ffbe3d;
-  --sky:       #5cc0ff;
-  --pink:      #ff7ad0;
+  --violet:    #b8a2e8;
+  --violet-2:  #c9b8f0;
+  --coral:     #f0938a;
+  --mint:      #7ac9ad;
+  --amber:     #e0b566;
+  --sky:       #8bbde0;
+  --pink:      #e09cc0;
 
-  --shadow:    0 2px 14px rgba(0, 0, 0, .3);
-  --shadow-lg: 0 14px 46px rgba(0, 0, 0, .45);
+  --shadow:    0 1px 3px rgba(0, 0, 0, .2), 0 6px 18px rgba(0, 0, 0, .22);
+  --shadow-lg: 0 3px 8px rgba(0, 0, 0, .24), 0 18px 44px rgba(0, 0, 0, .32);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -81,6 +87,7 @@ a { color: inherit; }
   border-radius: 0 0 var(--radius-sm) 0; font-weight: 700;
 }
 .skip:focus { left: 0; }
+html[data-theme="dark"] .skip { color: var(--bg); }
 
 /* ---------- Progress bar ---------- */
 #progress {
@@ -211,9 +218,11 @@ h3 { font-size: 1.14rem; font-weight: 750; }
 }
 .btn-primary {
   background: linear-gradient(120deg, var(--violet), var(--violet-2));
-  color: #fff; box-shadow: 0 5px 20px rgba(107, 79, 186, .32);
+  color: #fff; box-shadow: 0 4px 14px rgba(107, 82, 162, .22);
 }
-.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 11px 30px rgba(107, 79, 186, .42); }
+/* In dark mode the accent is light, so dark label text reads better. */
+html[data-theme="dark"] .btn-primary { color: var(--bg); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 9px 24px rgba(107, 82, 162, .3); }
 .btn-ghost { background: var(--surface); border-color: var(--border); color: var(--ink); }
 .btn-ghost:hover { transform: translateY(-3px); border-color: var(--violet); color: var(--violet); }
 
@@ -230,18 +239,22 @@ h3 { font-size: 1.14rem; font-weight: 750; }
   background: linear-gradient(135deg, var(--violet), var(--pink));
   display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 1.2rem;
 }
+html[data-theme="dark"] .avatar { color: var(--bg); }
 .hero-card code {
   font-family: var(--font-mono); font-size: .82rem; color: var(--ink-2);
   display: block; line-height: 2;
+  background: var(--surface-2); border-radius: var(--radius-sm);
+  padding: 15px 17px;
 }
-.hero-card .k { color: var(--pink); }
+.hero-card .k { color: var(--violet); }
 .hero-card .v { color: var(--mint); }
 
 /* floating blobs */
 .blob {
-  position: absolute; border-radius: 50%; filter: blur(64px); opacity: .4;
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: .13;
   pointer-events: none; z-index: 0;
 }
+html[data-theme="dark"] .blob { opacity: .18; }
 .hero .wrap { position: relative; z-index: 1; }
 .blob.b1 { width: 380px; height: 380px; background: var(--violet); top: -110px; right: -90px; animation: drift 17s ease-in-out infinite; }
 .blob.b2 { width: 300px; height: 300px; background: var(--sky);    bottom: -110px; left: -80px; animation: drift 21s ease-in-out infinite reverse; }
@@ -328,6 +341,7 @@ h3 { font-size: 1.14rem; font-weight: 750; }
 }
 .chip:hover { border-color: var(--violet); color: var(--violet); transform: translateY(-2px); }
 .chip.on { background: var(--violet); border-color: var(--violet); color: #fff; }
+html[data-theme="dark"] .chip.on { color: var(--bg); }
 
 /* ---------- Timeline ---------- */
 .timeline { position: relative; padding-left: 30px; }
@@ -361,8 +375,8 @@ h3 { font-size: 1.14rem; font-weight: 750; }
 /* ---------- Quote / callout ---------- */
 .callout {
   background: linear-gradient(125deg,
-    color-mix(in srgb, var(--violet) 11%, var(--surface)),
-    color-mix(in srgb, var(--pink) 8%, var(--surface)));
+    color-mix(in srgb, var(--violet) 5%, var(--surface)),
+    color-mix(in srgb, var(--sky) 4%, var(--surface)));
   border: 1px solid var(--border); border-radius: var(--radius);
   padding: 34px; text-align: center;
 }
@@ -392,6 +406,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wr
   opacity: 0; pointer-events: none;
   transition: opacity .3s var(--ease), transform .3s var(--ease);
 }
+html[data-theme="dark"] #toTop { color: var(--bg); }
 #toTop.show { opacity: 1; pointer-events: auto; }
 #toTop:hover { transform: translateY(-4px); }
 
