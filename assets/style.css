@@ -92,7 +92,7 @@ html[data-theme="dark"] .skip { color: var(--bg); }
 /* ---------- Progress bar ---------- */
 #progress {
   position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-  background: linear-gradient(90deg, var(--violet), var(--pink), var(--sky));
+  background: var(--violet);
   z-index: 120; transition: width .1s linear;
 }
 
@@ -115,7 +115,7 @@ html[data-theme="dark"] .skip { color: var(--bg); }
 }
 .brand .dot {
   width: 11px; height: 11px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--violet), var(--pink));
+  background: var(--violet);
   animation: pulse 2.6s var(--ease) infinite;
 }
 @keyframes pulse {
@@ -133,8 +133,10 @@ html[data-theme="dark"] .skip { color: var(--bg); }
 .navlinks a.active { color: var(--violet); }
 .navlinks a.active::after {
   content: ""; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px;
-  border-radius: 2px; background: linear-gradient(90deg, var(--violet), var(--pink));
+  border-radius: 2px; background: var(--violet);
+  animation: growIn .32s var(--ease) both;
 }
+@keyframes growIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 .iconbtn {
   width: 38px; height: 38px; flex: 0 0 38px; display: grid; place-items: center;
@@ -142,7 +144,8 @@ html[data-theme="dark"] .skip { color: var(--bg); }
   color: var(--ink); cursor: pointer; font-size: 1rem;
   transition: transform .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
 }
-.iconbtn:hover { transform: translateY(-2px); border-color: var(--violet); color: var(--violet); }
+.iconbtn:hover { transform: translateY(-2px) rotate(12deg); border-color: var(--violet); color: var(--violet); }
+.iconbtn:active { transform: scale(.92); }
 
 .burger { display: none; }
 
@@ -162,10 +165,23 @@ html[data-theme="dark"] .skip { color: var(--bg); }
 
 /* ---------- Reveal on scroll ---------- */
 .reveal {
-  opacity: 0; transform: translateY(22px);
-  transition: opacity .62s var(--ease), transform .62s var(--ease);
+  opacity: 0; transform: translateY(26px) scale(.985);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
 }
 .reveal.in { opacity: 1; transform: none; }
+
+/* Slide in from the side, for alternating rows. */
+.reveal-l { opacity: 0; transform: translateX(-28px); }
+.reveal-r { opacity: 0; transform: translateX(28px); }
+.reveal-l, .reveal-r { transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.reveal-l.in, .reveal-r.in { opacity: 1; transform: none; }
+
+/* Mid-filter: cards drop away before the new set arrives. */
+.filtering {
+  opacity: 0 !important;
+  transform: translateY(10px) scale(.97) !important;
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+}
 
 /* ---------- Sections ---------- */
 main { padding-top: var(--nav-h); }
@@ -189,12 +205,7 @@ h3 { font-size: 1.14rem; font-weight: 750; }
 .hero h1 {
   font-size: clamp(2.3rem, 6vw, 4rem); font-weight: 800; margin-bottom: 20px;
 }
-.grad {
-  background: linear-gradient(115deg, var(--violet), var(--pink) 45%, var(--sky));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  background-size: 220% auto; animation: shift 7s ease-in-out infinite;
-}
-@keyframes shift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.grad { color: var(--violet); }
 
 .hero p.intro { font-size: 1.1rem; color: var(--ink-2); max-width: 54ch; }
 
@@ -217,12 +228,13 @@ h3 { font-size: 1.14rem; font-weight: 750; }
   transition: transform .2s var(--ease), box-shadow .25s var(--ease), background .2s var(--ease);
 }
 .btn-primary {
-  background: linear-gradient(120deg, var(--violet), var(--violet-2));
+  background: var(--violet);
   color: #fff; box-shadow: 0 4px 14px rgba(107, 82, 162, .22);
 }
 /* In dark mode the accent is light, so dark label text reads better. */
 html[data-theme="dark"] .btn-primary { color: var(--bg); }
 .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 9px 24px rgba(107, 82, 162, .3); }
+.btn:active { transform: translateY(-1px) scale(.985); }
 .btn-ghost { background: var(--surface); border-color: var(--border); color: var(--ink); }
 .btn-ghost:hover { transform: translateY(-3px); border-color: var(--violet); color: var(--violet); }
 
@@ -236,7 +248,7 @@ html[data-theme="dark"] .btn-primary { color: var(--bg); }
 .hero-card .row { display: flex; align-items: center; gap: 13px; margin-bottom: 17px; }
 .avatar {
   width: 52px; height: 52px; flex: 0 0 52px; border-radius: 14px;
-  background: linear-gradient(135deg, var(--violet), var(--pink));
+  background: var(--violet);
   display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 1.2rem;
 }
 html[data-theme="dark"] .avatar { color: var(--bg); }
@@ -248,6 +260,40 @@ html[data-theme="dark"] .avatar { color: var(--bg); }
 }
 .hero-card .k { color: var(--violet); }
 .hero-card .v { color: var(--mint); }
+
+/* Scholarship highlight inside the hero card */
+.scholar {
+  margin-top: 16px; padding: 15px 17px;
+  border: 1px solid color-mix(in srgb, var(--violet) 32%, var(--border));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--violet) 6%, var(--surface));
+  transition: border-color .3s var(--ease), background .3s var(--ease),
+              transform .3s var(--ease);
+}
+.scholar:hover {
+  transform: translateY(-2px);
+  border-color: var(--violet);
+  background: color-mix(in srgb, var(--violet) 10%, var(--surface));
+}
+.scholar-top { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+.scholar-badge {
+  font-size: .68rem; font-weight: 800; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--violet);
+  display: inline-flex; align-items: center; gap: 7px;
+}
+/* Small dot that softly pulses, so the badge draws the eye. */
+.scholar-badge::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--violet); flex: 0 0 7px;
+  animation: glow 2.4s var(--ease) infinite;
+}
+@keyframes glow {
+  0%, 100% { opacity: 1;  box-shadow: 0 0 0 0 color-mix(in srgb, var(--violet) 55%, transparent); }
+  50%      { opacity: .7; box-shadow: 0 0 0 6px color-mix(in srgb, var(--violet) 0%, transparent); }
+}
+.scholar-body { display: flex; flex-direction: column; gap: 2px; }
+.scholar-body b { font-size: .95rem; color: var(--ink); }
+.scholar-body span { font-size: .8rem; color: var(--muted); }
 
 /* floating blobs */
 .blob {
@@ -274,7 +320,12 @@ html[data-theme="dark"] .blob { opacity: .18; }
 .stat::before {
   content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
   background: var(--t, var(--violet));
+  transform: scaleX(.35); transform-origin: center;
+  transition: transform .4s var(--ease);
 }
+.stat:hover::before { transform: scaleX(1); }
+.stat .num { transition: transform .3s var(--ease); }
+.stat:hover .num { transform: scale(1.06); }
 .stat:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 .stat .num {
   font-size: 1.95rem; font-weight: 800; letter-spacing: -.03em;
@@ -290,9 +341,28 @@ html[data-theme="dark"] .blob { opacity: .18; }
 .card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow);
-  transition: transform .28s var(--ease), box-shadow .28s var(--ease), border-color .28s var(--ease);
+  position: relative; overflow: hidden;
+  transition: transform .34s var(--ease), box-shadow .34s var(--ease),
+              border-color .34s var(--ease);
 }
-.card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: color-mix(in srgb, var(--violet) 34%, var(--border)); }
+/* A tint that wipes in from the left on hover. */
+.card::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: color-mix(in srgb, var(--t, var(--violet)) 5%, transparent);
+  opacity: 0; transition: opacity .34s var(--ease);
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: color-mix(in srgb, var(--t, var(--violet)) 42%, var(--border));
+}
+.card:hover::before { opacity: 1; }
+
+/* Children shift slightly as the card lifts, so it feels layered. */
+.card h3 { transition: color .28s var(--ease); }
+.card:hover h3 { color: var(--t, var(--violet)); }
+.card .tag { transition: border-color .28s var(--ease), transform .28s var(--ease); }
+.card:hover .tag { border-color: color-mix(in srgb, var(--t, var(--violet)) 30%, var(--border)); }
 
 /* project card */
 .pcard { position: relative; overflow: hidden; display: flex; flex-direction: column; }
@@ -316,6 +386,13 @@ html[data-theme="dark"] .blob { opacity: .18; }
   font-family: var(--font-mono); font-size: .7rem; color: var(--ink-2);
   background: var(--surface-2); border: 1px solid var(--border);
   border-radius: 6px; padding: 3px 8px;
+  transition: transform .2s var(--ease), color .2s var(--ease),
+              background .2s var(--ease);
+}
+.tag:hover {
+  transform: translateY(-2px);
+  color: var(--t, var(--violet));
+  background: color-mix(in srgb, var(--t, var(--violet)) 9%, var(--surface-2));
 }
 
 .pill {
@@ -330,6 +407,8 @@ html[data-theme="dark"] .blob { opacity: .18; }
   transition: gap .2s var(--ease);
 }
 .link:hover { gap: 10px; }
+.link::after { content: ""; }
+.link:hover { color: var(--t, var(--violet)); }
 
 /* ---------- Filter chips ---------- */
 .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
@@ -340,6 +419,7 @@ html[data-theme="dark"] .blob { opacity: .18; }
   transition: all .2s var(--ease);
 }
 .chip:hover { border-color: var(--violet); color: var(--violet); transform: translateY(-2px); }
+.chip:active { transform: translateY(0) scale(.96); }
 .chip.on { background: var(--violet); border-color: var(--violet); color: #fff; }
 html[data-theme="dark"] .chip.on { color: var(--bg); }
 
@@ -347,7 +427,7 @@ html[data-theme="dark"] .chip.on { color: var(--bg); }
 .timeline { position: relative; padding-left: 30px; }
 .timeline::before {
   content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px;
-  background: linear-gradient(var(--violet), var(--pink), transparent);
+  background: var(--border);
 }
 .tl-item { position: relative; padding-bottom: 30px; }
 .tl-item:last-child { padding-bottom: 0; }
@@ -355,7 +435,14 @@ html[data-theme="dark"] .chip.on { color: var(--bg); }
   content: ""; position: absolute; left: -30px; top: 6px;
   width: 16px; height: 16px; border-radius: 50%;
   background: var(--surface); border: 3px solid var(--t, var(--violet));
+  transition: background .3s var(--ease), transform .3s var(--ease);
 }
+.tl-item:hover::before {
+  background: var(--t, var(--violet));
+  transform: scale(1.25);
+}
+.tl-item .what { transition: color .28s var(--ease); }
+.tl-item:hover .what { color: var(--t, var(--violet)); }
 .tl-item .when {
   font-family: var(--font-mono); font-size: .76rem; color: var(--muted);
   font-weight: 500; margin-bottom: 3px;
@@ -374,9 +461,7 @@ html[data-theme="dark"] .chip.on { color: var(--bg); }
 
 /* ---------- Quote / callout ---------- */
 .callout {
-  background: linear-gradient(125deg,
-    color-mix(in srgb, var(--violet) 5%, var(--surface)),
-    color-mix(in srgb, var(--sky) 4%, var(--surface)));
+  background: var(--surface);
   border: 1px solid var(--border); border-radius: var(--radius);
   padding: 34px; text-align: center;
 }
@@ -395,7 +480,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wr
   text-decoration: none; font-weight: 700; font-size: .8rem;
   transition: all .2s var(--ease);
 }
-.social a:hover { transform: translateY(-3px); border-color: var(--violet); color: var(--violet); }
+.social a:hover { transform: translateY(-3px) rotate(-4deg); border-color: var(--violet); color: var(--violet); }
 
 /* ---------- Back to top ---------- */
 #toTop {

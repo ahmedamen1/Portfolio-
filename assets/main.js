@@ -80,7 +80,19 @@
   }
 
   /* ---------- Reveal on scroll ---------- */
-  var items = $$('.reveal');
+  var items = $$('.reveal, .reveal-l, .reveal-r');
+
+  /* Cards inside a grid stagger automatically, so a row of three
+     arrives one after another instead of all at once. */
+  $$('.grid').forEach(function (grid) {
+    var kids = $$('.reveal, .reveal-l, .reveal-r', grid);
+    kids.forEach(function (el, i) {
+      if (!el.hasAttribute('data-delay')) {
+        el.setAttribute('data-delay', (i * 0.07).toFixed(2));
+      }
+    });
+  });
+
   if (!('IntersectionObserver' in window) || reduced) {
     items.forEach(function (el) { el.classList.add('in'); });
   } else {
@@ -152,17 +164,44 @@
   if (chips.length) {
     chips.forEach(function (c) {
       c.addEventListener('click', function () {
-        chips.forEach(function (x) { x.classList.remove('on'); });
-        c.classList.add('on');
-        var f = c.getAttribute('data-filter');
-        $$('[data-kind]').forEach(function (card) {
-          var show = (f === 'all' || card.getAttribute('data-kind') === f);
-          card.style.display = show ? '' : 'none';
-          if (show) {
-            card.classList.remove('in');
-            requestAnimationFrame(function () { card.classList.add('in'); });
-          }
+        if (c.classList.contains('on')) return;
+        chips.forEach(function (x) {
+          x.classList.remove('on');
+          x.setAttribute('aria-pressed', 'false');
         });
+        c.classList.add('on');
+        c.setAttribute('aria-pressed', 'true');
+
+        var f = c.getAttribute('data-filter');
+        var cards = $$('[data-kind]');
+
+        if (reduced) {
+          cards.forEach(function (card) {
+            card.style.display =
+              (f === 'all' || card.getAttribute('data-kind') === f) ? '' : 'none';
+          });
+          return;
+        }
+
+        /* Fade the whole set out, swap, then stagger the matches back in. */
+        cards.forEach(function (card) { card.classList.add('filtering'); });
+
+        setTimeout(function () {
+          var shown = 0;
+          cards.forEach(function (card) {
+            var show = (f === 'all' || card.getAttribute('data-kind') === f);
+            card.style.display = show ? '' : 'none';
+            card.classList.remove('in');
+            if (show) {
+              var delay = shown * 60;
+              shown++;
+              setTimeout(function () {
+                card.classList.remove('filtering');
+                card.classList.add('in');
+              }, delay);
+            }
+          });
+        }, 200);
       });
     });
   }
