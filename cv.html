@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV — Ahmed Amin</title>
+<meta name="description" content="Curriculum vitae of Ahmed Amin: AI Engineer at Takhail, Google DeepMind Scholar, IEEE published. Education, experience, publication, skills and awards.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  /* CV-specific layout */
+  .cv-head {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 22px; flex-wrap: wrap; margin-bottom: 30px;
+  }
+  .cv-contact {
+    font-size: .9rem; color: var(--ink-2); line-height: 1.9;
+  }
+  .cv-contact a { color: var(--violet); text-decoration: none; font-weight: 650; }
+  .cv-contact a:hover { text-decoration: underline; }
+
+  .cv-block { margin-bottom: 34px; }
+  .cv-block > h2 {
+    font-size: 1.02rem; text-transform: uppercase; letter-spacing: .1em;
+    font-weight: 800; color: var(--ink); padding-bottom: 9px;
+    border-bottom: 2px solid var(--border); margin-bottom: 18px;
+  }
+
+  .entry { margin-bottom: 22px; }
+  .entry:last-child { margin-bottom: 0; }
+  .entry-top {
+    display: flex; justify-content: space-between; gap: 14px;
+    flex-wrap: wrap; align-items: baseline;
+  }
+  .entry-title { font-weight: 750; font-size: 1.02rem; }
+  .entry-when {
+    font-family: var(--font-mono); font-size: .8rem; color: var(--muted);
+    white-space: nowrap;
+  }
+  .entry-sub {
+    color: var(--violet); font-weight: 650; font-size: .89rem; margin: 2px 0 8px;
+  }
+  .entry ul { margin: 0 0 0 18px; }
+  .entry li {
+    color: var(--ink-2); font-size: .92rem; margin-bottom: 6px; line-height: 1.6;
+  }
+  .entry li b, .entry li strong { color: var(--ink); }
+
+  .kv { display: grid; grid-template-columns: 150px 1fr; gap: 9px 16px; }
+  .kv dt {
+    font-size: .76rem; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--muted); font-weight: 700; padding-top: 2px;
+  }
+  .kv dd { font-size: .91rem; color: var(--ink-2); margin: 0; }
+
+  .awards { display: grid; gap: 10px; }
+  .award {
+    display: flex; gap: 13px; align-items: baseline;
+    padding: 11px 15px; border-radius: var(--radius-sm);
+    background: var(--surface-2); border-left: 3px solid var(--t, var(--violet));
+    transition: transform .25s var(--ease), background .25s var(--ease);
+  }
+  .award:hover { transform: translateX(4px); background: color-mix(in srgb, var(--t, var(--violet)) 7%, var(--surface-2)); }
+  .award .yr {
+    font-family: var(--font-mono); font-size: .78rem; color: var(--t, var(--violet));
+    font-weight: 500; white-space: nowrap; flex: 0 0 auto;
+  }
+  .award .txt { font-size: .92rem; color: var(--ink-2); }
+  .award .txt b { color: var(--ink); }
+
+  @media (max-width: 680px) {
+    .kv { grid-template-columns: 1fr; gap: 3px 0; }
+    .kv dt { padding-top: 9px; }
+    .entry-when { font-size: .76rem; }
+  }
+  @media print {
+    .cv-block { break-inside: avoid; }
+    .entry { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html" class="active">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main">
+  <section class="section">
+    <div class="wrap">
+
+      <div class="section-head reveal in" style="margin-bottom:22px">
+        <span class="eyebrow">Curriculum vitae</span>
+        <h2>Ahmed Mohamed Amin</h2>
+      </div>
+
+      <div class="cv-head reveal in">
+        <div class="cv-contact">
+          AI Engineer at Takhail &middot; Giza, Egypt<br>
+          <a href="mailto:ahmed.m.amin2003@gmail.com">ahmed.m.amin2003@gmail.com</a> &middot;
+          <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener">GitHub</a> &middot;
+          <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener">LinkedIn</a> &middot;
+          <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener">IEEE paper</a>
+        </div>
+        <button class="btn btn-primary" id="printCv" type="button">Save as PDF</button>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="cv-block reveal">
+        <h2>Education</h2>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">M.Sc. Mathematical Sciences &mdash; AI for Science</span>
+            <span class="entry-when">Sept 2026 &ndash; July 2027</span>
+          </div>
+          <div class="entry-sub">African Institute for Mathematical Sciences (AIMS) &middot; Cape Town, South Africa</div>
+          <ul>
+            <li><b>Fully funded by a Google DeepMind Scholarship</b>, covering tuition, accommodation, meals, medical cover, flights, stipend and research/cloud GPU compute.</li>
+            <li>Registered at the University of Cape Town, Faculty of Science.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">B.Sc. Communications &amp; Information Engineering</span>
+            <span class="entry-when">Sept 2021 &ndash; June 2026</span>
+          </div>
+          <div class="entry-sub">Zewail City of Science and Technology &middot; Giza, Egypt &middot; ABET accredited</div>
+          <ul>
+            <li><b>GPA 3.64/4.00, Cum Laude</b>, 162 credits.</li>
+            <li><b>Key courses:</b> Machine Learning, Neural Networks &amp; Deep Learning, NLP, Computer Vision, Big Data Analytics, Statistical Inference, Probability &amp; Stochastic Processes, Algorithms &amp; Data Structures, Linear Algebra.</li>
+            <li><b>Honors:</b> Provost's Honors Roll for 7 semesters; five-year full Excellence Scholarship.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- EXPERIENCE -->
+      <div class="cv-block reveal">
+        <h2>Experience</h2>
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">AI Engineer</span>
+            <span class="entry-when">Dec 2025 &ndash; Present</span>
+          </div>
+          <div class="entry-sub">Takhail &middot; Giza, Egypt</div>
+          <ul>
+            <li><b>Lead a two-person engineering team</b> across four client-facing AI products, owning system architecture end to end and reporting delivery progress monthly.</li>
+            <li>Cut per-message inference cost on an Arabic voice assistant from ~5 EGP to <b>~0.8&ndash;1 EGP (roughly 5&times;)</b> through embedding and retrieval architecture changes.</li>
+            <li>Built a production AI chatbot assistant for a luxury real estate brand using a multilingual RAG pipeline (ChromaDB, FastAPI, Celery, Redis) on AWS EC2 with Docker Swarm, in Arabic and English.</li>
+            <li>Improved answer quality with hybrid BM25 + vector retrieval, RRF fusion and MMR reranking over <b>~100 classical Arabic texts</b>, plus semantic routing across ~7 content types.</li>
+            <li>Designed an <b>async fire-and-poll architecture</b> with Celery so voice and text conversations run concurrently, with STT, TTS and RAG stages in parallel behind one chat API.</li>
+            <li>Built a RAG observability pipeline: structured traces shipped via Promtail to Loki, with a token-gated live debug dashboard showing pipeline stages, retrieval scores and response times.</li>
+            <li>Owned full system architecture: API design, containerized microservices (MinIO, ChromaDB, MongoDB, Redis), ElevenLabs TTS, Whisper STT, and multi-provider LLM switching with zero-downtime deployments.</li>
+            <li><b>Products:</b> Dr. Sherine (Arabic counselling voice agent), TMG/The Spine (multilingual property assistant in Arabic, English, Spanish and French), Tanza (multi-tenant guide on PostgreSQL + pgvector + FTS5), InfinityECN (recovered a stalled client assistant).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PUBLICATION -->
+      <div class="cv-block reveal">
+        <h2>Publication</h2>
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">IEEE CSCloud 2025 &mdash; 12th Intl. Conference on Cyber Security and Cloud Computing</span>
+            <span class="entry-when">Aug 2025</span>
+          </div>
+          <div class="entry-sub">Second author of four &middot; NUST Islamabad and Zewail City</div>
+          <ul>
+            <li>L. Rana, <b>A. Amin</b>, H. Ameer, and S. Latif, "<a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" style="color:var(--violet);font-weight:650">FinVerse Agent: Resource-Efficient Financial LLMs with Modular LoRA Fine-Tuning and Task Routing</a>," in <i>Proc. IEEE CSCloud</i>, 2025.</li>
+            <li><b>My contribution:</b> fine-tuned 15 task-specific LoRA adapters over a 4-bit quantized LLaMA-3.1-8B and built the Planner&ndash;Executor&ndash;Verifier routing loop for dynamic adapter selection and validated inference.</li>
+            <li><b>Results:</b> 93.07% on CFA Level I (GPT-4o: 88.10%) and 81.43% on Level II; 97.24 F1 on NER (BloombergGPT: 60.82); 99.50% Financial Math; 0.9171 FinanceBench BERTScore (GPT-4o: 0.564).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- GRADUATION PROJECT -->
+      <div class="cv-block reveal">
+        <h2>Graduation Project</h2>
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">Rafeeq &mdash; AI Retrofit Kit for Manual Wheelchairs</span>
+            <span class="entry-when">Sept 2025 &ndash; 2026</span>
+          </div>
+          <div class="entry-sub">Lead AI Architect &middot; Arabic NLP, Robotics, Edge AI</div>
+          <ul>
+            <li><b>Concept:</b> a modular kit adding autonomous navigation, Arabic voice control and health monitoring to any existing manual wheelchair, at 60 to 70% lower cost than imported smart wheelchairs.</li>
+            <li><b>AI:</b> offline Egyptian Arabic speech recognition (faster-whisper INT8) on a Raspberry Pi 5, reaching <b>87% command accuracy at 0.9s latency with no internet</b>. Added a RAG-based Arabic chatbot for health Q&amp;A.</li>
+            <li><b>Robotics:</b> autonomous indoor navigation with LiDAR and depth-camera SLAM (ROS 2 Nav2), and a three-tier control stack (Raspberry Pi, Arduino Mega, STM32) converting commands into motor movement in <b>under 20ms</b>.</li>
+            <li><b>Health &amp; safety:</b> real-time heart rate, SpO<sub>2</sub> and temperature monitoring with a 22-screen Flutter app for patients and caregivers, SOS alerts and live vitals over Firebase.</li>
+            <li><b>Funding:</b> won a <b>$1,600 USD grant</b> from Egypt's Ministry of Higher Education through the Innovators Support Fund, selected from projects across all Egyptian universities.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="cv-block reveal">
+        <h2>Technical Skills</h2>
+        <dl class="kv">
+          <dt>Programming</dt>
+          <dd>Python, C++, SQL</dd>
+          <dt>AI, NLP &amp; ML</dt>
+          <dd>RAG, hybrid retrieval (BM25 + vector), RRF, MMR reranking, LangChain, Hugging Face Transformers, PyTorch, TensorFlow, scikit-learn, LoRA/QLoRA, PEFT, 4-bit quantization, Unsloth, vLLM, Whisper/faster-whisper, ElevenLabs TTS, computer vision</dd>
+          <dt>Data &amp; retrieval</dt>
+          <dd>PostgreSQL, pgvector, ChromaDB, FAISS, FTS5, MongoDB, Redis</dd>
+          <dt>Infrastructure</dt>
+          <dd>AWS EC2, Docker, Docker Swarm, Traefik, MinIO, Celery, Promtail/Loki, Git, Linux, CI/CD</dd>
+          <dt>Software eng.</dt>
+          <dd>FastAPI, REST API design, microservices architecture, system design, Flutter/Riverpod, ROS 2, Agile/Scrum</dd>
+          <dt>Spoken languages</dt>
+          <dd>Arabic (native &mdash; MSA and Egyptian dialect), English (professional &mdash; <b>IELTS Academic 6.5</b>, CEFR B2)</dd>
+        </dl>
+      </div>
+
+      <!-- AWARDS -->
+      <div class="cv-block reveal">
+        <h2>Awards &amp; Honors</h2>
+        <div class="awards">
+          <div class="award" style="--t:var(--violet)">
+            <span class="yr">2026</span>
+            <span class="txt"><b>Google DeepMind Scholarship</b> &mdash; full funding for the AI for Science M.Sc. at AIMS South Africa.</span>
+          </div>
+          <div class="award" style="--t:var(--amber)">
+            <span class="yr">2025</span>
+            <span class="txt"><b>1st Place, FinAI Contest 2025</b> (Task 2) &mdash; 93.07% on CFA Level I, above GPT-4o.</span>
+          </div>
+          <div class="award" style="--t:var(--mint)">
+            <span class="yr">2026</span>
+            <span class="txt"><b>Ministry of Higher Education Grant</b> &mdash; $1,600 USD for Rafeeq, selected nationally.</span>
+          </div>
+          <div class="award" style="--t:var(--sky)">
+            <span class="yr">2021&ndash;26</span>
+            <span class="txt"><b>Full Excellence Scholarship</b> &mdash; five years of full tuition, Zewail City.</span>
+          </div>
+          <div class="award" style="--t:var(--pink)">
+            <span class="yr">2021&ndash;26</span>
+            <span class="txt"><b>Provost's Honors Roll</b> &mdash; 7 semesters; graduated Cum Laude.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEADERSHIP -->
+      <div class="cv-block reveal">
+        <h2>Leadership &amp; Extracurriculars</h2>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">Engineering Team Lead</span>
+            <span class="entry-when">2026</span>
+          </div>
+          <div class="entry-sub">Takhail</div>
+          <ul><li>Lead a two-person engineering team: assign work, review delivery and produce monthly progress reports.</li></ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">Elected Student Representative</span>
+            <span class="entry-when">2021 &ndash; 2025</span>
+          </div>
+          <div class="entry-sub">Zewail City of Science and Technology</div>
+          <ul><li>Represented all CIE cohorts (4 batches) for four consecutive years, working with faculty on academic matters affecting <b>200+ students</b>.</li></ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">Egypt Scholars &mdash; Basic Lab 12</span>
+            <span class="entry-when">Feb &ndash; May 2026</span>
+          </div>
+          <div class="entry-sub">Competitively selected participant</div>
+          <ul><li>Three-month programme on research methods, scientific writing and critical thinking.</li></ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">Junior Teaching Assistant &mdash; Math 101</span>
+            <span class="entry-when">Oct 2022 &ndash; Jan 2023</span>
+          </div>
+          <div class="entry-sub">Zewail City</div>
+          <ul><li>Led tutorials and one-on-one mentoring for <b>50+ first-year students</b> in calculus and linear algebra.</li></ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+<script>
+  document.getElementById('printCv').addEventListener('click', function () {
+    window.print();
+  });
+</script>
+</body>
+</html>

@@ -10,13 +10,14 @@ no dependencies.
 | `index.html` | Home: hero, headline numbers, what I do, featured projects |
 | `projects.html` | All projects, filterable by type |
 | `about.html` | Bio, timeline, skills, awards, how I work |
+| `cv.html` | Full CV, with a Save as PDF button |
 | `contact.html` | Ways to reach me |
 | `assets/style.css` | All styling, both themes |
 | `assets/main.js` | All behaviour |
 
 ## Features
 
-- **Light and dark theme**, remembered in the browser and defaulting to the system setting
+- **Light and dark theme** — light by default, dark is opt-in and remembered in the browser
 - **Scroll animations** that fade sections in as you reach them
 - **Animated counters** on the headline numbers
 - **Typing effect** in the hero
@@ -24,7 +25,7 @@ no dependencies.
 - **Reading progress bar** and back-to-top button
 - **Fully responsive**, with a mobile menu under 680px
 - **Respects `prefers-reduced-motion`** — all animation switches off
-- **Prints cleanly** to PDF
+- **Prints cleanly** to PDF, and the CV page has its own Save as PDF button
 
 ## Running it
 
