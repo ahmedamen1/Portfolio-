@@ -89,6 +89,27 @@ a { color: inherit; }
 .skip:focus { left: 0; }
 html[data-theme="dark"] .skip { color: var(--bg); }
 
+/* ---------- Focus ----------
+   Every operable control needs a visible ring. :focus-visible keeps it
+   off for mouse users while guaranteeing it for keyboard and switch users. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+/* Cards act as links on the contact page; give them a matching ring. */
+.card:focus-visible, .shotfig:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 4px;
+}
+/* Older engines without :focus-visible still get a ring rather than none. */
+@supports not selector(:focus-visible) {
+  :where(a, button, input, select, textarea, [tabindex]):focus {
+    outline: 2px solid var(--violet);
+    outline-offset: 3px;
+  }
+}
+
 /* ---------- Progress bar ---------- */
 #progress {
   position: fixed; top: 0; left: 0; height: 3px; width: 0%;
@@ -154,9 +175,13 @@ html[data-theme="dark"] .skip { color: var(--bg); }
   position: fixed; inset: var(--nav-h) 0 auto 0; z-index: 99;
   background: var(--surface); border-bottom: 1px solid var(--border);
   padding: 14px 0 20px; transform: translateY(-120%);
-  transition: transform .34s var(--ease); box-shadow: var(--shadow-lg);
+  transition: transform .34s var(--ease);
+  box-shadow: var(--shadow-lg);
+  /* Closed: off-screen AND out of the tab order, so keyboard users never
+     land on links they cannot see. */
+  visibility: hidden;
 }
-.mobilemenu.open { transform: translateY(0); }
+.mobilemenu.open { transform: translateY(0); visibility: visible; }
 .mobilemenu a {
   display: block; text-decoration: none; color: var(--ink); font-weight: 650;
   padding: 13px 4px; border-bottom: 1px solid var(--border);
@@ -789,7 +814,7 @@ html[data-theme="dark"] .chip.on { color: var(--bg); }
 
 /* ---------- Skill bars ---------- */
 .skillgroup { margin-bottom: 24px; }
-.skillgroup h4 {
+.skillgroup h3.skilllabel {
   font-size: .78rem; text-transform: uppercase; letter-spacing: .1em;
   color: var(--muted); font-weight: 700; margin-bottom: 12px;
 }
