@@ -108,37 +108,6 @@
     items.forEach(function (el) { io.observe(el); });
   }
 
-  /* ---------- Count-up numbers ---------- */
-  var nums = $$('[data-count]');
-  function countUp(el) {
-    var target = parseFloat(el.getAttribute('data-count'));
-    var suffix = el.getAttribute('data-suffix') || '';
-    var prefix = el.getAttribute('data-prefix') || '';
-    var dec = (el.getAttribute('data-dec') | 0);
-    if (reduced) { el.textContent = prefix + target.toFixed(dec) + suffix; return; }
-    var start = null, dur = 1400;
-    function step(ts) {
-      if (!start) start = ts;
-      var p = Math.min((ts - start) / dur, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = prefix + (target * eased).toFixed(dec) + suffix;
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-  if ('IntersectionObserver' in window) {
-    var io2 = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        countUp(en.target);
-        io2.unobserve(en.target);
-      });
-    }, { threshold: 0.5 });
-    nums.forEach(function (el) { io2.observe(el); });
-  } else {
-    nums.forEach(countUp);
-  }
-
   /* ---------- Typing line (hero) ---------- */
   var typed = $('#typed');
   if (typed) {

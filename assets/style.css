@@ -335,29 +335,6 @@ html[data-theme="dark"] .blob { opacity: .18; }
   66%      { transform: translate(-26px, 22px) scale(.94); }
 }
 
-/* ---------- Stat strip ---------- */
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.stat {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 22px; text-align: center; position: relative; overflow: hidden;
-  transition: transform .26s var(--ease), box-shadow .26s var(--ease);
-}
-.stat::before {
-  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
-  background: var(--t, var(--violet));
-  transform: scaleX(.35); transform-origin: center;
-  transition: transform .4s var(--ease);
-}
-.stat:hover::before { transform: scaleX(1); }
-.stat .num { transition: transform .3s var(--ease); }
-.stat:hover .num { transform: scale(1.06); }
-.stat:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-.stat .num {
-  font-size: 1.95rem; font-weight: 800; letter-spacing: -.03em;
-  color: var(--t, var(--violet)); line-height: 1.1;
-}
-.stat .lbl { font-size: .82rem; color: var(--muted); margin-top: 5px; font-weight: 600; }
-
 /* ---------- Cards ---------- */
 .grid { display: grid; gap: 20px; }
 .g2 { grid-template-columns: repeat(2, 1fr); }
@@ -860,7 +837,6 @@ html[data-theme="dark"] #toTop { color: var(--bg); }
   .hero-grid { grid-template-columns: 1fr; gap: 36px; }
   .hero-card { max-width: 420px; }
   .g3 { grid-template-columns: repeat(2, 1fr); }
-  .stats { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 680px) {
   .navlinks { display: none; }
@@ -886,5 +862,5 @@ html[data-theme="dark"] #toTop { color: var(--bg); }
 @media print {
   .nav, #toTop, #progress, .mobilemenu, .blob { display: none !important; }
   body { background: #fff; color: #000; }
-  .card, .stat { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+  .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
 }
