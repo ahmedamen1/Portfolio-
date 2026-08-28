@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Property-Sales AI Assistant — Ahmed Amin</title>
+<meta name="description" content="A bilingual property-sales assistant with a 702-image visual catalogue: the retrieval and conversational-state problems I solved, and the evaluation harness that caught my own judge being wrong.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--sky)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Property-Sales AI Assistant</h1>
+      <p class="p-sub">A conversational sales assistant for a large mixed-use development. Buyers ask in Arabic, English or another language, by text or voice, and get answers grounded in an approved knowledge base together with the relevant floor plans and renders.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--pink)">Client work</span>
+        <span class="pill" style="--t:var(--mint)">Production</span>
+        <span class="pill" style="--t:var(--sky)">Backend / ML engineer</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--pink)">
+          <div class="fv">702</div><div class="fl">catalogued images, bilingual</div>
+        </div>
+        <div class="figure" style="--t:var(--violet)">
+          <div class="fv">~16,827</div><div class="fl">lines of Python</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">165</div><div class="fl">towers in the building graph</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">66</div><div class="fl">case evaluation harness</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">A sales assistant is judged on what it refuses to say as much as what it says. An invented price is a commercial problem, not a technical one.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Shows the right pictures</b><span>Floor plans, renders and specification sheets retrieved alongside the text, scoped to the building or unit type under discussion, with images already shown earlier suppressed.</span></div>
+        <div class="fitem"><b>Numeric filtering in natural language</b><span>"under 90 m²", "between 70 and 100", "أكبر من 120 متر", plus qualitative forms like "big" or "compact" — including Arabic-Indic numerals.</span></div>
+        <div class="fitem"><b>Understands follow-ups</b><span>"What about the ground floor?" or a bare "yes" resolve against remembered state: last building discussed, last catalogue shown, last question asked.</span></div>
+        <div class="fitem"><b>Speaks the buyer's language</b><span>English, Egyptian dialect, or whatever they write in — with knowledge-base text rewritten into the reply language rather than pasted verbatim.</span></div>
+        <div class="fitem"><b>Refuses out of scope</b><span>Competitor questions get a fixed redirect. Unknown building codes get "I don't have that, here is the official channel" rather than an invented answer.</span></div>
+        <div class="fitem"><b>Captures leads</b><span>And powers a sales analytics dashboard with eight endpoints: overview, timeseries, intents, properties, funnel, queries, leads and behaviour.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">Four problems where the fix depended on understanding exactly why the obvious approach fails.</p>
+      <article class="story" style="--t:var(--coral)">
+        <h3>A grounding guard that fails closed on exactly one category</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>The obvious anti-hallucination guard checks every claim against the retrieved context and blocks anything unsupported. In practice that blocks a large fraction of <b>good</b> answers, because natural sales phrasing legitimately rephrases and connects facts.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Decision</span>
+          <p>The guard intercepts <b>only explicit financial claims</b> — prices, down payments, instalments, currency amounts, "sold out", and their Arabic equivalents. If the answer contains one of those and the retrieved context does not, the answer is blocked. Everything else passes.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Reasoning</span>
+          <p>A risk asymmetry specific to the domain. A slightly loose description of a garden is recoverable in the next message. An invented price is a commercial liability. <b>Asymmetric risk deserves an asymmetric guard.</b></p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--violet)">
+        <h3>Conversational state that resolves a bare "yes"</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>A buyer answering "yes" to "would you like to see the floor plans?" is sending a message with no content of its own. Resolving it requires knowing what was asked.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Design</span>
+          <p>The system keeps compact session state — last building code, last catalogue shown, seen image URLs, last assistant question — and rewrites confirmations into self-contained queries.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">The ordering bug</span>
+          <p>The rewrite must happen <b>before the cache key is computed</b>. Otherwise the key is built from the bare "yes", the image search runs on the wrong query, and a cache hit returns images for whatever the <i>last person who said "yes"</i> was asking about. Three distinct consequences, all from ordering one operation correctly.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Carve-outs</span>
+          <p>Building context is injected into follow-up image queries, with three exceptions, each of which was a real bug: project-wide topics must not be scoped to the last building; an explicit zone reference is self-contained; and a catalogue switch is project-wide. <b>Each is the memory feature working exactly as designed and producing a wrong answer.</b></p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--amber)">
+        <h3>An LLM bias, cross-checked with a cheap deterministic tool</h3>
+        <div class="beat">
+          <span class="btag">Observation</span>
+          <p>The query analyzer has a measurable bias: when it classifies a query as out of scope, it tends to report the language as English <b>even when the query is plainly in another language</b>. A French question came back as <code>language: en</code>. The consequence is a refusal delivered in the wrong language, which reads as broken.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Fix</span>
+          <p>Run <code>langdetect</code> on the raw text as a cross-check — but <b>only when the analyzer said "en" specifically</b>, because that is the only direction the bias has actually been observed in. If langdetect disagrees and returns a valid code, it overrides. If it throws, the analyzer stands.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Principle</span>
+          <p>Rather than replacing the LLM with a heuristic or trusting it blindly, use a cheap deterministic tool to check the one failure mode you have actually seen, and scope the override to that direction only.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--mint)">
+        <h3>A string bug that only corrupts Arabic</h3>
+        <div class="beat">
+          <span class="btag">Symptom</span>
+          <p>Extracting the topic from an image request produced corrupted Arabic words.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Cause</span>
+          <p>The code used <code>str.strip(chars)</code>, which strips <b>individual characters</b>, not words. Given leading Arabic filler, it stripped those letters from <b>both edges</b> — including from the middle of legitimate adjacent words.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Why Arabic</span>
+          <p>In English this bug is often invisible, because the stripped characters rarely begin the next real word. In Arabic, where short function words are built from very common letters, it corrupts constantly.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Fix</span>
+          <p>Two explicit regexes: one for boundary punctuation, one for a named list of leading filler words. The comment records the reasoning so nobody "simplifies" it back to <code>strip()</code>.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>How I think about this</h2>
+      <p class="p-lede">The evaluation work is the part I would most want to be asked about.</p>
+      <article class="story" style="--t:var(--coral)">
+        <h3>A judge that certified a hallucination</h3>
+        <div class="beat">
+          <span class="btag">What happened</span>
+          <p>My 66-case LLM-as-judge harness scored an answer <b>faithful 1.0 and relevant 1.0</b>, while its own context-recall metric for the same span read <b>0.0</b>. The answer confidently stated a travel time to the airport that appears nowhere in the retrieved context.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Implication</span>
+          <p>The judge scored the answer as faithful to a context that did not support it. That single case is the strongest argument in this project for keeping <b>deterministic checks alongside LLM judging</b>.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Consequence</span>
+          <p>Only 20 of 61 scored cases passed the strict deterministic gate — a far harsher bar than the judge scores, and a healthy corrective to them.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--sky)">
+        <h3>An honest flaw in my own evaluation</h3>
+        <div class="beat">
+          <span class="btag">The flaw</span>
+          <p>I ran a controlled model benchmark across 25 scenarios to isolate generation quality from retrieval. The <code>judge_score</code> column came back <code>N/A</code> throughout: the harness supports judge scoring but it was not enabled for that run.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">What I do about it</span>
+          <p>I do not present that benchmark's recommendation as judge-validated. The numbers are still useful for comparing generation behaviour, but the claim they support is narrower than it first appears, and the write-up says so.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>This working copy is <b>not a git repository</b>, so unlike my other projects I cannot verify commit counts, authorship or an exact date range from history. The only firm date is the audit document's own. Duration and commit-level attribution are left out rather than estimated.</p>
+        <p>The evaluation figures come from my own harness on my own corpus. They are a regression guard, not a benchmark against anyone else's system.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-arabic-chatbot.html">← Arabic Advisory Chatbot</a>
+        <a href="project-multichannel.html">Multi-Channel Sales Assistant →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>

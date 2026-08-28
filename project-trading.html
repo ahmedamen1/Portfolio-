@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading &amp; Market Assistant — Ahmed Amin</title>
+<meta name="description" content="A bilingual assistant for an online brokerage: live market data, product retrieval, a phone voice agent, and the routing decision that keeps each answer on the source that can be right about it.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--mint)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Trading &amp; Market Assistant</h1>
+      <p class="p-sub">A production conversational platform for an online trading brokerage. A bilingual English and Gulf-Arabic assistant that answers market questions with live data, explains the firm's products from a curated knowledge base, captures leads, and speaks to customers by voice over the web and over the phone.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--pink)">Client work</span>
+        <span class="pill" style="--t:var(--mint)">Production</span>
+        <span class="pill" style="--t:var(--sky)">Backend / AI engineer</span>
+        <span class="pill" style="--t:var(--amber)">Dec 2025 – ongoing</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--pink)">
+          <div class="fv">~11,500</div><div class="fl">lines of Python</div>
+        </div>
+        <div class="figure" style="--t:var(--violet)">
+          <div class="fv">19</div><div class="fl">services, 9 API routers</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">9</div><div class="fl">container stack on AWS</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">2</div><div class="fl">languages, one a dialect</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">A sales assistant for a brokerage has to be right about two very different kinds of fact: what the market did five minutes ago, and what the firm charges.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Live market data per question</b><span>"Why is gold moving today?" gets a grounded answer with real prices and cited catalysts, not a guess from stale training data. Web search runs per question and merges with technical indicators from a market API.</span></div>
+        <div class="fitem"><b>Product facts from a vector store</b><span>Account tiers, spreads, commissions, deposit and withdrawal rules served from curated content rather than model memory — the difference between a correct quote and an invented one on a sales call.</span></div>
+        <div class="fitem"><b>Writes a regional urban dialect</b><span>Not Modern Standard Arabic. Enforced by a prompt specification covering a vocabulary map, pronouns, and the specific grammatical tells that mark a non-native speaker.</span></div>
+        <div class="fitem"><b>Talks over the phone</b><span>A dedicated tool endpoint backs a third-party voice agent, returning a finished, speakable sentence for it to read aloud.</span></div>
+        <div class="fitem"><b>Renders live charts inline</b><span>The assistant decides when a question deserves a chart, a comparison, or a market-overview widget, and emits it alongside the streamed answer.</span></div>
+        <div class="fitem"><b>Captures and qualifies leads</b><span>Names and phone numbers extracted from natural conversation by a cheap model running on every message, surfaced with history on a dashboard.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">The core design question was which subsystem is allowed to answer which kind of question.</p>
+      <article class="story" style="--t:var(--mint)">
+        <h3>Routing between tools and retrieval, by kind of truth</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>Live market data cannot go through a knowledge base: it is stale the moment it is indexed. Product facts cannot go through a live feed: the web does not know this firm's commission structure.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Decision</span>
+          <p>The assistant routes per question between <b>tool calls for market data and retrieval for product facts</b>, so each question is answered by the source that can actually be right about it. Getting this wrong in either direction produces a confident, plausible, wrong answer on a sales call.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--sky)">
+        <h3>A dialect specification, not a dialect instruction</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>Asking a model to "reply in Gulf Arabic" produces Modern Standard Arabic with a few dialect words sprinkled in. Native speakers spot it instantly, and on a sales call that costs trust.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Approach</span>
+          <p>A detailed prompt specification rather than an instruction: a vocabulary map, the correct pronouns, and <b>the specific grammatical tells that mark a non-native speaker</b>. Naming the failure modes explicitly works better than describing the target.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>This is the project I have the least public measurement for. Line counts and service architecture are read from the repository; I have no published evaluation harness for it comparable to the property-sales work.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-multichannel.html">← Multi-Channel Sales Assistant</a>
+        <a href="project-finverse.html">FinVerse Agent →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>

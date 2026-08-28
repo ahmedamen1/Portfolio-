@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rafeeq Smart Wheel Kit — Ahmed Amin</title>
+<meta name="description" content="A retrofit kit turning any manual wheelchair into a smart one: offline Egyptian Arabic voice control on a Raspberry Pi, a context-aware Arabic health assistant, and a 23-feature Flutter app.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--mint)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Rafeeq Smart Wheel Kit</h1>
+      <p class="p-sub">Imported smart wheelchairs cost more than most Egyptian families can pay. Rafeeq is a kit that upgrades the manual chair someone already owns, adding autonomous navigation, health monitoring and Arabic voice control that keeps working with no internet. My work was the AI and RAG system and the mobile application.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--pink)">Graduation project</span>
+        <span class="pill" style="--t:var(--mint)">Lead AI Architect</span>
+        <span class="pill" style="--t:var(--sky)">$1,600 government grant</span>
+        <span class="pill" style="--t:var(--amber)">Team project</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--pink)">
+          <div class="fv">87%</div><div class="fl">offline Arabic command accuracy</div>
+        </div>
+        <div class="figure" style="--t:var(--violet)">
+          <div class="fv">&lt;20ms</div><div class="fl">voice command to motor movement</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">2,750</div><div class="fl">lines in the RAG module</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">11,833</div><div class="fl">lines of Dart, 23 features</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">The assistant is only useful if it knows the specific patient, not general health advice.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Knows the patient's actual situation</b><span>Latest mood, pain and sleep check-in; active medications with dosage and frequency; next appointment with doctor and location; and 7-day alarm compliance broken into taken, pending and missed with the specific alarm names.</span></div>
+        <div class="fitem"><b>Reads live vital signs</b><span>Heart rate, SpO₂ and temperature from the chair's sensors, folded into the conversation context.</span></div>
+        <div class="fitem"><b>Generates a PDF medical report</b><span>On request, detected from natural Arabic phrasing rather than a button.</span></div>
+        <div class="fitem"><b>A separate caregiver assistant</b><span>Its own persona and prompt, oriented to monitoring: summarises every linked patient, flags missed alarms and upcoming appointments, and includes caregiver-burnout guidance as an explicit task.</span></div>
+        <div class="fitem"><b>Offline Egyptian Arabic voice control</b><span>faster-whisper INT8 on a Raspberry Pi 5, reaching 87% command accuracy at 0.9s latency with no network.</span></div>
+        <div class="fitem"><b>Autonomous indoor navigation</b><span>LiDAR and depth-camera SLAM with ROS 2 Nav2, and a three-tier control stack from Raspberry Pi through Arduino Mega to STM32.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">The constraint that shaped everything: a wheelchair cannot depend on a network.</p>
+      <article class="story" style="--t:var(--mint)">
+        <h3>Everything critical runs on the chair</h3>
+        <div class="beat">
+          <span class="btag">Constraint</span>
+          <p>A mobility device that stops responding when the connection drops is not a mobility device. Cloud speech recognition would be more accurate and completely unsuitable.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Decision</span>
+          <p>INT8-quantized speech recognition running locally on a Raspberry Pi 5, and a three-tier control stack that converts a spoken command into motor movement in <b>under 20ms</b> without leaving the device.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Cost of the decision</span>
+          <p>87% command accuracy rather than the higher figure a cloud model would reach. That is the right trade: a command that works offline 87% of the time beats one that works 95% of the time only when there is signal.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--amber)">
+        <h3>Cost as a design constraint, not an afterthought</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>The target user cannot pay for an imported smart wheelchair. A cheaper version of the same architecture is still too expensive.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Approach</span>
+          <p>Retrofit rather than replace: the kit upgrades a chair the family already owns. Hardware cost was cut further by <b>repurposing hoverboard motors</b> rather than sourcing purpose-built drives.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Result</span>
+          <p>A target retail price 60 to 70% below imported alternatives, and a $1,600 grant from Egypt's Ministry of Higher Education, selected from projects across all Egyptian universities.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>This is a <b>team graduation project</b>. The AI and RAG system and the Flutter application are my work; the hardware and control layers were shared with teammates.</p>
+        <p>The current two-motor arrangement <b>cannot perform normal left-right turning</b>. That is a real limitation of the build as it stands, not a solved problem.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-security.html">← Multi-Camera Threat Detection</a>
+        <a href="projects.html">All projects →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Forecasting &amp; Battery Dispatch — Ahmed Amin</title>
+<meta name="description" content="Day-ahead load forecasting feeding a rolling-horizon MPC optimizer: within EUR 0.33 of a perfect-information oracle, and the leaking-feature artifact I caught before trusting it.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--amber)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Energy Forecasting &amp; Battery Dispatch</h1>
+      <p class="p-sub">Gradient-boosted day-ahead load forecasting feeding a rolling-horizon Model Predictive Controller that solves a linear program at every step to schedule a 16 kWh battery against a 9 kWp rooftop array, priced against the real Italian time-of-use tariff.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--pink)">Two-person team</span>
+        <span class="pill" style="--t:var(--mint)">2026</span>
+        <span class="pill" style="--t:var(--sky)">Forecasting + optimization</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--pink)">
+          <div class="fv">€0.33</div><div class="fl">from a perfect-information oracle</div>
+        </div>
+        <div class="figure" style="--t:var(--violet)">
+          <div class="fv">€10.51</div><div class="fl">better than the site controller</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">96</div><div class="fl">forecast steps per day</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">1,495</div><div class="fl">lines across 6 modules</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">The objective is measured in euros on a bill, not in forecast error. Those are not the same thing.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Forecasts 96 quarter-hour steps a day</b><span>Trained on a full prior year and evaluated on held-out target months.</span></div>
+        <div class="fitem"><b>Models the tariff correctly</b><span>Three Italian price bands whose boundaries depend on hour of day, day of week <i>and</i> the public-holiday calendar — holidays bill at the cheapest weekend rate.</span></div>
+        <div class="fitem"><b>Re-solves at every step</b><span>A linear program over a 24-hour lookahead horizon, re-solved as new information arrives.</span></div>
+        <div class="fitem"><b>Simulates against physical reality</b><span>Plans are re-checked against actual load, actual PV, true state-of-charge limits and the grid cap, so reported bills reflect what the battery could really have done.</span></div>
+        <div class="fitem"><b>Benchmarked against three references</b><span>The site's real recorded controller, a no-battery counterfactual, and a perfect-foresight oracle.</span></div>
+        <div class="fitem"><b>Generalizes to an unseen site</b><span>The same trained pipeline was applied to a second building it had never seen.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">The most valuable thing here was distrusting a good result.</p>
+      <article class="story" style="--t:var(--coral)">
+        <h3>A validation score that was too good to be true</h3>
+        <div class="beat">
+          <span class="btag">What I saw</span>
+          <p>An early model reported a validation RMSE of 0.79 kW. That looked strong.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">What it was</span>
+          <p>An artifact. The feature set was leaking the answer — information from the target window was reachable at prediction time.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Fix</span>
+          <p>Rebuilt with honest lags from the previous day and rolling statistics over windows of at least a day. The new number was <b>worse and real</b>.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Principle</span>
+          <p>A forecasting result that beats expectations should be treated as a bug report until proven otherwise.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--amber)">
+        <h3>Measuring the forecast in money, not error</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>Forecast error metrics do not tell you what a forecast is worth. A model can look worse on NRMSE and still schedule a battery better, because the optimizer cares about specific hours.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Approach</span>
+          <p>I built a <b>perfect-information oracle</b> — the same optimizer given the true future — as an upper bound, and measured the gap in euros. Forecast-driven MPC landed within <b>€0.33 in April and €0.56 in September</b> of that ceiling.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">What it proves</span>
+          <p>The remaining forecast error costs well under a euro a month. Further forecasting work on this site would be effort spent on a problem that is already solved.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>This was a <b>two-person team</b> over three days. Work was joint across forecasting, the optimizer and the evaluation harness; I handled repository and integration, and all commits are under my account, which overstates authorship if read naively.</p>
+        <p>The euro figures are simulation against recorded site data, not a deployed controller's realised savings.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-finverse.html">← FinVerse Agent</a>
+        <a href="project-security.html">Multi-Camera Threat Detection →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>

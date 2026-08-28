@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arabic Advisory Chatbot — Ahmed Amin</title>
+<meta name="description" content="A production Arabic RAG chatbot over 23,512 chunks of classical text: the retrieval problems I hit, how I diagnosed them, and what I changed.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--pink)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Arabic Advisory Chatbot</h1>
+      <p class="p-sub">
+        A conversational assistant that answers personal questions from a corpus of
+        classical Arabic texts, in Egyptian dialect, by text or by voice. The chat
+        interface was never the hard part. Making retrieval work across a fully
+        diacritized Classical Arabic corpus, when users type undiacritized colloquial
+        Egyptian, was.
+      </p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--pink)">Client work</span>
+        <span class="pill" style="--t:var(--mint)">Production</span>
+        <span class="pill" style="--t:var(--sky)">5 months</span>
+        <span class="pill" style="--t:var(--amber)">Backend / ML engineer</span>
+      </div>
+
+      <div class="figures">
+        <div class="figure" style="--t:var(--pink)">
+          <div class="fv">23,512</div><div class="fl">indexed chunks, 9 classical books</div>
+        </div>
+        <div class="figure" style="--t:var(--violet)">
+          <div class="fv">~10,840</div><div class="fl">lines of Python</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">~5&times;</div><div class="fl">cost reduction per message</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">100</div><div class="fl">question scored evaluation set</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">
+        The behaviour that matters here is refusal and fidelity, not fluency. A
+        confident wrong answer about scripture is worse than no answer.
+      </p>
+      <div class="fgrid">
+        <div class="fitem"><b>Quotes scripture exactly</b><span>Quran and hadith are reproduced verbatim in Classical Arabic and only then explained in dialect. Paraphrasing scripture into dialect is explicitly forbidden.</span></div>
+        <div class="fitem"><b>Admits ignorance</b><span>When the retrieved passages do not cover the question, it says so plainly instead of producing a fluent, unverifiable answer.</span></div>
+        <div class="fitem"><b>Author and book scoping</b><span>"What does al-Ghazali say about…" restricts retrieval to that author's work and requires the answer to quote his own wording.</span></div>
+        <div class="fitem"><b>Any language in, same language out</b><span>But scripture is never translated. It is quoted in the original and explained in the user's language.</span></div>
+        <div class="fitem"><b>Voice in, voice out</b><span>A recorded question is transcribed, answered through the same pipeline, and spoken back in a cloned voice.</span></div>
+        <div class="fitem"><b>Accounts, sessions and quotas</b><span>Email verification, device fingerprinting, trusted devices, and per-role session and message limits.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">
+        Four that were worth the investigation. In each case the symptom pointed
+        somewhere other than the cause.
+      </p>
+
+      <article class="story" style="--t:var(--coral)">
+        <h3>A regex that deleted real Arabic letters</h3>
+        <div class="beat">
+          <span class="btag">Symptom</span>
+          <p>Queries naming a scholar returned poor results. For a long time this looked exactly like a weak retriever, which is the most common and most misleading diagnosis in RAG work.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Cause</span>
+          <p>The diacritics-stripping regex used a character range running continuously up to <code>U+06E8</code>. That range spans <code>U+06E5–U+06E6</code>, which are <b>not diacritics</b> — they are real Arabic letters, small waw and small ya. The pattern was deleting base letters. The word <code>الرازي</code> ("al-Razi") normalized to an <b>empty string</b>, so any query naming him produced an empty search and matched nothing.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Fix</span>
+          <p>Split the range in two with a deliberate gap, verified against Python's <code>unicodedata</code> nonspacing-mark category for the whole <code>U+0600–U+06FF</code> block. The index builder now writes ranges as explicit <code>\uXXXX</code> escapes rather than literal characters, because visually similar Arabic combining marks are near-impossible to proofread when typed directly — that had already produced one silently broken, order-scrambled range.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--violet)">
+        <h3>False "I don't know" answers, traced to how people actually ask</h3>
+        <div class="beat">
+          <span class="btag">Symptom</span>
+          <p>The system reported "my sources don't contain this" on questions it could clearly answer.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Analysis</span>
+          <p>Roughly <b>56% of real user questions describe the shape of the answer they want, not its topic</b> — "give me a hadith that talks about marriage". The lexical query was built from all content words, so it required <i>hadith</i> and <i>talks about</i> to co-occur with the actual topic. Source chunks never narrate "here is a hadith about…", so the strict match found nothing, fell back to a weak match, and surfaced chunks about the <i>concept</i> of hadith instead of about marriage.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Decision</span>
+          <p>Strip a curated set of meta-request words, including Egyptian dialect verb forms (<code>بيتكلم</code>, <code>بيتحدث</code>), from the <b>lexical query only</b>. Semantic search keeps the full query, because embeddings tolerate the extra words and stripping them risks shifting vector results. Two words were deliberately left in (<code>قرآن</code>, <code>سورة</code>) because they can legitimately <i>be</i> the topic.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Why it matters</span>
+          <p>The same word is noise in one search system and signal in the other, so it is handled differently in each. That is the part I would defend in an interview.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--sky)">
+        <h3>An author's name is an identifier, not text to search for</h3>
+        <div class="beat">
+          <span class="btag">Symptom</span>
+          <p>"What does al-Razi say about prayer being the ascent of the knower" failed, even though the target passage was correctly indexed.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Cause</span>
+          <p>The query required the literal word <code>الرازي</code> to appear inside the matched chunk. But <b>a chunk from al-Razi's own book does not repeat his name inline.</b> No chunk satisfied the constraint, so it degraded to a weak match that ranked unrelated books above the correct one.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Fix</span>
+          <p>When a book or author alias is detected, those tokens <b>scope</b> the SQL query and are simultaneously <b>excluded</b> from the words required to co-occur inside the chunk text. I confirmed live that the target chunk existed and was indexed: the retrieval logic was asking the wrong question.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--amber)">
+        <h3>The hub chunk — a vector-space problem wearing a code costume</h3>
+        <div class="beat">
+          <span class="btag">Symptom</span>
+          <p>Questions about a specific large tafsir returned passages from the right book that were unrelated to the question. My first instinct was that the book filter was broken.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Evidence</span>
+          <p>I tested five questions systematically. The filter was working: logs confirmed retrieval was correctly scoped. The problem was <b>inside</b> the correct book. The decisive finding: <b>the same chunk</b> was the top result for three completely unrelated questions. Its embedding sits near the centre of the semantic space for this corpus, so it becomes a near-default result whenever search finds nothing genuinely strong.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Root cause</span>
+          <p>Chunking. That tafsir's commentary on a single famous verse spans many pages and was split unevenly, so no chunk cleanly represents it.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Decision</span>
+          <p>I wrote up four candidate fixes with costs and trade-offs, and <b>changed no code in that pass</b> — the deliverable was the diagnosis. The recommendation was staged: prompt hardening as an immediate defensive measure (acknowledged in the writeup as papering over the retrieval problem), stronger lexical weighting next, and metadata-precise re-chunking as the real long-term fix.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>How I think about this</h2>
+      <p class="p-lede">
+        Three principles this project taught me, each paid for with a bug.
+      </p>
+
+      <article class="story" style="--t:var(--mint)">
+        <h3>Normalization is the foundation everything else stands on</h3>
+        <div class="beat">
+          <span class="btag">Context</span>
+          <p>The corpus is fully diacritized Classical Arabic (<code>مِعْرَاجُ</code>). Users type plain undiacritized Egyptian (<code>معراج</code>). Byte for byte these do not match, so lexical search fires essentially never without normalization. The pipeline strips diacritics and tatweel and unifies alef variants on both sides, at index time and at query time.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">The risk</span>
+          <p>The same normalization function is duplicated in the index builder and the query path, with an explicit comment requiring the two to stay identical. <b>If they diverge, retrieval silently degrades rather than erroring.</b> Nothing crashes; answers just get worse. That is the most dangerous class of bug in a retrieval system.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Verified</span>
+          <p>I checked that SQLite FTS5's <code>remove_diacritics</code> tokenizer option does <b>not</b> handle Arabic tashkeel — it targets Latin-script diacritics — which is why normalization happens before insertion rather than being delegated to the tokenizer.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--coral)">
+        <h3>Things I built, measured, and deleted</h3>
+        <div class="beat">
+          <span class="btag">Deleted</span>
+          <p><b>Keyword-boost retrieval.</b> An exact-word matching layer to catch what embeddings miss. It worked, and it added roughly <b>78 seconds of latency per request</b>. Reverted two commits later. The capability was rebuilt properly as the disk-backed FTS5 index: same goal, viable implementation.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Narrowed</span>
+          <p><b>In-memory BM25.</b> Enabled across nine books, hastily narrowed to one when server RAM ran critically low, then replaced wholesale by FTS5. Three commits, each a smaller claim than the last, ending in a different architecture.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Removed</span>
+          <p>A Prometheus instrumentation library that raised an error on <b>every</b> request. I tried pinning one version, then downgrading to another; neither worked. The third commit dropped the middleware and mounted the client directly. Two failed version pins are still in the git history, and I would rather leave them visible than tidy them away.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>
+          The hub-chunk investigation also found a case where the model produced a
+          confident, detailed answer while most retrieved chunks were off-topic —
+          evidence it was drawing on general knowledge rather than the sources. That is
+          the exact failure the whole design exists to prevent, and it was still
+          happening at that point.
+        </p>
+        <p>
+          The 100-question evaluation set is scored, but it is my own harness on my own
+          corpus, not an external benchmark. Treat it as a regression guard, not proof
+          of quality against anyone else's system.
+        </p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="projects.html">← All projects</a>
+        <a href="project-property-sales.html">Property-Sales AI Assistant →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>

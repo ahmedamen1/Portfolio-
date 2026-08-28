@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Channel Sales Assistant — Ahmed Amin</title>
+<meta name="description" content="One assistant across WhatsApp, Messenger and Instagram: the retrieval threshold that was silently discarding every vector result, and the 143 images I wrongly reported as missing.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--violet)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Multi-Channel Sales Assistant</h1>
+      <p class="p-sub">The same assistant reachable from three messaging platforms, behaving like a well-briefed salesperson in whichever language the customer writes. I owned the retrieval and image layer, the multilingual output, and the rate limits that keep a business account from being flagged.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--pink)">Client work</span>
+        <span class="pill" style="--t:var(--mint)">Production</span>
+        <span class="pill" style="--t:var(--sky)">Backend / AI engineer</span>
+        <span class="pill" style="--t:var(--amber)">Two engineers</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--pink)">
+          <div class="fv">845</div><div class="fl">indexed images, 43 buildings</div>
+        </div>
+        <div class="figure" style="--t:var(--violet)">
+          <div class="fv">192</div><div class="fl">structured unit configurations</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">~3,360</div><div class="fl">lines of Python added</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">7</div><div class="fl">container deployment</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">From the customer's side it should feel like messaging a person who knows the inventory.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Answers in the language they wrote in</b><span>Judged per message, so a customer switching mid-conversation is followed rather than corrected.</span></div>
+        <div class="fitem"><b>Sends the right pictures</b><span>"Show me B1.1" returns that building's exterior render followed by its floor plans. A question about a 106 m² apartment returns the actual 106 m² unit plans.</span></div>
+        <div class="fitem"><b>Reports real inventory</b><span>"What units are bigger than 70 m?" returns all 176 matching configurations across 19 buildings, grouped by bedroom count — not three illustrative examples.</span></div>
+        <div class="fitem"><b>Answers voice notes with voice notes</b><span>Synthesised in the same dialect the customer used.</span></div>
+        <div class="fitem"><b>Declines cleanly</b><span>Will not invent a building that does not exist, will not discuss a competitor, and does not attach photographs to a pricing question.</span></div>
+        <div class="fitem"><b>Runs AI workers off-box</b><span>Kafka with an external listener, so inference does not have to share a host with webhook ingestion.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">The two most useful things I found here came from instrumenting what I assumed was working.</p>
+      <article class="story" style="--t:var(--amber)">
+        <h3>A threshold that was silently discarding the entire semantic leg</h3>
+        <div class="beat">
+          <span class="btag">Symptom</span>
+          <p>Broad questions returned visibly arbitrary images. The ranking code looked correct.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Measurement</span>
+          <p>I instrumented the retrieval legs separately. A specific query like <code>"B5.2a floor plan"</code> had a best vector distance of 0.64 to 0.68. <code>"tell me about the project"</code> scored <b>1.38 to 1.43</b>. The relevance ceiling was 1.35.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Cause</span>
+          <p>Every image description is about a <i>specific</i> building, so nothing sits semantically close to a question about the development as a whole. For those queries <b>all 36 vector candidates were discarded</b>, leaving retrieval running on keyword overlap alone. That is why results looked random: whichever caption happened to share a word won.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Fix</span>
+          <p>Raised the ceiling to 1.55, <b>calibrated from those measurements rather than guessed</b>. The guard that keeps images off pricing questions is a separate non-visual term list, which is where that responsibility belongs.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--coral)">
+        <h3>143 images I wrongly reported as missing</h3>
+        <div class="beat">
+          <span class="btag">What I said</span>
+          <p>The residential towers appeared to have no good imagery. I reported this to the client <b>twice</b> as a data limitation and recommended sourcing more renders.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">What was true</span>
+          <p>I was wrong. 143 images were sitting on disk but absent from the description CSV, so they were never embedded and no query could reach them — the per-unit floor plans for exactly the buildings I had written off.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Fix</span>
+          <p>Generated descriptions from the structured filenames, which carry building, tower and unit position, and re-ingested from 702 to 845 embeddings.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Lesson</span>
+          <p>I diagnosed "the data doesn't exist" from inside the system's own index without checking the filesystem. <b>Confidently reporting a data gap that was actually an ingestion gap is the mistake in this project I would most want back.</b></p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--violet)">
+        <h3>Rate limits shaped around how bans actually happen</h3>
+        <div class="beat">
+          <span class="btag">Constraint</span>
+          <p>Messaging platforms ban business accounts that behave like broadcasters. A global message cap is the obvious implementation and the wrong one: it throttles genuine conversations while still allowing a burst pattern that looks automated.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Design</span>
+          <p>Limits are shaped around <b>per-recipient</b> behaviour instead. A single customer in an active conversation gets fast replies; the account-wide pattern never resembles a broadcast.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>The 176-configuration inventory answer is correct against the structured data I was given. I did not independently audit the client's own inventory records against it.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-property-sales.html">← Property-Sales AI Assistant</a>
+        <a href="project-trading.html">Trading & Market Assistant →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Camera Threat Detection — Ahmed Amin</title>
+<meta name="description" content="Weapons, falls and violence across multiple camera feeds: a two-stage detector using CLIP with explicit negative prompts, and the incident log that revealed an alerting problem rather than a detection one.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--coral)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Multi-Camera Threat Detection</h1>
+      <p class="p-sub">A real-time system watching several camera feeds at once for weapons, falls and violence, with automatic evidence capture and escalation. I was the sole engineer: model training, architecture, and the entire runtime including the threading model, alerting and dashboard.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--pink)">Sole engineer</span>
+        <span class="pill" style="--t:var(--mint)">Training + runtime</span>
+        <span class="pill" style="--t:var(--sky)">Computer vision</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--pink)">
+          <div class="fv">0.844</div><div class="fl">weapon detection mAP@0.50</div>
+        </div>
+        <div class="figure" style="--t:var(--violet)">
+          <div class="fv">81%</div><div class="fl">violence classifier, 680 samples</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">698 ms</div><div class="fl">average inference latency, CPU</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">1,065</div><div class="fl">lines across 9 modules</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">In a school, a false alarm and a miss are both unacceptable, and they pull the design in opposite directions.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Per-camera detector assignment</b><span>Each camera configured independently in JSON, so an entrance camera can run weapon detection only while a corridor camera runs fall detection only.</span></div>
+        <div class="fitem"><b>Two-stage weapon detection</b><span>A fine-tuned detector proposes regions, then CLIP verifies each crop against positive and negative text prompts before anything counts as a threat.</span></div>
+        <div class="fitem"><b>Falls from geometry</b><span>Derived from person bounding-box proportions, required to persist across consecutive frames before firing.</span></div>
+        <div class="fitem"><b>Violence from temporal sequences</b><span>A 3D-CNN over a rolling 16-frame buffer, rather than judging single frames.</span></div>
+        <div class="fitem"><b>Automatic evidence escalation</b><span>A frame or reconstructed MP4 clip uploaded to a category-specific cloud folder, made link-accessible, and emailed to security staff with the link embedded.</span></div>
+        <div class="fitem"><b>Live operator dashboard</b><span>MJPEG feeds with an on-frame HUD, a real-time violence-score meter, and a health panel marking each camera online or offline with FPS and queue depth.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">Two problems worth describing: one architectural, one that only the logs revealed.</p>
+      <article class="story" style="--t:var(--coral)">
+        <h3>A detector for recall, CLIP for precision</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>A detector tuned for high recall on weapons fires on phones, pens and wallets — dark, hand-held, roughly rectangular objects in the same size range. Tuned for precision instead, it misses real weapons. <b>Both failure modes are unacceptable in a school:</b> false alarms destroy trust and get the system switched off; misses defeat the purpose.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Design</span>
+          <p>Separate the two concerns. The detector runs at a deliberately permissive <b>0.40 confidence threshold</b>, optimising for recall. Every proposed crop then goes to CLIP, scored against a prompt set containing both positive classes (weapon, gun, pistol, rifle, knife) and explicit <b>negative</b> classes (mobile phone, pen, eyeglasses, wallet). A detection is promoted only if the top-scoring prompt is positive.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Why the negatives matter</span>
+          <p>CLIP is being used as a <b>discriminative classifier, not a similarity scorer</b>. Adding the exact confusable objects as competing labels means a phone is not merely "less similar to a weapon" — it is actively assigned to a phone label that outranks the weapon labels. Without negatives, a softmax over positive prompts alone would confidently label a phone as whichever weapon it most resembled.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Bonus property</span>
+          <p>The detector can be retrained without retraining a classifier, and the confusable-object list extends by editing a list of strings. Adding "a water bottle" is a one-line change.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--violet)">
+        <h3>The incident log revealed an alerting problem, not a detection problem</h3>
+        <div class="beat">
+          <span class="btag">What the logs showed</span>
+          <p>Reviewing incident timestamps showed the same event generating repeated alerts rather than one.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Diagnosis</span>
+          <p>Detection was working correctly. The <b>alerting policy</b> was wrong: without a cooldown keyed to the incident rather than the frame, a sustained threat in view produces an alert per detection cycle.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Why it matters</span>
+          <p>An operator who receives twelve alerts for one event learns to ignore alerts. The failure was in how the system communicated, not in what it saw.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>All 7 commits landed on a single day as a publication of pre-existing work, so <b>commit history is not a record of development time</b> and I state no duration for this project.</p>
+        <p>The repository README claims a "under 1 second" weapon response time. The measured average latency of 698 ms supports it, but the same run recorded per-camera throughput as low as 0.5 FPS, so the claim holds on average rather than in every condition.</p>
+        <p>Latency was measured on CPU. I have not benchmarked it on a GPU deployment.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-energy.html">← Energy Forecasting & Battery Dispatch</a>
+        <a href="project-rafeeq.html">Rafeeq Smart Wheel Kit →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinVerse Agent — Ahmed Amin</title>
+<meta name="description" content="IEEE CSCloud 2025: fifteen LoRA adapters on one 4-bit quantized LLaMA-3.1-8B, with a Planner-Executor-Verifier routing loop. 93.07% on CFA Level I, above GPT-4o.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--violet)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>FinVerse Agent</h1>
+      <p class="p-sub">A task-adaptive financial AI system built for the FinAI Contest 2025. Fifteen task-specific LoRA adapters sit on a single 4-bit quantized LLaMA-3.1-8B, with an agentic routing loop that picks the adapter, runs it, and verifies the answer before returning it.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--pink)">IEEE CSCloud 2025</span>
+        <span class="pill" style="--t:var(--mint)">Second author of four</span>
+        <span class="pill" style="--t:var(--sky)">1st place, FinAI Task 2</span>
+        <span class="pill" style="--t:var(--amber)">NUST + Zewail City</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--pink)">
+          <div class="fv">93.07%</div><div class="fl">CFA Level I (GPT-4o: 88.10%)</div>
+        </div>
+        <div class="figure" style="--t:var(--violet)">
+          <div class="fv">97.24</div><div class="fl">F1 on NER (BloombergGPT: 60.82)</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">15</div><div class="fl">adapters, one base model</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">0.9171</div><div class="fl">FinanceBench (GPT-4o: 0.564)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">The premise: a well-trained small model, specialised per task, can beat a much larger general one on finance work.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Planner, Executor, Verifier</b><span>The Planner picks the adapter, the Executor attaches it to the frozen base and runs it, and the Verifier applies domain constraints — discrete answer formats for exams, numeric plausibility for calculations — re-routing invalid outputs.</span></div>
+        <div class="fitem"><b>Hybrid adapter routing</b><span>Heuristic intent cues such as MCQ format and XBRL tokens, embedding similarity to task centroids, and a lightweight supervised classifier over query embeddings.</span></div>
+        <div class="fitem"><b>Adapters chain</b><span>Multi-stage questions run adapters in sequence, for example XBRL value extraction followed by formula calculation.</span></div>
+        <div class="fitem"><b>Fifteen financial tasks</b><span>CFA Levels I and II, sentiment, headlines, NER, XBRL tagging and formula work, ConvFinQA, Financial Math, FinanceBench.</span></div>
+        <div class="fitem"><b>Trained under constraint</b><span>LoRA rank 4 to 8, alpha 16, 8 epochs on an A100 40GB, over 12 hours per adapter, using Unsloth and bitsandbytes on a 4-bit base.</span></div>
+        <div class="fitem"><b>Replicated on a second base</b><span>The same 15 adapters were trained on Qwen-2.5-7B as well, for 30 experiments total.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">One architectural decision carries most of the result.</p>
+      <article class="story" style="--t:var(--violet)">
+        <h3>Fifteen adapters on one model, not fifteen models</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>Specialisation usually means one fine-tuned model per task. Fifteen tasks would mean fifteen deployments, fifteen sets of weights in memory, and fifteen things to keep in sync.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Decision</span>
+          <p>One frozen 4-bit base with fifteen LoRA adapters attached to the key projection layers. All adapters stay <b>pre-loaded in memory</b> so switching is cheap, and a routing cache keyed on query embeddings reuses decisions for repeated or semantically similar queries.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Result</span>
+          <p>Specialisation without paying for fifteen deployments. On CFA Level I the adapters reach 93.07% against GPT-4o's 88.10%, and on NER 97.24 F1 against BloombergGPT's 60.82.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--amber)">
+        <h3>A Verifier, because a confident wrong number is the failure mode</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>In financial reasoning, a fluent answer in the wrong format or with an implausible magnitude is worse than a refusal, because it looks usable.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Design</span>
+          <p>The Verifier applies domain-specific constraints per task: exam answers must be a discrete option, calculations must be numerically plausible. Invalid outputs are re-routed to an alternate adapter rather than returned.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>I am the <b>second author of four</b>. The work was a collaboration between NUST Islamabad and Zewail City, and I do not claim sole credit for the paper.</p>
+        <p><b>DeepSeek V3 and Gemini 2.0 FL still beat these adapters on raw XBRL tag and value extraction.</b> The advantage here is on exam reasoning, sentiment, NER and compositional numeric work. The paper says so, and so do I.</p>
+        <p>The paper notes the full agentic routing loop was still under implementation at publication; the reported figures are adapter-level performance.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-trading.html">← Trading & Market Assistant</a>
+        <a href="project-energy.html">Energy Forecasting & Battery Dispatch →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>
