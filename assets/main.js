@@ -180,6 +180,12 @@
             card.style.display =
               (f === 'all' || card.getAttribute('data-kind') === f) ? '' : 'none';
           });
+          $$('.group').forEach(function (g) {
+            var visible = $$('[data-kind]', g).filter(function (c) {
+              return c.style.display !== 'none';
+            }).length;
+            g.style.display = visible ? '' : 'none';
+          });
           return;
         }
 
@@ -200,6 +206,13 @@
                 card.classList.add('in');
               }, delay);
             }
+          });
+          /* Hide a group heading when the filter left it with no cards. */
+          $$('.group').forEach(function (g) {
+            var visible = $$('[data-kind]', g).filter(function (c) {
+              return c.style.display !== 'none';
+            }).length;
+            g.style.display = visible ? '' : 'none';
           });
         }, 200);
       });

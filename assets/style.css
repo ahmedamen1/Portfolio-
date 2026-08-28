@@ -396,6 +396,37 @@ html[data-theme="dark"] .blob { opacity: .18; }
 }
 .decision p b { color: var(--ink); }
 
+/* What the system actually does, as a scannable list. */
+.features { margin: 0 0 15px; padding: 0; list-style: none; }
+.features li {
+  position: relative; padding-left: 19px; margin-bottom: 7px;
+  font-size: .89rem; color: var(--ink-2); line-height: 1.58;
+}
+.features li::before {
+  content: ""; position: absolute; left: 2px; top: .62em;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: color-mix(in srgb, var(--t, var(--violet)) 65%, transparent);
+}
+.features li b { color: var(--ink); font-weight: 700; }
+
+/* Group heading that splits the project list into families. */
+.group-head {
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  margin: 0 0 22px; padding-bottom: 11px;
+  border-bottom: 2px solid var(--border);
+}
+.group-head h3 {
+  font-size: 1.25rem; font-weight: 800; letter-spacing: -.02em; margin: 0;
+}
+.group-head .count {
+  font-family: var(--font-mono); font-size: .78rem; color: var(--muted);
+}
+.group-head p {
+  flex: 1 1 100%; margin: 4px 0 0; font-size: .93rem; color: var(--ink-2);
+}
+.group { margin-bottom: 46px; }
+.group:last-child { margin-bottom: 0; }
+
 .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px; }
 .tag {
   font-family: var(--font-mono); font-size: .7rem; color: var(--ink-2);

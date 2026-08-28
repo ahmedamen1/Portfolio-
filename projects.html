@@ -59,262 +59,394 @@
 
       <div class="chips reveal in" role="group" aria-label="Filter projects">
         <button class="chip on" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" data-filter="rag" aria-pressed="false">AI Chatbots &amp; Assistants</button>
         <button class="chip" data-filter="research" aria-pressed="false">Research</button>
-        <button class="chip" data-filter="rag" aria-pressed="false">RAG &amp; LLM</button>
         <button class="chip" data-filter="vision" aria-pressed="false">Vision</button>
         <button class="chip" data-filter="optimization" aria-pressed="false">Optimization</button>
         <button class="chip" data-filter="hardware" aria-pressed="false">Hardware</button>
       </div>
 
-      <div class="grid g2">
-
-        <!-- FinVerse -->
-        <article class="card pcard reveal" data-kind="research" style="--t:var(--violet)">
-          <div class="top">
-            <div>
-              <h3>FinVerse Agent</h3>
-              <div class="sub">IEEE CSCloud 2025 · second author of four</div>
-            </div>
-            <span class="pill" style="--t:var(--violet)">Research</span>
-          </div>
+      <!-- ===== GROUP 1: AI chatbots and assistants ===== -->
+      <div class="group" data-group="rag">
+        <div class="group-head reveal in">
+          <h3>AI Chatbots &amp; Assistants</h3>
+          <span class="count">4 production systems</span>
           <p>
-            A financial AI agent built for the FinAI 2025 contest. Fifteen task-specific
-            LoRA adapters sit on a single 4-bit quantized LLaMA-3.1-8B. A Planner picks
-            the adapter, an Executor runs it, and a Verifier checks the answer and
-            re-routes it if the format or the numbers look wrong.
+            Four conversational systems in production, all built on the same core
+            problem: making an LLM answer from a specific body of knowledge instead of
+            from its own memory, in Arabic as well as English, by text and by voice.
           </p>
-          <div class="decision">
-            <span class="dlabel">The call I made</span>
-            <p>Fifteen adapters on <b>one</b> base model, not fifteen models. All adapters stay pre-loaded in memory so switching is cheap, and a routing cache keyed on query embeddings reuses decisions for similar questions. Specialisation without paying for fifteen deployments.</p>
-          </div>
-          <div class="result">
-            93.07% CFA Level I (GPT-4o: 88.10%) · 97.24 F1 on NER (BloombergGPT: 60.82)
-            · 99.50% Financial Math · 1st place, FinAI 2025 Task 2
-          </div>
-          <div class="tags">
-            <span class="tag">LLaMA-3.1-8B</span><span class="tag">LoRA</span>
-            <span class="tag">PEFT</span><span class="tag">Unsloth</span>
-            <span class="tag">4-bit</span><span class="tag">PyTorch</span>
-          </div>
-          <div class="foot">
-            <a class="link" href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener">Read the paper →</a>
-          </div>
-        </article>
+        </div>
 
-        <!-- Arabic advisory chatbot -->
-        <article class="card pcard reveal" data-kind="rag" style="--t:var(--pink)">
-          <div class="top">
-            <div>
-              <h3>Arabic Advisory Chatbot</h3>
-              <div class="sub">Client work · production</div>
+        <div class="grid g2">
+
+          <!-- Arabic advisory chatbot -->
+          <article class="card pcard reveal" data-kind="rag" style="--t:var(--pink)">
+            <div class="top">
+              <div>
+                <h3>Arabic Advisory Chatbot</h3>
+                <div class="sub">Client work &middot; production &middot; 5 months</div>
+              </div>
+              <span class="pill" style="--t:var(--pink)">Assistant</span>
             </div>
-            <span class="pill" style="--t:var(--pink)">RAG &amp; LLM</span>
-          </div>
-          <p>
-            Answers personal questions from a classical Arabic corpus in Egyptian
-            dialect, by text or voice. The answer must quote scripture verbatim from
-            retrieved text rather than from model memory, so the hard problem is
-            retrieval precision, not chat.
-          </p>
-          <div class="decision">
-            <span class="dlabel">The problem I solved</span>
-            <p>Users got the right book but the wrong passage. The filter was fine: one chunk sat near the centre of the corpus embedding space and won three unrelated queries by default. <b>A chunking problem, not a code problem.</b> I wrote up four fixes with costs and shipped the diagnosis before touching code.</p>
-          </div>
-          <div class="result">
-            23,512 indexed chunks across 9 classical books · ~10,840 lines of Python
-            · 100-question scored evaluation set · ~5&times; cost reduction per message
-          </div>
-          <div class="tags">
-            <span class="tag">ChromaDB</span><span class="tag">SQLite FTS5</span>
-            <span class="tag">BM25 + RRF</span><span class="tag">Celery</span>
-            <span class="tag">MongoDB</span><span class="tag">ElevenLabs</span>
-            <span class="tag">Docker Swarm</span>
-          </div>
-        </article>
-
-        <!-- Property sales AI -->
-        <article class="card pcard reveal" data-kind="rag" style="--t:var(--sky)">
-          <div class="top">
-            <div>
-              <h3>Property-Sales AI Assistant</h3>
-              <div class="sub">Client work · production</div>
+            <p>
+              Answers personal questions from a corpus of classical Arabic texts, in
+              Egyptian dialect, by text or voice.
+            </p>
+            <ul class="features">
+              <li><b>Quotes scripture exactly.</b> Verses and hadith are reproduced verbatim in Classical Arabic, then explained in dialect. Paraphrasing scripture is explicitly forbidden.</li>
+              <li><b>Admits ignorance.</b> When retrieved passages do not cover the question it says so, rather than producing a fluent unverifiable answer.</li>
+              <li><b>Author and book scoping.</b> "What does al-Ghazali say about..." restricts retrieval to that author and requires his own wording.</li>
+              <li><b>Any language in, same language out</b> — but scripture is never translated, only quoted and then explained.</li>
+              <li><b>Voice in, voice out</b>, answered through the same pipeline and spoken back in a cloned voice.</li>
+              <li><b>Accounts and quotas</b> — email verification, device fingerprinting, trusted devices, per-role session and message limits.</li>
+            </ul>
+            <div class="decision">
+              <span class="dlabel">The problem I solved</span>
+              <p>
+                Users got the right book but the wrong passage. The filter was fine: one
+                chunk sat near the centre of the corpus embedding space and won three
+                unrelated queries by default. <b>A chunking problem, not a code
+                problem.</b> I wrote up four fixes with costs and shipped the diagnosis
+                before touching code.
+              </p>
             </div>
-            <span class="pill" style="--t:var(--sky)">RAG &amp; LLM</span>
-          </div>
-          <p>
-            A bilingual sales assistant for a large mixed-use development. Buyers ask
-            in Arabic or English, by text or voice, and get answers grounded in an
-            approved knowledge base together with the right floor plans and renders.
-          </p>
-          <div class="decision">
-            <span class="dlabel">The trade-off I chose</span>
-            <p>A guard that checks every claim against context blocks most good answers, because sales language legitimately rephrases. Mine blocks <b>only explicit financial claims</b> — prices, instalments, "sold out". A loose description is recoverable; an invented price is not.</p>
-          </div>
-          <div class="result">
-            702 catalogued images with bilingual descriptions · 165-tower building graph
-            · 66-case LLM-as-judge evaluation harness · ~16,827 lines of Python
-          </div>
-          <div class="tags">
-            <span class="tag">FastAPI</span><span class="tag">ChromaDB</span>
-            <span class="tag">rank_bm25</span><span class="tag">MinIO</span>
-            <span class="tag">Traefik</span><span class="tag">Prometheus</span>
-            <span class="tag">Grafana</span>
-          </div>
-        </article>
-
-        <!-- Multi-channel sales assistant (META) -->
-        <article class="card pcard reveal" data-kind="rag" style="--t:var(--violet)">
-          <div class="top">
-            <div>
-              <h3>Multi-Channel Sales Assistant</h3>
-              <div class="sub">Client work · WhatsApp, Messenger, Instagram</div>
+            <div class="result">
+              23,512 indexed chunks across 9 classical books &middot; ~10,840 lines of
+              Python &middot; 100-question scored evaluation set &middot; 33 pytest
+              tests &middot; ~5&times; cost reduction per message
             </div>
-            <span class="pill" style="--t:var(--violet)">RAG &amp; LLM</span>
-          </div>
-          <p>
-            The same assistant reachable from three messaging platforms. I owned the
-            retrieval and image layer, the multilingual output, and the per-recipient
-            rate limits that keep the business account from being flagged as spam.
-          </p>
-          <div class="decision">
-            <span class="dlabel">The constraint I designed around</span>
-            <p>Messaging platforms ban business accounts that behave like broadcasters. The rate limits are shaped around <b>per-recipient</b> behaviour rather than a global cap, so genuine conversations stay fast while the pattern never looks automated.</p>
-          </div>
-          <div class="result">
-            845 indexed images across 43 buildings · 192 structured unit configurations
-            · 7-container deployment with Kafka so AI workers can run off-box
-          </div>
-          <div class="tags">
-            <span class="tag">Kafka</span><span class="tag">LangChain</span>
-            <span class="tag">ChromaDB</span><span class="tag">Redis</span>
-            <span class="tag">WhatsApp Cloud API</span><span class="tag">Whisper</span>
-          </div>
-        </article>
-
-        <!-- Stock trading assistant -->
-        <article class="card pcard reveal" data-kind="rag" style="--t:var(--mint)">
-          <div class="top">
-            <div>
-              <h3>Trading &amp; Market Assistant</h3>
-              <div class="sub">Client work · online brokerage</div>
+            <div class="tags">
+              <span class="tag">ChromaDB</span><span class="tag">SQLite FTS5</span>
+              <span class="tag">BM25 + RRF</span><span class="tag">Celery</span>
+              <span class="tag">MongoDB</span><span class="tag">ElevenLabs</span>
+              <span class="tag">Docker Swarm</span><span class="tag">Grafana</span>
             </div>
-            <span class="pill" style="--t:var(--mint)">RAG &amp; LLM</span>
-          </div>
-          <p>
-            A bilingual English and Gulf-Arabic assistant for an online brokerage. It
-            answers market questions with live data, explains products from a curated
-            knowledge base, captures leads, and speaks to customers by voice over web
-            and phone.
-          </p>
-          <div class="decision">
-            <span class="dlabel">The call I made</span>
-            <p>Live market data cannot go through a knowledge base, and product facts cannot go through a live feed. The assistant routes between <b>tool calls for market data and retrieval for product facts</b>, so each question is answered by the source that can actually be right about it.</p>
-          </div>
-          <div class="result">
-            ~11,500 lines of Python · 9 API routers and 19 services · 9-container stack
-            on AWS EC2 with HTTPS via Traefik
-          </div>
-          <div class="tags">
-            <span class="tag">OpenAI Responses API</span><span class="tag">Tool calling</span>
-            <span class="tag">MongoDB</span><span class="tag">Redis</span>
-            <span class="tag">MinIO</span><span class="tag">Docker</span>
-          </div>
-        </article>
+          </article>
 
-        <!-- Multi-camera security -->
-        <article class="card pcard reveal" data-kind="vision" style="--t:var(--coral)">
-          <div class="top">
-            <div>
-              <h3>Multi-Camera Threat Detection</h3>
-              <div class="sub">Sole engineer · training and runtime</div>
+          <!-- Property sales -->
+          <article class="card pcard reveal" data-kind="rag" style="--t:var(--sky)">
+            <div class="top">
+              <div>
+                <h3>Property-Sales AI Assistant</h3>
+                <div class="sub">Client work &middot; production</div>
+              </div>
+              <span class="pill" style="--t:var(--sky)">Assistant</span>
             </div>
-            <span class="pill" style="--t:var(--coral)">Vision</span>
-          </div>
-          <p>
-            Watches several camera feeds at once for weapons, falls and violence. Three
-            model families run behind one threading model, with alerting and a cloud
-            evidence pipeline. I built the training, the architecture and the whole
-            runtime.
-          </p>
-          <div class="decision">
-            <span class="dlabel">The problem I solved</span>
-            <p>A detector tuned for recall fires on phones and wallets; tuned for precision it misses real weapons. Both are unacceptable in a school. I run the detector permissively at 0.40, then pass every crop to CLIP scored against <b>positive and explicitly negative prompts</b> — so a phone is actively labelled a phone, not merely "less like a weapon".</p>
-          </div>
-          <div class="result">
-            Weapon detection mAP@0.50 = 0.844 · violence classifier 81% on 680 test
-            samples · 698 ms average inference latency on CPU
-          </div>
-          <div class="tags">
-            <span class="tag">RF-DETR</span><span class="tag">CLIP</span>
-            <span class="tag">YOLOv8n</span><span class="tag">3D-CNN</span>
-            <span class="tag">PyTorch</span><span class="tag">OpenCV</span>
-          </div>
-        </article>
-
-        <!-- Energy forecasting + MPC -->
-        <article class="card pcard reveal" data-kind="optimization" style="--t:var(--amber)">
-          <div class="top">
-            <div>
-              <h3>Energy Forecasting &amp; Battery Dispatch</h3>
-              <div class="sub">Two-person team · 2026</div>
+            <p>
+              A bilingual sales assistant for a large mixed-use development. Buyers ask
+              in Arabic or English and get answers with the right drawings attached.
+            </p>
+            <ul class="features">
+              <li><b>Shows the right pictures.</b> Floor plans and renders retrieved alongside the text, scoped to the building under discussion, with images already shown earlier suppressed.</li>
+              <li><b>Numeric filtering in natural language</b> — "under 90 m²", "between 70 and 100", "أكبر من 120 متر", plus qualitative forms like "big" or "compact", including Arabic-Indic numerals.</li>
+              <li><b>Resolves follow-ups.</b> "What about the ground floor?" or a bare "yes" resolve against remembered state: last building, last catalogue, last question asked.</li>
+              <li><b>Refuses out of scope.</b> Competitor questions get a fixed redirect; unknown building codes get "I don't have that, here is the official channel" rather than an invention.</li>
+              <li><b>Captures leads</b> and powers a sales dashboard with eight endpoints: overview, timeseries, intents, properties, funnel, queries, leads, behaviour.</li>
+              <li><b>Voice in, voice out</b>, in the buyer's own language.</li>
+            </ul>
+            <div class="decision">
+              <span class="dlabel">The trade-off I chose</span>
+              <p>
+                A guard that checks every claim against context blocks most good answers,
+                because sales language legitimately rephrases. Mine blocks <b>only
+                explicit financial claims</b> — prices, instalments, "sold out". A loose
+                description is recoverable; an invented price is not.
+              </p>
             </div>
-            <span class="pill" style="--t:var(--amber)">Optimization</span>
-          </div>
-          <p>
-            Day-ahead load forecasting with gradient-boosted trees, feeding a
-            rolling-horizon Model Predictive Controller that solves a linear program at
-            each step to schedule a 16 kWh battery against a 9 kWp rooftop array.
-          </p>
-          <div class="decision">
-            <span class="dlabel">The mistake I caught</span>
-            <p>An early model showed a validation RMSE of 0.79 kW. It was an artifact: the features were leaking the answer. Rebuilding with honest lags and rolling windows gave a worse number and a <b>real</b> one. I measured against a perfect-information oracle to show exactly what the forecast error costs in euros.</p>
-          </div>
-          <div class="result">
-            Within &euro;0.33 (April) and &euro;0.56 (September) of a perfect-information
-            oracle · beat the site's own controller by &euro;10.51 and &euro;1.41
-          </div>
-          <div class="tags">
-            <span class="tag">scikit-learn</span><span class="tag">HistGradientBoosting</span>
-            <span class="tag">SciPy linprog</span><span class="tag">HiGHS</span>
-            <span class="tag">MPC</span><span class="tag">pandas</span>
-          </div>
-        </article>
-
-        <!-- Rafeeq -->
-        <article class="card pcard reveal" data-kind="hardware" style="--t:var(--mint)">
-          <div class="top">
-            <div>
-              <h3>Rafeeq Smart Wheel Kit</h3>
-              <div class="sub">Graduation project · Lead AI Architect</div>
+            <div class="result">
+              702 catalogued images with bilingual descriptions &middot; 165-tower
+              building graph &middot; 66-case LLM-as-judge harness with deterministic
+              cross-checks &middot; ~16,827 lines of Python
             </div>
-            <span class="pill" style="--t:var(--mint)">Hardware</span>
-          </div>
-          <p>
-            Imported smart wheelchairs cost more than most Egyptian families can pay.
-            Rafeeq is a kit that upgrades the manual chair someone already owns: indoor
-            navigation, health monitoring, and Egyptian Arabic voice control that keeps
-            working with no internet.
-          </p>
-          <div class="decision">
-            <span class="dlabel">The constraint I designed around</span>
-            <p>A wheelchair cannot depend on a network. Everything critical runs <b>on the chair</b>: INT8 speech recognition on a Raspberry Pi 5, and a three-tier control stack that converts a spoken command to motor movement in under 20ms without leaving the device.</p>
-          </div>
-          <div class="result">
-            87% command accuracy at 0.9s latency, fully offline · under 20ms control
-            loop · 2,750-line RAG module · 11,833-line Flutter app across 23 features
-            · $1,600 government grant
-          </div>
-          <div class="tags">
-            <span class="tag">ROS 2</span><span class="tag">Nav2</span>
-            <span class="tag">ORB-SLAM3</span><span class="tag">faster-whisper</span>
-            <span class="tag">Raspberry Pi 5</span><span class="tag">Flutter</span>
-            <span class="tag">Riverpod</span><span class="tag">pgvector</span>
-          </div>
-          <div class="foot">
-            <a class="link" href="https://ahmedamen1.github.io/Rafeeq-Demo/" target="_blank" rel="noopener">See the demo →</a>
-          </div>
-        </article>
+            <div class="tags">
+              <span class="tag">FastAPI</span><span class="tag">ChromaDB</span>
+              <span class="tag">rank_bm25</span><span class="tag">MinIO</span>
+              <span class="tag">Traefik</span><span class="tag">Prometheus</span>
+              <span class="tag">Grafana</span><span class="tag">Loki</span>
+            </div>
+          </article>
 
+          <!-- Multi-channel -->
+          <article class="card pcard reveal" data-kind="rag" style="--t:var(--violet)">
+            <div class="top">
+              <div>
+                <h3>Multi-Channel Sales Assistant</h3>
+                <div class="sub">Client work &middot; WhatsApp, Messenger, Instagram</div>
+              </div>
+              <span class="pill" style="--t:var(--violet)">Assistant</span>
+            </div>
+            <p>
+              The same assistant reachable from three messaging platforms, behaving like
+              a well-briefed salesperson in whichever language the customer writes.
+            </p>
+            <ul class="features">
+              <li><b>Language judged per message</b>, so a customer switching mid-conversation is followed rather than corrected.</li>
+              <li><b>Sends the right pictures without being asked twice.</b> "Show me B1.1" returns that building's exterior render followed by its floor plans.</li>
+              <li><b>Reports real inventory.</b> "What units are bigger than 70 m?" returns all 176 matching configurations across 19 buildings, grouped by bedroom count, not three illustrative examples.</li>
+              <li><b>Answers voice notes with voice notes</b>, synthesised in the same dialect.</li>
+              <li><b>Declines cleanly.</b> Will not invent a building, will not discuss a competitor, and does not attach photos to a pricing question.</li>
+            </ul>
+            <div class="decision">
+              <span class="dlabel">The constraint I designed around</span>
+              <p>
+                Messaging platforms ban business accounts that behave like broadcasters.
+                The rate limits are shaped around <b>per-recipient</b> behaviour rather
+                than a global cap, so genuine conversations stay fast while the pattern
+                never looks automated.
+              </p>
+            </div>
+            <div class="result">
+              845 indexed images across 43 buildings &middot; 192 structured unit
+              configurations &middot; ~3,360 lines of Python added across 18 files
+              &middot; 7-container deployment with Kafka so AI workers run off-box
+            </div>
+            <div class="tags">
+              <span class="tag">Kafka</span><span class="tag">LangChain</span>
+              <span class="tag">ChromaDB</span><span class="tag">Redis</span>
+              <span class="tag">WhatsApp Cloud API</span><span class="tag">Whisper</span>
+              <span class="tag">ElevenLabs</span>
+            </div>
+          </article>
+
+          <!-- Trading -->
+          <article class="card pcard reveal" data-kind="rag" style="--t:var(--mint)">
+            <div class="top">
+              <div>
+                <h3>Trading &amp; Market Assistant</h3>
+                <div class="sub">Client work &middot; online brokerage</div>
+              </div>
+              <span class="pill" style="--t:var(--mint)">Assistant</span>
+            </div>
+            <p>
+              A bilingual English and Gulf-Arabic assistant that answers market
+              questions with live data and explains products from a curated store.
+            </p>
+            <ul class="features">
+              <li><b>Live market data per question.</b> "Why is gold moving today?" gets real prices and cited catalysts, not a guess from stale training data.</li>
+              <li><b>Product facts from a vector store</b> — account tiers, spreads, commissions, deposit rules — the difference between a correct quote and an invented one on a sales call.</li>
+              <li><b>Writes a regional urban dialect</b>, not Modern Standard Arabic, enforced by a prompt specification covering vocabulary, pronouns and the grammatical tells of a non-native speaker.</li>
+              <li><b>Talks over the phone.</b> A tool endpoint backs a third-party voice agent, returning a finished speakable sentence.</li>
+              <li><b>Renders live charts inline</b>, deciding for itself when a question deserves a chart, a comparison or a market-overview widget.</li>
+              <li><b>Captures and qualifies leads</b> from natural conversation using a cheap model on every message.</li>
+            </ul>
+            <div class="decision">
+              <span class="dlabel">The call I made</span>
+              <p>
+                Live market data cannot go through a knowledge base, and product facts
+                cannot go through a live feed. The assistant routes between <b>tool calls
+                for market data and retrieval for product facts</b>, so each question is
+                answered by the source that can actually be right about it.
+              </p>
+            </div>
+            <div class="result">
+              ~11,500 lines of Python &middot; 9 API routers and 19 services &middot;
+              9-container stack on AWS EC2 with HTTPS via Traefik
+            </div>
+            <div class="tags">
+              <span class="tag">OpenAI Responses API</span><span class="tag">Tool calling</span>
+              <span class="tag">MongoDB</span><span class="tag">Redis</span>
+              <span class="tag">ChromaDB</span><span class="tag">MinIO</span>
+              <span class="tag">Docker</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- ===== GROUP 2: Research ===== -->
+      <div class="group" data-group="research">
+        <div class="group-head reveal">
+          <h3>Research &amp; Optimization</h3>
+          <span class="count">2 projects</span>
+          <p>Peer-reviewed work on making small models outperform large ones, and
+             classical optimization where the objective is measured in euros.</p>
+        </div>
+
+        <div class="grid g2">
+          <article class="card pcard reveal" data-kind="research" style="--t:var(--violet)">
+            <div class="top">
+              <div>
+                <h3>FinVerse Agent</h3>
+                <div class="sub">IEEE CSCloud 2025 &middot; second author of four</div>
+              </div>
+              <span class="pill" style="--t:var(--violet)">Research</span>
+            </div>
+            <p>
+              A financial AI agent built for the FinAI 2025 contest. Fifteen
+              task-specific LoRA adapters on a single 4-bit quantized LLaMA-3.1-8B.
+            </p>
+            <ul class="features">
+              <li><b>Planner, Executor, Verifier loop.</b> The Planner picks the adapter, the Executor runs it, and the Verifier checks format and numeric plausibility, re-routing the query when the answer looks wrong.</li>
+              <li><b>Hybrid adapter routing</b> — heuristic intent cues, embedding similarity to task centroids, and a supervised classifier over query embeddings.</li>
+              <li><b>Adapters chain</b> for multi-stage questions, such as XBRL value extraction followed by formula calculation.</li>
+              <li><b>Trained across 15 financial tasks</b>: CFA Levels I and II, sentiment, NER, XBRL tagging and formula work, ConvFinQA, FinanceBench.</li>
+            </ul>
+            <div class="decision">
+              <span class="dlabel">The call I made</span>
+              <p>
+                Fifteen adapters on <b>one</b> base model, not fifteen models. All
+                adapters stay pre-loaded in memory so switching is cheap, and a routing
+                cache keyed on query embeddings reuses decisions for similar questions.
+                Specialisation without paying for fifteen deployments.
+              </p>
+            </div>
+            <div class="result">
+              93.07% CFA Level I (GPT-4o: 88.10%) &middot; 97.24 F1 on NER
+              (BloombergGPT: 60.82) &middot; 99.50% Financial Math &middot; 0.9171
+              FinanceBench BERTScore (GPT-4o: 0.564) &middot; 1st place, FinAI 2025 Task 2
+            </div>
+            <div class="tags">
+              <span class="tag">LLaMA-3.1-8B</span><span class="tag">Qwen-2.5-7B</span>
+              <span class="tag">LoRA</span><span class="tag">PEFT</span>
+              <span class="tag">Unsloth</span><span class="tag">4-bit</span>
+              <span class="tag">PyTorch</span>
+            </div>
+            <div class="foot">
+              <a class="link" href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener">Read the paper →</a>
+            </div>
+          </article>
+
+          <article class="card pcard reveal" data-delay=".08" data-kind="optimization" style="--t:var(--amber)">
+            <div class="top">
+              <div>
+                <h3>Energy Forecasting &amp; Battery Dispatch</h3>
+                <div class="sub">Two-person team &middot; 2026</div>
+              </div>
+              <span class="pill" style="--t:var(--amber)">Optimization</span>
+            </div>
+            <p>
+              Day-ahead load forecasting feeding a rolling-horizon Model Predictive
+              Controller that schedules a 16 kWh battery against a 9 kWp rooftop array.
+            </p>
+            <ul class="features">
+              <li><b>Forecasts 96 quarter-hour steps a day</b>, trained on a full prior year and evaluated on held-out target months.</li>
+              <li><b>Models the Italian time-of-use tariff correctly</b> — three price bands whose boundaries depend on hour, weekday <i>and</i> the public-holiday calendar, since holidays bill at the cheapest rate.</li>
+              <li><b>Re-solves a linear program at every step</b> over a 24-hour lookahead as new information arrives.</li>
+              <li><b>Simulates against physical reality</b> — plans re-checked against actual load, actual PV, true state-of-charge limits and the grid cap, so reported bills reflect what the battery could really have done.</li>
+              <li><b>Benchmarked against three references</b>: the site's real controller, a no-battery counterfactual, and a perfect-foresight oracle.</li>
+              <li><b>Generalizes to an unseen site</b>, tested on a second building the pipeline had never seen.</li>
+            </ul>
+            <div class="decision">
+              <span class="dlabel">The mistake I caught</span>
+              <p>
+                An early model showed a validation RMSE of 0.79 kW. It was an artifact:
+                the features were leaking the answer. Rebuilding with honest lags and
+                rolling windows gave a worse number and a <b>real</b> one. I measured
+                against a perfect-information oracle to show exactly what forecast error
+                costs in euros.
+              </p>
+            </div>
+            <div class="result">
+              Within &euro;0.33 (April) and &euro;0.56 (September) of a
+              perfect-information oracle &middot; beat the site's own controller by
+              &euro;10.51 and &euro;1.41 &middot; 1,495 lines across 6 modules
+            </div>
+            <div class="tags">
+              <span class="tag">scikit-learn</span><span class="tag">HistGradientBoosting</span>
+              <span class="tag">SciPy linprog</span><span class="tag">HiGHS</span>
+              <span class="tag">MPC</span><span class="tag">pandas</span>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- ===== GROUP 3: Vision and hardware ===== -->
+      <div class="group" data-group="other">
+        <div class="group-head reveal">
+          <h3>Vision &amp; Hardware</h3>
+          <span class="count">2 systems</span>
+          <p>Models running on real cameras and real devices, where latency and failure handling matter more than benchmark scores.</p>
+        </div>
+
+        <div class="grid g2">
+          <article class="card pcard reveal" data-kind="vision" style="--t:var(--coral)">
+            <div class="top">
+              <div>
+                <h3>Multi-Camera Threat Detection</h3>
+                <div class="sub">Sole engineer &middot; training and runtime</div>
+              </div>
+              <span class="pill" style="--t:var(--coral)">Vision</span>
+            </div>
+            <p>
+              Watches several camera feeds at once for weapons, falls and violence, with
+              alerting and a cloud evidence pipeline.
+            </p>
+            <ul class="features">
+              <li><b>Per-camera detector assignment.</b> An entrance camera can run weapon detection only while a corridor camera runs fall detection only, configured in JSON.</li>
+              <li><b>Two-stage weapon detection</b> — a detector proposes regions, CLIP verifies each crop against positive and negative prompts before anything counts as a threat.</li>
+              <li><b>Falls from bounding-box geometry</b>, required to persist across consecutive frames before firing.</li>
+              <li><b>Violence from 16-frame sequences</b> using a 3D-CNN over a rolling buffer.</li>
+              <li><b>Automatic evidence escalation</b> — a frame or reconstructed MP4 uploaded to a category-specific cloud folder, made link-accessible, and emailed to security staff.</li>
+              <li><b>Live dashboard</b> with MJPEG feeds, on-frame HUD, a real-time violence-score meter, and a health panel marking each camera online or offline with FPS and queue depth.</li>
+            </ul>
+            <div class="decision">
+              <span class="dlabel">The problem I solved</span>
+              <p>
+                A detector tuned for recall fires on phones and wallets; tuned for
+                precision it misses real weapons. Both are unacceptable in a school. I run
+                the detector permissively at 0.40, then pass every crop to CLIP scored
+                against <b>positive and explicitly negative prompts</b> — so a phone is
+                actively labelled a phone, not merely "less like a weapon".
+              </p>
+            </div>
+            <div class="result">
+              Weapon detection mAP@0.50 = 0.844 &middot; violence classifier 81% on 680
+              test samples &middot; 698 ms average inference latency on CPU &middot;
+              1,065 lines across 9 modules
+            </div>
+            <div class="tags">
+              <span class="tag">RF-DETR</span><span class="tag">CLIP</span>
+              <span class="tag">YOLOv8n</span><span class="tag">3D-CNN</span>
+              <span class="tag">PyTorch</span><span class="tag">TensorFlow</span>
+              <span class="tag">OpenCV</span>
+            </div>
+          </article>
+
+          <article class="card pcard reveal" data-delay=".08" data-kind="hardware" style="--t:var(--mint)">
+            <div class="top">
+              <div>
+                <h3>Rafeeq Smart Wheel Kit</h3>
+                <div class="sub">Graduation project &middot; Lead AI Architect</div>
+              </div>
+              <span class="pill" style="--t:var(--mint)">Hardware</span>
+            </div>
+            <p>
+              A kit that upgrades the manual wheelchair someone already owns, because
+              imported smart chairs cost more than most Egyptian families can pay.
+            </p>
+            <ul class="features">
+              <li><b>Knows the patient's actual situation</b> — latest mood and pain check-in, active medications with dosage, next appointment, and 7-day alarm compliance broken into taken, pending and missed.</li>
+              <li><b>Reads live vital signs</b> from the chair's sensors and folds them into the conversation context.</li>
+              <li><b>Generates a PDF medical report</b> on request, detected from natural Arabic phrasing.</li>
+              <li><b>A separate caregiver assistant</b> with its own persona, summarising every linked patient, flagging missed alarms, and including burnout guidance as an explicit task.</li>
+              <li><b>Offline Egyptian Arabic voice control</b> and autonomous indoor navigation with LiDAR and depth-camera SLAM.</li>
+            </ul>
+            <div class="decision">
+              <span class="dlabel">The constraint I designed around</span>
+              <p>
+                A wheelchair cannot depend on a network. Everything critical runs <b>on
+                the chair</b>: INT8 speech recognition on a Raspberry Pi 5, and a
+                three-tier control stack that converts a spoken command to motor movement
+                in under 20ms without leaving the device.
+              </p>
+            </div>
+            <div class="result">
+              87% command accuracy at 0.9s latency, fully offline &middot; under 20ms
+              control loop &middot; 2,750-line RAG module &middot; 11,833-line Flutter
+              app across 23 features &middot; $1,600 government grant
+            </div>
+            <div class="tags">
+              <span class="tag">ROS 2</span><span class="tag">Nav2</span>
+              <span class="tag">ORB-SLAM3</span><span class="tag">faster-whisper</span>
+              <span class="tag">Raspberry Pi 5</span><span class="tag">Flutter</span>
+              <span class="tag">Riverpod</span><span class="tag">pgvector</span>
+            </div>
+            <div class="foot">
+              <a class="link" href="https://ahmedamen1.github.io/Rafeeq-Demo/" target="_blank" rel="noopener">See the demo →</a>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
   </section>
