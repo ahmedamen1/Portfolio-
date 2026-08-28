@@ -235,6 +235,56 @@
     sections.forEach(function (s) { io3.observe(s); });
   }
 
+  /* ---------- Scripted demo panels ----------
+     A demo plays its messages in sequence when scrolled into view.
+     Everything is pre-written markup: no network calls, no model. */
+  $$('.demo').forEach(function (demo) {
+    var body = $('.demo-body', demo);
+    var msgs = $$('.msg', body);
+    var btn = $('button', demo);
+    if (!msgs.length) return;
+
+    var timers = [];
+
+    function clearTimers() {
+      timers.forEach(clearTimeout);
+      timers = [];
+    }
+
+    function showAll() {
+      msgs.forEach(function (m) { m.classList.add('show'); });
+    }
+
+    function play() {
+      clearTimers();
+      msgs.forEach(function (m) { m.classList.remove('show'); });
+      if (reduced) { showAll(); return; }
+      var t = 0;
+      msgs.forEach(function (m, i) {
+        // A reply waits a little longer, as if it were thinking.
+        t += (i === 0) ? 260 : (m.classList.contains('me') ? 620 : 1000);
+        timers.push(setTimeout(function () { m.classList.add('show'); }, t));
+      });
+    }
+
+    if (btn) btn.addEventListener('click', play);
+
+    if (!('IntersectionObserver' in window) || reduced) {
+      showAll();
+    } else {
+      var seen = false;
+      var dio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting || seen) return;
+          seen = true;
+          play();
+          dio.unobserve(demo);
+        });
+      }, { threshold: 0.3 });
+      dio.observe(demo);
+    }
+  });
+
   /* ---------- Year in footer ---------- */
   $$('.js-year').forEach(function (el) { el.textContent = new Date().getFullYear(); });
 })();

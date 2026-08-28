@@ -427,6 +427,124 @@ html[data-theme="dark"] .blob { opacity: .18; }
 .group { margin-bottom: 46px; }
 .group:last-child { margin-bottom: 0; }
 
+/* =========================================================
+   Demo panel — a scripted showcase of what a system does
+   ========================================================= */
+.demo {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+}
+.demo-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 18px; border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.demo-bar .dots { display: flex; gap: 5px; }
+.demo-bar .dots i {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: color-mix(in srgb, var(--muted) 45%, transparent);
+}
+.demo-bar .who { font-size: .82rem; font-weight: 700; color: var(--ink-2); }
+.demo-bar .tagline {
+  margin-left: auto; font-family: var(--font-mono);
+  font-size: .68rem; color: var(--muted);
+}
+
+.demo-body {
+  padding: 20px; min-height: 268px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.msg { display: flex; gap: 10px; max-width: 86%; align-items: flex-start; }
+.msg.me { align-self: flex-end; flex-direction: row-reverse; }
+.msg .av {
+  width: 28px; height: 28px; flex: 0 0 28px; border-radius: 8px;
+  display: grid; place-items: center; font-size: .66rem; font-weight: 800;
+  background: var(--t, var(--violet)); color: #fff;
+}
+html[data-theme="dark"] .msg .av { color: var(--bg); }
+.msg.me .av { background: color-mix(in srgb, var(--muted) 40%, var(--surface-2)); color: var(--ink); }
+.msg .bub {
+  background: var(--surface-2); border-radius: 13px; padding: 11px 14px;
+  font-size: .89rem; line-height: 1.6; color: var(--ink-2);
+}
+.msg.me .bub {
+  background: color-mix(in srgb, var(--t, var(--violet)) 12%, var(--surface-2));
+  color: var(--ink);
+}
+.msg .bub b { color: var(--ink); }
+.msg .bub .ar { direction: rtl; text-align: right; display: block; }
+.msg .bub .note {
+  display: block; margin-top: 7px; padding-top: 7px;
+  border-top: 1px solid var(--border);
+  font-size: .78rem; color: var(--muted);
+}
+.msg .bub .cite {
+  display: inline-block; margin-top: 6px; font-family: var(--font-mono);
+  font-size: .7rem; color: var(--t, var(--violet));
+}
+
+/* Fake image tiles, for assistants that return drawings */
+.shots { display: flex; gap: 7px; margin-top: 9px; flex-wrap: wrap; }
+.shot {
+  width: 74px; height: 54px; border-radius: 7px;
+  border: 1px solid var(--border);
+  background:
+    repeating-linear-gradient(45deg,
+      color-mix(in srgb, var(--t, var(--violet)) 9%, var(--surface)) 0 6px,
+      var(--surface) 6px 12px);
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: .58rem; color: var(--muted);
+  text-align: center; line-height: 1.25; padding: 3px;
+}
+
+/* Typing indicator */
+.typing { display: inline-flex; gap: 4px; align-items: center; padding: 2px 0; }
+.typing i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: color-mix(in srgb, var(--muted) 65%, transparent);
+  animation: bounce 1.3s ease-in-out infinite;
+}
+.typing i:nth-child(2) { animation-delay: .16s; }
+.typing i:nth-child(3) { animation-delay: .32s; }
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: .5; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}
+
+/* Reveal each message as the script plays */
+.msg { opacity: 0; transform: translateY(8px); }
+.msg.show { opacity: 1; transform: none; transition: opacity .34s var(--ease), transform .34s var(--ease); }
+
+.demo-foot {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 13px 18px; border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.demo-foot .hint { font-size: .76rem; color: var(--muted); }
+.demo-foot button {
+  margin-left: auto; font-family: inherit; font-size: .78rem; font-weight: 700;
+  cursor: pointer; padding: 6px 14px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--border); color: var(--ink-2);
+  transition: all .2s var(--ease);
+}
+.demo-foot button:hover { border-color: var(--t, var(--violet)); color: var(--t, var(--violet)); }
+
+@media (max-width: 680px) {
+  .msg { max-width: 96%; }
+  .demo-body { min-height: 0; }
+}
+
+/* Profile photo */
+.avatar.photo { padding: 0; overflow: hidden; background: none; }
+.avatar.photo img { width: 100%; height: 100%; object-fit: cover; }
+.portrait {
+  width: 132px; height: 132px; border-radius: 20px; overflow: hidden;
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+  flex: 0 0 132px;
+}
+.portrait img { width: 100%; height: 100%; object-fit: cover; }
+
 /* A group holding a single card should not leave half the row empty. */
 .grid.g2 > .pcard:only-child { grid-column: 1 / -1; }
 .grid.g2 > .pcard:only-child .features { columns: 2; column-gap: 30px; }

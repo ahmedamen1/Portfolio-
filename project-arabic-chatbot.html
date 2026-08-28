@@ -100,6 +100,50 @@
 
   <section class="p-section">
     <div class="wrap">
+      <h2>See it work</h2>
+      <p class="p-lede">Three behaviours that are hard to get right: quoting a source exactly, scoping to one author, and refusing when the corpus does not cover the question.</p>
+      <div class="demo reveal">
+        <div class="demo-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="who">Arabic Advisory Chatbot</span>
+          <span class="tagline">grounded · dialect · voice</span>
+        </div>
+        <div class="demo-body">
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub"><span class="ar">إيه اللي بيقوله القرآن عن الصبر؟</span></div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub"><span class="ar">﴿وَبَشِّرِ الصَّابِرِينَ﴾</span><span class="note">Quoted verbatim in Classical Arabic, then explained in dialect below. Scripture is never paraphrased.</span><span class="cite">al-Baqarah 155</span></div>
+        </div>
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub">What does al-Ghazali say about intention?</div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub">Retrieval is now scoped to al-Ghazali's own work, and the answer is required to quote his wording rather than summarise it.<span class="cite">source scoped: 1 author</span></div>
+        </div>
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub">What is the ruling on cryptocurrency staking?</div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub"><b>My sources don't cover that.</b> The corpus is nine classical texts, and none of them address it. I would rather say so than produce a fluent answer I cannot ground.</div>
+        </div>
+        </div>
+        <div class="demo-foot">
+          <span class="hint">A scripted walkthrough of real behaviour, not a live model.</span>
+          <button type="button">Replay</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
       <h2>Problems I solved</h2>
       <p class="p-lede">
         Four that were worth the investigation. In each case the symptom pointed

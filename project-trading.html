@@ -90,6 +90,50 @@
 
   <section class="p-section">
     <div class="wrap">
+      <h2>See it work</h2>
+      <p class="p-lede">The routing decision made visible: a market question goes to live tools, a product question goes to retrieval.</p>
+      <div class="demo reveal">
+        <div class="demo-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="who">Trading Assistant</span>
+          <span class="tagline">live data · product KB · voice</span>
+        </div>
+        <div class="demo-body">
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub">Why is gold moving today?</div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub">Gold is up on the session, with the move attributed to the latest rate expectations.<span class="note">Routed to <b>live tools</b>: web search plus technical indicators from a market API, run per question.</span><span class="cite">tool: market_data + web_search</span></div>
+        </div>
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub">And what commission do you charge on that?</div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub">Answered from the curated product knowledge base, not from the model and not from the web.<span class="note">Routed to <b>retrieval</b>. Getting this backwards means quoting a commission the firm does not charge.</span><span class="cite">source: product KB</span></div>
+        </div>
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub"><span class="ar">تقدر تشرح لي بالعربي؟</span></div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub"><span class="ar">أكيد، خلني أشرحلك…</span><span class="note">Regional urban dialect, enforced by a prompt specification covering vocabulary, pronouns and the grammatical tells of a non-native speaker.</span></div>
+        </div>
+        </div>
+        <div class="demo-foot">
+          <span class="hint">A scripted walkthrough of real behaviour, not a live model.</span>
+          <button type="button">Replay</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
       <h2>Problems I solved</h2>
       <p class="p-lede">The core design question was which subsystem is allowed to answer which kind of question.</p>
       <article class="story" style="--t:var(--mint)">

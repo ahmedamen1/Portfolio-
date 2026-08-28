@@ -89,6 +89,58 @@
 
   <section class="p-section">
     <div class="wrap">
+      <h2>See it work</h2>
+      <p class="p-lede">Natural-language numeric filtering, a bare "yes" resolved from state, and the guard that blocks an unsupported price while letting everything else through.</p>
+      <div class="demo reveal">
+        <div class="demo-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="who">Property-Sales Assistant</span>
+          <span class="tagline">bilingual · visual · guarded</span>
+        </div>
+        <div class="demo-body">
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub"><span class="ar">عايز شقة أكبر من ١٢٠ متر</span></div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub">Filtering on <b>&gt; 120 m²</b> — Arabic-Indic numerals parsed, and the comparison read from natural phrasing.<span class="note">18 configurations match across 4 buildings.</span></div>
+        </div>
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub">Show me the floor plans for B1.1</div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub">Here are the plans for that building.<span class="shots"><span class="shot">FLOOR<br>PLAN</span><span class="shot">UNIT<br>LAYOUT</span><span class="shot">EXTERIOR<br>RENDER</span></span><span class="note">Scoped to B1.1. Images already shown earlier in this conversation are suppressed.</span></div>
+        </div>
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub">yes</div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub">Resolved against the last question asked, before the cache key was computed — otherwise a cache hit would return whatever the <i>previous</i> person who said "yes" was asking about.</div>
+        </div>
+        <div class="msg me">
+          <div class="av">You</div>
+          <div class="bub">So it is 4.2 million, right?</div>
+        </div>
+        <div class="msg">
+          <div class="av">AI</div>
+          <div class="bub"><b>Blocked.</b> That figure is not in the approved knowledge base, and the guard fails closed on financial claims specifically. Here is the official sales channel instead.<span class="note">A loose description is recoverable. An invented price is not.</span></div>
+        </div>
+        </div>
+        <div class="demo-foot">
+          <span class="hint">A scripted walkthrough of real behaviour, not a live model.</span>
+          <button type="button">Replay</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
       <h2>Problems I solved</h2>
       <p class="p-lede">Four problems where the fix depended on understanding exactly why the obvious approach fails.</p>
       <article class="story" style="--t:var(--coral)">
