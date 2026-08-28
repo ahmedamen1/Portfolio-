@@ -733,6 +733,9 @@ html[data-theme="dark"] .msg .av { color: var(--bg); }
 }
 
 .pill {
+  /* inline-block so a pill used as a <div> hugs its text instead of
+     stretching to the full card width. */
+  display: inline-block;
   font-size: .7rem; font-weight: 700; padding: 4px 10px; border-radius: 999px;
   background: color-mix(in srgb, var(--t, var(--violet)) 15%, transparent);
   color: var(--t, var(--violet)); white-space: nowrap;
