@@ -55,6 +55,7 @@
         <span class="pill" style="--t:var(--mint)">Lead AI Architect</span>
         <span class="pill" style="--t:var(--sky)">$1,600 government grant</span>
         <span class="pill" style="--t:var(--amber)">Team project</span>
+        <a class="link" href="https://ahmedamen1.github.io/Rafeeq-Demo/" target="_blank" rel="noopener" style="margin-left:4px">Open the live demo →</a>
       </div>
       <div class="figures">
         <div class="figure" style="--t:var(--pink)">
@@ -84,6 +85,52 @@
         <div class="fitem"><b>A separate caregiver assistant</b><span>Its own persona and prompt, oriented to monitoring: summarises every linked patient, flags missed alarms and upcoming appointments, and includes caregiver-burnout guidance as an explicit task.</span></div>
         <div class="fitem"><b>Offline Egyptian Arabic voice control</b><span>faster-whisper INT8 on a Raspberry Pi 5, reaching 87% command accuracy at 0.9s latency with no network.</span></div>
         <div class="fitem"><b>Autonomous indoor navigation</b><span>LiDAR and depth-camera SLAM with ROS 2 Nav2, and a three-tier control stack from Raspberry Pi through Arduino Mega to STM32.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>See it work</h2>
+      <p class="p-lede">
+        The kit on the chair, the app I built, and the health-monitoring hardware
+        before it was enclosed.
+      </p>
+
+      <div class="showcase">
+        <figure class="shotfig">
+          <img src="assets/rafeeq/system.jpg" alt="Diagram of a manual wheelchair with the Rafeeq kit fitted: voice control unit, depth camera, health monitor, hub motor and companion app." width="1100" height="619" loading="lazy">
+          <figcaption>
+            <b>The whole kit, fitted to a chair the user already owns.</b> Voice control
+            and the compute unit at the backrest, a depth camera and health monitor on
+            the frame, a hub motor on the wheel, and the companion app in the caregiver's
+            hand. Nothing here requires buying a new wheelchair.
+          </figcaption>
+        </figure>
+
+        <div class="phones">
+          <figure class="shotfig">
+            <img src="assets/rafeeq/app-chat.jpg" alt="Arabic chat screen: the assistant asks how the patient feels, the patient reports pain level 6, and the assistant replies referencing their painkiller and the 8am aspirin dose." width="420" height="884" loading="lazy">
+            <figcaption><b>Patient assistant.</b> It answers knowing the reported pain level, the active medication and the exact time of the next dose.</figcaption>
+          </figure>
+          <figure class="shotfig">
+            <img src="assets/rafeeq/app-health.jpg" alt="Arabic health dashboard showing live SpO2 98%, heart rate 78 bpm, temperature 36.8C and chair-occupancy status." width="420" height="884" loading="lazy">
+            <figcaption><b>Live vitals.</b> SpO<sub>2</sub>, heart rate, temperature and occupancy, streamed from the chair's own sensors.</figcaption>
+          </figure>
+          <figure class="shotfig">
+            <img src="assets/rafeeq/app-caregiver.jpg" alt="Arabic caregiver dashboard listing linked patients with their latest vitals and a summary of completed and pending alarms." width="420" height="884" loading="lazy">
+            <figcaption><b>Caregiver view.</b> Every linked patient, their latest readings, and alarm compliance split into completed and pending.</figcaption>
+          </figure>
+        </div>
+
+        <figure class="shotfig">
+          <img src="assets/rafeeq/hardware.jpg" alt="Breadboard prototype of the health monitoring circuit with pulse oximeter, infrared thermometer and ESP32 microcontroller wired to an aviation connector." width="900" height="587" loading="lazy">
+          <figcaption>
+            <b>Health monitoring, before the enclosure.</b> Pulse oximeter, infrared
+            thermometer and an ESP32 on the bench. The aviation connector on the right is
+            what lets the sensor harness detach from the chair for cleaning.
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
