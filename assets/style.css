@@ -381,6 +381,21 @@ html[data-theme="dark"] .blob { opacity: .18; }
 }
 .pcard .foot { margin-top: auto; display: flex; gap: 9px; flex-wrap: wrap; align-items: center; }
 
+/* "The call I made" block — the reasoning behind a project, not just its stack. */
+.decision {
+  border-left: 3px solid color-mix(in srgb, var(--t, var(--violet)) 45%, var(--border));
+  padding: 0 0 0 14px; margin: 0 0 15px;
+}
+.decision .dlabel {
+  font-size: .68rem; font-weight: 800; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--t, var(--violet));
+  display: block; margin-bottom: 5px;
+}
+.decision p {
+  margin: 0; font-size: .89rem; color: var(--ink-2); line-height: 1.62;
+}
+.decision p b { color: var(--ink); }
+
 .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px; }
 .tag {
   font-family: var(--font-mono); font-size: .7rem; color: var(--ink-2);

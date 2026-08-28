@@ -51,8 +51,9 @@
         <span class="eyebrow">Projects</span>
         <h2>Things I built and shipped</h2>
         <p class="lede">
-          Research, production systems, and hardware. Every number below is measured,
-          not estimated.
+          Each one below says what the system does, <b>the call I made and why</b>, and
+          what it measured. Every number is read from the work, not estimated. Where
+          something failed or a baseline still beats me, it says so.
         </p>
       </div>
 
@@ -82,6 +83,10 @@
             the adapter, an Executor runs it, and a Verifier checks the answer and
             re-routes it if the format or the numbers look wrong.
           </p>
+          <div class="decision">
+            <span class="dlabel">The call I made</span>
+            <p>Fifteen adapters on <b>one</b> base model, not fifteen models. All adapters stay pre-loaded in memory so switching is cheap, and a routing cache keyed on query embeddings reuses decisions for similar questions. Specialisation without paying for fifteen deployments.</p>
+          </div>
           <div class="result">
             93.07% CFA Level I (GPT-4o: 88.10%) · 97.24 F1 on NER (BloombergGPT: 60.82)
             · 99.50% Financial Math · 1st place, FinAI 2025 Task 2
@@ -111,6 +116,10 @@
             retrieved text rather than from model memory, so the hard problem is
             retrieval precision, not chat.
           </p>
+          <div class="decision">
+            <span class="dlabel">The problem I solved</span>
+            <p>Users got the right book but the wrong passage. The filter was fine: one chunk sat near the centre of the corpus embedding space and won three unrelated queries by default. <b>A chunking problem, not a code problem.</b> I wrote up four fixes with costs and shipped the diagnosis before touching code.</p>
+          </div>
           <div class="result">
             23,512 indexed chunks across 9 classical books · ~10,840 lines of Python
             · 100-question scored evaluation set · ~5&times; cost reduction per message
@@ -137,6 +146,10 @@
             in Arabic or English, by text or voice, and get answers grounded in an
             approved knowledge base together with the right floor plans and renders.
           </p>
+          <div class="decision">
+            <span class="dlabel">The trade-off I chose</span>
+            <p>A guard that checks every claim against context blocks most good answers, because sales language legitimately rephrases. Mine blocks <b>only explicit financial claims</b> — prices, instalments, "sold out". A loose description is recoverable; an invented price is not.</p>
+          </div>
           <div class="result">
             702 catalogued images with bilingual descriptions · 165-tower building graph
             · 66-case LLM-as-judge evaluation harness · ~16,827 lines of Python
@@ -163,6 +176,10 @@
             retrieval and image layer, the multilingual output, and the per-recipient
             rate limits that keep the business account from being flagged as spam.
           </p>
+          <div class="decision">
+            <span class="dlabel">The constraint I designed around</span>
+            <p>Messaging platforms ban business accounts that behave like broadcasters. The rate limits are shaped around <b>per-recipient</b> behaviour rather than a global cap, so genuine conversations stay fast while the pattern never looks automated.</p>
+          </div>
           <div class="result">
             845 indexed images across 43 buildings · 192 structured unit configurations
             · 7-container deployment with Kafka so AI workers can run off-box
@@ -189,6 +206,10 @@
             knowledge base, captures leads, and speaks to customers by voice over web
             and phone.
           </p>
+          <div class="decision">
+            <span class="dlabel">The call I made</span>
+            <p>Live market data cannot go through a knowledge base, and product facts cannot go through a live feed. The assistant routes between <b>tool calls for market data and retrieval for product facts</b>, so each question is answered by the source that can actually be right about it.</p>
+          </div>
           <div class="result">
             ~11,500 lines of Python · 9 API routers and 19 services · 9-container stack
             on AWS EC2 with HTTPS via Traefik
@@ -215,6 +236,10 @@
             evidence pipeline. I built the training, the architecture and the whole
             runtime.
           </p>
+          <div class="decision">
+            <span class="dlabel">The problem I solved</span>
+            <p>A detector tuned for recall fires on phones and wallets; tuned for precision it misses real weapons. Both are unacceptable in a school. I run the detector permissively at 0.40, then pass every crop to CLIP scored against <b>positive and explicitly negative prompts</b> — so a phone is actively labelled a phone, not merely "less like a weapon".</p>
+          </div>
           <div class="result">
             Weapon detection mAP@0.50 = 0.844 · violence classifier 81% on 680 test
             samples · 698 ms average inference latency on CPU
@@ -240,6 +265,10 @@
             rolling-horizon Model Predictive Controller that solves a linear program at
             each step to schedule a 16 kWh battery against a 9 kWp rooftop array.
           </p>
+          <div class="decision">
+            <span class="dlabel">The mistake I caught</span>
+            <p>An early model showed a validation RMSE of 0.79 kW. It was an artifact: the features were leaking the answer. Rebuilding with honest lags and rolling windows gave a worse number and a <b>real</b> one. I measured against a perfect-information oracle to show exactly what the forecast error costs in euros.</p>
+          </div>
           <div class="result">
             Within &euro;0.33 (April) and &euro;0.56 (September) of a perfect-information
             oracle · beat the site's own controller by &euro;10.51 and &euro;1.41
@@ -266,6 +295,10 @@
             navigation, health monitoring, and Egyptian Arabic voice control that keeps
             working with no internet.
           </p>
+          <div class="decision">
+            <span class="dlabel">The constraint I designed around</span>
+            <p>A wheelchair cannot depend on a network. Everything critical runs <b>on the chair</b>: INT8 speech recognition on a Raspberry Pi 5, and a three-tier control stack that converts a spoken command to motor movement in under 20ms without leaving the device.</p>
+          </div>
           <div class="result">
             87% command accuracy at 0.9s latency, fully offline · under 20ms control
             loop · 2,750-line RAG module · 11,833-line Flutter app across 23 features

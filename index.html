@@ -56,14 +56,16 @@
       <div class="hero-grid">
         <div class="reveal in">
           <span class="eyebrow">AI Engineer · Giza, Egypt</span>
-          <h1>I build AI that is<br><span class="grad">small, fast and honest.</span></h1>
+          <h1>I build AI that is<br><span class="grad">small, fast and grounded.</span></h1>
           <div class="typed-wrap">
-            <span id="typed" data-lines='["Production RAG pipelines.","Fine-tuned LLMs on one GPU.","Arabic NLP that really works.","Offline voice on a Raspberry Pi."]'></span><span class="caret"></span>
+            <span id="typed" data-lines='["Production RAG pipelines.","Fine-tuned LLMs on one GPU.","Answers tied to sources, not memory.","Offline voice on a Raspberry Pi."]'></span><span class="caret"></span>
           </div>
           <p class="intro">
             Big models are easy to demo and expensive to run. I care about the version
-            that ships: cheap enough to afford, fast enough to use, and accurate enough
-            to trust. Most of my work is in Arabic, where that gap is widest.
+            that ships: cheap enough to afford, fast enough to use, and answering from
+            its sources rather than from model memory. Most of the systems I build are
+            required to quote the retrieved text, and I build the evaluation that proves
+            whether they did.
           </p>
           <div class="btnrow">
             <a class="btn btn-primary" href="projects.html">See my work →</a>
@@ -104,20 +106,20 @@
     <div class="wrap">
       <div class="stats">
         <div class="stat reveal" style="--t:var(--violet)">
-          <div class="num"><span data-count="93.07" data-dec="2" data-suffix="%">0</span></div>
-          <div class="lbl">CFA Level I, above GPT-4o</div>
+          <div class="num"><span data-count="6">0</span></div>
+          <div class="lbl">production AI systems shipped to real users</div>
         </div>
         <div class="stat reveal" data-delay=".08" style="--t:var(--mint)">
-          <div class="num"><span data-count="5" data-prefix="~" data-suffix="×">0</span></div>
-          <div class="lbl">cost cut per message</div>
+          <div class="num"><span data-count="47" data-prefix="~" data-suffix="k">0</span></div>
+          <div class="lbl">lines of production Python, plus 12k of Dart</div>
         </div>
         <div class="stat reveal" data-delay=".16" style="--t:var(--amber)">
-          <div class="num"><span data-count="87" data-suffix="%">0</span></div>
-          <div class="lbl">offline Arabic voice accuracy</div>
+          <div class="num"><span data-count="25" data-prefix="~" data-suffix="k">0</span></div>
+          <div class="lbl">chunks and images indexed for retrieval</div>
         </div>
         <div class="stat reveal" data-delay=".24" style="--t:var(--sky)">
-          <div class="num"><span data-count="15">0</span></div>
-          <div class="lbl">LoRA adapters, one base model</div>
+          <div class="num"><span data-count="4">0</span></div>
+          <div class="lbl">languages my systems answer in</div>
         </div>
       </div>
     </div>
@@ -127,42 +129,50 @@
   <section class="section" id="what">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">What I do</span>
-        <h2>Three things I am good at</h2>
+        <span class="eyebrow">How I work</span>
+        <h2>Decisions, not just tools</h2>
         <p class="lede">
-          All of it points the same way: making capable AI cheap enough and reliable
-          enough to put in front of real users.
+          Anyone can list a stack. These are three calls I made, why I made them, and
+          what they cost.
         </p>
       </div>
 
       <div class="grid g3">
         <article class="card reveal" style="--t:var(--violet)">
-          <div class="pill" style="--t:var(--violet)">Retrieval</div>
-          <h3 style="margin:13px 0 8px">Production RAG</h3>
+          <div class="pill" style="--t:var(--violet)">Diagnosis</div>
+          <h3 style="margin:13px 0 8px">I found the bug in the vectors, not the code</h3>
           <p style="color:var(--ink-2);font-size:.93rem">
-            Hybrid BM25 and vector search, RRF fusion, MMR reranking, intent routing.
-            I have built this over ~100 classical Arabic books and made it answer
-            reliably in dialect.
+            Users got the right book but the wrong passage. My instinct said the filter
+            was broken. I tested five questions and found the same chunk winning three
+            unrelated queries: its embedding sat near the centre of the corpus, so it
+            became the default whenever search found nothing strong. A chunking problem
+            wearing a code costume. I wrote up four fixes with costs and
+            <b>changed no code that pass</b>, because the diagnosis was the deliverable.
           </p>
         </article>
 
         <article class="card reveal" data-delay=".1" style="--t:var(--pink)">
-          <div class="pill" style="--t:var(--pink)">Efficiency</div>
-          <h3 style="margin:13px 0 8px">Fine-tuning LLMs</h3>
+          <div class="pill" style="--t:var(--pink)">Trade-off</div>
+          <h3 style="margin:13px 0 8px">I made the guard block one thing, not everything</h3>
           <p style="color:var(--ink-2);font-size:.93rem">
-            LoRA and QLoRA on quantized models. In FinVerse Agent, 15 adapters over one
-            4-bit LLaMA-3.1-8B beat GPT-4o on CFA exams. Small models, trained well,
-            win more often than people expect.
+            The obvious anti-hallucination guard checks every claim against the context.
+            In practice it blocks most good answers, because natural sales language
+            rephrases and connects facts. Mine intercepts <b>only explicit financial
+            claims</b> — prices, instalments, "sold out". A loose description is
+            recoverable; an invented price is not. Asymmetric risk deserves an
+            asymmetric guard.
           </p>
         </article>
 
         <article class="card reveal" data-delay=".2" style="--t:var(--mint)">
-          <div class="pill" style="--t:var(--mint)">Arabic NLP</div>
-          <h3 style="margin:13px 0 8px">Language that fits</h3>
+          <div class="pill" style="--t:var(--mint)">Measurement</div>
+          <h3 style="margin:13px 0 8px">I caught my own evaluator being wrong</h3>
           <p style="color:var(--ink-2);font-size:.93rem">
-            Egyptian dialect and MSA, RTL formatting, voice in and out. Arabic is my
-            first language, so I can tell when a model is merely fluent and when it is
-            actually right.
+            My LLM judge scored an answer fully faithful while its own context-recall
+            metric read zero. The answer stated a travel time that appeared nowhere in
+            the retrieved text. That single case is why I keep <b>deterministic checks
+            alongside LLM judging</b>: only 20 of 61 cases passed the strict gate, a far
+            harsher and more useful bar than the judge's scores.
           </p>
         </article>
       </div>
