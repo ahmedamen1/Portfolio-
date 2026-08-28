@@ -261,8 +261,15 @@
       if (reduced) { showAll(); return; }
       var t = 0;
       msgs.forEach(function (m, i) {
-        // A reply waits a little longer, as if it were thinking.
-        t += (i === 0) ? 260 : (m.classList.contains('me') ? 620 : 1000);
+        if (i === 0) {
+          t += 260;
+        } else if (m.classList.contains('me')) {
+          t += 700;
+        } else {
+          // A long reply should feel like it took longer to produce.
+          var chars = (m.textContent || '').length;
+          t += 900 + Math.min(chars * 1.6, 1900);
+        }
         timers.push(setTimeout(function () { m.classList.add('show'); }, t));
       });
     }

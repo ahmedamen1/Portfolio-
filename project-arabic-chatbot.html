@@ -101,7 +101,7 @@
   <section class="p-section">
     <div class="wrap">
       <h2>See it work</h2>
-      <p class="p-lede">Three behaviours that are hard to get right: quoting a source exactly, scoping to one author, and refusing when the corpus does not cover the question.</p>
+      <p class="p-lede">Answers are short by design, two or three sentences ending in a follow-up question. Scripture is quoted verbatim first and only then explained in dialect. Watch what happens on the last question, where the corpus has nothing to offer.</p>
       <div class="demo reveal">
         <div class="demo-bar">
           <span class="dots"><i></i><i></i><i></i></span>
@@ -111,27 +111,27 @@
         <div class="demo-body">
         <div class="msg me">
           <div class="av">You</div>
-          <div class="bub"><span class="ar">إيه اللي بيقوله القرآن عن الصبر؟</span></div>
+          <div class="bub"><span class="ar">أنا تعبان ومضايق من فترة، ومش عارف أصبر. إيه اللي بيقوله الدين عن الصبر؟</span></div>
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub"><span class="ar">﴿وَبَشِّرِ الصَّابِرِينَ﴾</span><span class="note">Quoted verbatim in Classical Arabic, then explained in dialect below. Scripture is never paraphrased.</span><span class="cite">al-Baqarah 155</span></div>
+          <div class="bub"><span class="ar">ربنا قال في كتابه الكريم:</span><span class="ar" style="margin-top:8px;padding:9px 12px;border-radius:9px;background:color-mix(in srgb, var(--t) 10%, transparent);font-weight:650">﴿وَبَشِّرِ الصَّابِرِينَ الَّذِينَ إِذَا أَصَابَتْهُم مُّصِيبَةٌ قَالُوا إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ﴾</span><span class="ar" style="margin-top:8px;display:block">يعني الصبر مش إنك تكتم اللي جواك، لكنه إنك تفضل ماشي وانت عارف إن اللي بيحصل مش سُدى. والبُشرى هنا جات للي بيصبروا، مش للي مش بيتعبوا.</span><span class="ar" style="margin-top:8px;display:block">حابب أقولك على حاجات تانية جت في نفس المعنى؟</span><span class="note">Verse reproduced verbatim in Classical Arabic, then explained in Egyptian dialect. Paraphrasing scripture into dialect is forbidden in the prompt, so the two registers stay separate. Ends with a follow-up question, as every answer does.</span><span class="cite">al-Baqarah 155–156 &middot; retrieved, not recalled</span></div>
         </div>
         <div class="msg me">
           <div class="av">You</div>
-          <div class="bub">What does al-Ghazali say about intention?</div>
+          <div class="bub">What does al-Ghazali specifically say about intention?</div>
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub">Retrieval is now scoped to al-Ghazali's own work, and the answer is required to quote his wording rather than summarise it.<span class="cite">source scoped: 1 author</span></div>
+          <div class="bub">Al-Ghazali treats intention as the thing that gives an act its weight, not as a preface to it. In his own wording, the same outward deed can be worship or habit depending on what the heart was doing at the time, and he is blunt that most people mistake the habit for the worship.<br><br>Would you like the passage in full, or how later scholars read it?<span class="note">Retrieval is now scoped to one author. The alias "al-Ghazali" filters the source set <b>and</b> is excluded from the words required to appear inside the chunk — because a chunk from his own book does not repeat his name.</span><span class="cite">scope: 1 of 9 sources &middot; 4 chunks retrieved</span></div>
         </div>
         <div class="msg me">
           <div class="av">You</div>
-          <div class="bub">What is the ruling on cryptocurrency staking?</div>
+          <div class="bub">And what is the ruling on staking cryptocurrency?</div>
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub"><b>My sources don't cover that.</b> The corpus is nine classical texts, and none of them address it. I would rather say so than produce a fluent answer I cannot ground.</div>
+          <div class="bub"><b>I don't have that in my sources.</b> The corpus here is nine classical texts, and none of them address it — the question postdates all of them by centuries.<br><br>I could tell you what the general principles about risk and uncertainty say, but I would be reasoning by analogy rather than quoting, and I would rather be clear about that difference. Do you want me to?<span class="note">The failure mode this whole system is built to prevent: a fluent, confident, ungrounded answer. Retrieval returned nothing above threshold, so the model is instructed to say so rather than fall back on what it happens to know.</span><span class="cite">0 chunks above relevance threshold</span></div>
         </div>
         </div>
         <div class="demo-foot">

@@ -91,7 +91,7 @@
   <section class="p-section">
     <div class="wrap">
       <h2>See it work</h2>
-      <p class="p-lede">Language judged per message, real inventory rather than examples, and a voice note answered with a voice note.</p>
+      <p class="p-lede">The same question asked on WhatsApp and on Instagram gets two genuinely different answers, because the platforms cap replies at 4,096 and 1,000 characters. That is the same data rendered at three verbosities, not one answer truncated.</p>
       <div class="demo reveal">
         <div class="demo-bar">
           <span class="dots"><i></i><i></i><i></i></span>
@@ -101,27 +101,27 @@
         <div class="demo-body">
         <div class="msg me">
           <div class="av">You</div>
-          <div class="bub">What units are bigger than 70 m?</div>
+          <div class="bub">What units do you have bigger than 70 m?</div>
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub"><b>176 configurations</b> across 19 buildings, grouped by bedroom count.<span class="note">The full matching set from structured data, not three illustrative examples.</span></div>
+          <div class="bub">We have <b>176 configurations</b> above 70 m² across 19 buildings. By bedroom count:<br><br><b>1 bedroom</b> — 71 to 89 m², 24 configurations<br><b>2 bedrooms</b> — 88 to 124 m², 61 configurations<br><b>3 bedrooms</b> — 118 to 152 m², 63 configurations<br><b>4 bedrooms</b> — 148 to 186 m², 28 configurations<br><br>Several of the corner units add terraces of 9 to 18 m² on top of the built area. Which size range should I go into?<span class="note">3,172 characters on WhatsApp, where the cap is 4,096. The full answer with every size and terrace area. On Messenger this renders as ranges per bedroom type at 1,390 characters; on Instagram, totals and an offer to drill down at 518. Three renderings of one dataset, chosen by platform.</span></div>
         </div>
         <div class="msg me">
           <div class="av">You</div>
-          <div class="bub"><span class="ar">وإيه المتاح في B5؟</span></div>
+          <div class="bub"><span class="ar">طيب وإيه المتاح في B5 بالتحديد؟</span></div>
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub"><span class="ar">في B5 متاح ٣ أنواع وحدات…</span><span class="note">Switched to Egyptian dialect mid-conversation. Language is judged per message, not per session.</span></div>
+          <div class="bub"><span class="ar">في B5 متاح ٣ تشكيلات:</span><span class="ar" style="display:block;margin-top:8px;line-height:2">• غرفتين — ٩٤ متر<br>• ٣ غرف — ١٢٦ متر<br>• ٣ غرف بتراس — ١٣٨ متر + ١٤ متر تراس</span><span class="ar" style="display:block;margin-top:8px">تحب أبعتلك الرسومات؟</span><span class="note">Switched to Egyptian dialect on this message alone. Language is judged <b>per message</b>, not per session, so a customer who switches mid-conversation is followed rather than corrected back.</span></div>
         </div>
         <div class="msg me">
           <div class="av">You</div>
-          <div class="bub">🎤 <i>voice note, 0:07</i></div>
+          <div class="bub">🎤 <i>voice note &middot; 0:09</i></div>
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub">🔊 <i>voice reply, 0:11</i><span class="note">Transcribed, answered through the same pipeline, and synthesised back in the same dialect.</span></div>
+          <div class="bub">🔊 <i>voice reply &middot; 0:14</i><br><span class="ar">"سألت عن الدور الأرضي في B5 — الوحدات الأرضية عندها حديقة خاصة من ٢٠ لـ ٣٥ متر…"</span><span class="note">Transcribed with Whisper, answered through the same retrieval pipeline, and synthesised back in the same dialect. Empty transcriptions and known hallucination phrases are filtered before they ever reach the pipeline.</span></div>
         </div>
         </div>
         <div class="demo-foot">

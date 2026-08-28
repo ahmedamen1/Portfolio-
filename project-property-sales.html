@@ -90,7 +90,7 @@
   <section class="p-section">
     <div class="wrap">
       <h2>See it work</h2>
-      <p class="p-lede">Natural-language numeric filtering, a bare "yes" resolved from state, and the guard that blocks an unsupported price while letting everything else through.</p>
+      <p class="p-lede">A buyer conversation that exercises four things at once: Arabic-Indic numerals in a numeric filter, image retrieval scoped to a building, a bare "yes" resolved from state, and the guard that fails closed on money.</p>
       <div class="demo reveal">
         <div class="demo-bar">
           <span class="dots"><i></i><i></i><i></i></span>
@@ -100,11 +100,11 @@
         <div class="demo-body">
         <div class="msg me">
           <div class="av">You</div>
-          <div class="bub"><span class="ar">عايز شقة أكبر من ١٢٠ متر</span></div>
+          <div class="bub"><span class="ar">عايز شقة أكبر من ١٢٠ متر، إيه المتاح؟</span></div>
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub">Filtering on <b>&gt; 120 m²</b> — Arabic-Indic numerals parsed, and the comparison read from natural phrasing.<span class="note">18 configurations match across 4 buildings.</span></div>
+          <div class="bub"><span class="ar">تمام. عندنا ١٨ تشكيلة فوق ١٢٠ متر موزعة على ٤ مباني:</span><span class="ar" style="display:block;margin-top:8px;line-height:2">• <b>B1.1</b> — ٣ غرف، ١٢٤ إلى ١٣٨ متر<br>• <b>B2.4</b> — ٣ غرف، ١٢٦ إلى ١٤١ متر<br>• <b>B5.2</b> — ٤ غرف، ١٥٢ إلى ١٦٨ متر<br>• <b>C3.1</b> — ٤ غرف بتراس، ١٧٤ متر</span><span class="ar" style="display:block;margin-top:8px">تحب أوريك رسومات أي واحدة فيهم؟</span><span class="note">"أكبر من ١٢٠ متر" parsed into a <code>&gt; 120</code> filter: Arabic-Indic numerals converted, and the comparison read from natural phrasing rather than a form field. The same works for "under 90", "between 70 and 100", and qualitative forms like "big" or "compact".</span></div>
         </div>
         <div class="msg me">
           <div class="av">You</div>
@@ -112,7 +112,7 @@
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub">Here are the plans for that building.<span class="shots"><span class="shot">FLOOR<br>PLAN</span><span class="shot">UNIT<br>LAYOUT</span><span class="shot">EXTERIOR<br>RENDER</span></span><span class="note">Scoped to B1.1. Images already shown earlier in this conversation are suppressed.</span></div>
+          <div class="bub">Here are the plans for B1.1 — the three-bedroom layouts, plus the exterior render so you can see how it sits in the zone.<span class="shots"><span class="shot">B1.1<br>FLOOR PLAN</span><span class="shot">3-BED<br>LAYOUT</span><span class="shot">EXTERIOR<br>RENDER</span></span><br>The terrace on the corner units adds about 12 m² that is not counted in the built area. Would you like the payment structure for this building?<span class="note">Images scoped to B1.1 and ranked by presentation quality, not similarity alone — brochure scans are useful reference and a poor thing to send a buyer. An explicit request for a floor plan deliberately bypasses that tiering, because there a brochure page is the right answer.</span></div>
         </div>
         <div class="msg me">
           <div class="av">You</div>
@@ -120,15 +120,15 @@
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub">Resolved against the last question asked, before the cache key was computed — otherwise a cache hit would return whatever the <i>previous</i> person who said "yes" was asking about.</div>
+          <div class="bub">For B1.1 the standard plan is a 10% down payment with the balance over 8 years, and there is a discounted cash option. The exact figures depend on the unit and the current price list, so the sales team confirms those directly.<span class="note">A bare "yes" carries no content of its own. It is rewritten into a self-contained query from remembered state — last building, last question asked — and crucially <b>before the cache key is computed</b>. Otherwise a cache hit returns whatever the previous person who said "yes" was asking about.</span></div>
         </div>
         <div class="msg me">
           <div class="av">You</div>
-          <div class="bub">So it is 4.2 million, right?</div>
+          <div class="bub">A friend told me B1.1 starts at 4.2 million. Right?</div>
         </div>
         <div class="msg">
           <div class="av">AI</div>
-          <div class="bub"><b>Blocked.</b> That figure is not in the approved knowledge base, and the guard fails closed on financial claims specifically. Here is the official sales channel instead.<span class="note">A loose description is recoverable. An invented price is not.</span></div>
+          <div class="bub">I can't confirm a price. That figure isn't in the approved knowledge base I answer from, and I won't repeat a number I can't source — on something this consequential, being wrong is worse than being unhelpful.<br><br>The sales team can give you the current list for B1.1 directly. Shall I pass your details on?<span class="note">The guard intercepts <b>only</b> explicit financial claims — prices, instalments, "sold out", and their Arabic equivalents. Everything else passes freely, because a guard that checks every claim blocks most good answers. A loose description is recoverable; an invented price is a commercial liability.</span><span class="cite">grounding guard: financial claim, unsupported</span></div>
         </div>
         </div>
         <div class="demo-foot">
