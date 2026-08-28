@@ -427,6 +427,14 @@ html[data-theme="dark"] .blob { opacity: .18; }
 .group { margin-bottom: 46px; }
 .group:last-child { margin-bottom: 0; }
 
+/* A group holding a single card should not leave half the row empty. */
+.grid.g2 > .pcard:only-child { grid-column: 1 / -1; }
+.grid.g2 > .pcard:only-child .features { columns: 2; column-gap: 30px; }
+.grid.g2 > .pcard:only-child .features li { break-inside: avoid; }
+@media (max-width: 760px) {
+  .grid.g2 > .pcard:only-child .features { columns: 1; }
+}
+
 /* =========================================================
    Project detail page
    ========================================================= */
