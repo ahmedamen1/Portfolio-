@@ -866,4 +866,15 @@ html[data-theme="dark"] #toTop { color: var(--bg); }
   .nav, #toTop, #progress, .mobilemenu, .blob { display: none !important; }
   body { background: #fff; color: #000; }
   .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+
+  /* Content below the fold never gets its IntersectionObserver trigger
+     before the print dialog captures the page, so every .reveal element
+     stays invisible unless this forces it into its final state. This is
+     the fix for the CV printing as a mostly-blank document: only the
+     hero (marked reveal in) had already fired. */
+  .reveal, .reveal-l, .reveal-r {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
