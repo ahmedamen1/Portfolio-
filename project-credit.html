@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Approval Prediction — Ahmed Amin</title>
+<meta name="description" content="Predicting loan repayment risk on a dataset where only 3.4% of clients are bad: building the labels, handling the imbalance with SMOTE, and why accuracy is the wrong headline number.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--sky)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Credit Approval Prediction</h1>
+      <p class="p-sub">Classifying loan applicants as good or bad credit risks from demographic records and
+         monthly repayment history. The dataset has no label column, so the first real task was deciding
+         what "bad" means, and only 3.4% of clients end up on that side of the line.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--violet)">Coursework</span>
+        <span class="pill" style="--t:var(--mint)">Machine Learning (CIE 417)</span>
+        <span class="pill" style="--t:var(--amber)">Supervised classification</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">41,449</div><div class="fl">clients after joining both tables</div>
+        </div>
+        <div class="figure" style="--t:var(--coral)">
+          <div class="fv">3.4%</div><div class="fl">minority class before resampling</div>
+        </div>
+        <div class="figure" style="--t:var(--violet)">
+          <div class="fv">6</div><div class="fl">model families compared</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">95.6%</div><div class="fl">tuned XGBoost accuracy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">The interesting work was upstream of the model. The data arrives as two tables and no answer key.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Builds the labels from repayment history</b><span>Applicant records and monthly credit records join on client ID. Each month carries a status code, which I scored and summed per client, then thresholded into good and bad.</span></div>
+        <div class="fitem"><b>Engineers a weighted credit score</b><span>Not every late month means the same thing, so statuses are weighted rather than counted, giving one composite <i>weighted_points</i> feature per client.</span></div>
+        <div class="fitem"><b>Corrects a 29:1 class imbalance</b><span>40,048 good clients against 1,401 bad. SMOTE synthesises minority examples on the training split so the model sees a balanced problem.</span></div>
+        <div class="fitem"><b>Prunes features that carry nothing</b><span>Dropped zero-importance columns, including a mobile-phone flag that was constant across the dataset, using XGBoost feature importances.</span></div>
+        <div class="fitem"><b>Compares six model families</b><span>Logistic regression, k-nearest neighbours, SVM, decision tree, random forest and XGBoost, each on the same split.</span></div>
+        <div class="fitem"><b>Tunes the finalist</b><span>Grid search with cross-validation over depth, learning rate, estimator count, subsample ratio and minimum child weight.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">On a dataset that is 96.6% one class, the headline metric is the thing most likely to mislead you.</p>
+
+      <article class="story" style="--t:var(--coral)">
+        <h3>The dataset had no target variable</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>Neither table says whether a client is creditworthy. There is an applicant table and a table of monthly status codes, and nothing labelled good or bad.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Approach</span>
+          <p>I assigned weights to the status codes by severity, summed them per client into a <b>weighted_points</b> total, and set a threshold above which a client counts as bad.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Honest caveat</span>
+          <p>That threshold is a modelling choice, not ground truth. Move it and both the class balance and every score on this page move with it. A different analyst would draw the line somewhere else and get different numbers.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--amber)">
+        <h3>Why 95.6% accuracy is not the achievement</h3>
+        <div class="beat">
+          <span class="btag">What I saw</span>
+          <p>Only <b>1,401 of 41,449</b> clients are bad. Predicting "good" for everyone scores about 96.6% without learning anything at all.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">What it means</span>
+          <p>Accuracy alone cannot distinguish a working model from that constant baseline, so the comparison worth reporting is against a real learner: logistic regression managed <b>58.5%</b> on the balanced data, and the tuned XGBoost reached <b>95.6%</b>.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Fix</span>
+          <p>Applied SMOTE so the training distribution stops rewarding the lazy answer, and read precision, recall and F1 per class rather than the single accuracy figure.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--violet)">
+        <h3>Picking a model that was not the top scorer</h3>
+        <div class="beat">
+          <span class="btag">Result</span>
+          <p>Random forest scored marginally higher on raw accuracy than the tuned XGBoost, at <b>96.0%</b> against <b>95.6%</b>.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Decision</span>
+          <p>I chose XGBoost anyway, on per-class precision and recall and on interpretability. Its feature importances were already driving the feature-pruning step, so the model explains which signals it is using.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Principle</span>
+          <p>A four-tenths-of-a-point gap on an imbalanced dataset is noise, not evidence. Picking on that margin alone would be fitting the decision to the test split.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>This is <b>university coursework</b> for Machine Learning (CIE 417) at Zewail City, supervised by Dr. Omar Fahmy, not a deployed credit system. It was graded A-.</p>
+        <p>The labels are constructed, not observed. Everything downstream inherits the threshold I chose, so the scores describe performance against my own definition of a bad client rather than against real defaults.</p>
+        <p>SMOTE was used to balance training data. It synthesises minority examples rather than finding new ones, which helps a model learn but does not add real information about rare cases.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-energy.html">← Energy Forecasting &amp; Battery Dispatch</a>
+        <a href="project-security.html">Multi-Camera Threat Detection →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>
