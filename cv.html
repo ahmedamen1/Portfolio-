@@ -202,7 +202,7 @@
           </div>
           <div class="entry-sub">Second author of four &middot; NUST Islamabad and Zewail City</div>
           <ul>
-            <li>L. Rana, <b>A. Amin</b>, H. Ameer, and S. Latif, "<a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" style="color:var(--violet);font-weight:650">FinVerse Agent: Resource-Efficient Financial LLMs with Modular LoRA Fine-Tuning and Task Routing</a>," in <i>Proc. IEEE CSCloud</i>, 2025.</li>
+            <li>L. Rana, <b>A. Amin</b>, H. Ameer, and S. Latif, "<a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener">FinVerse Agent: Resource-Efficient Financial LLMs with Modular LoRA Fine-Tuning and Task Routing</a>," in <i>Proc. IEEE CSCloud</i>, 2025.</li>
             <li><b>My contribution:</b> fine-tuned 15 task-specific LoRA adapters over a 4-bit quantized LLaMA-3.1-8B and built the Planner&ndash;Executor&ndash;Verifier routing loop for dynamic adapter selection and validated inference.</li>
             <li><b>Results:</b> 93.07% on CFA Level I (GPT-4o: 88.10%) and 81.43% on Level II; 97.24 F1 on NER (BloombergGPT: 60.82); 99.50% Financial Math; 0.9171 FinanceBench BERTScore (GPT-4o: 0.564).</li>
           </ul>
@@ -223,9 +223,68 @@
             <li><b>AI:</b> offline Egyptian Arabic speech recognition (faster-whisper INT8) on a Raspberry Pi 5, reaching <b>87% command accuracy at 0.9s latency with no internet</b>. Added a RAG-based Arabic chatbot for health Q&amp;A.</li>
             <li><b>Robotics:</b> autonomous indoor navigation with LiDAR and depth-camera SLAM (ROS 2 Nav2), and a three-tier control stack (Raspberry Pi, Arduino Mega, STM32) converting commands into motor movement in <b>under 20ms</b>.</li>
             <li><b>Health &amp; safety:</b> real-time heart rate, SpO<sub>2</sub> and temperature monitoring with a 22-screen Flutter app for patients and caregivers, SOS alerts and live vitals over Firebase.</li>
-            <li><b>Funding:</b> won a <b>$1,600 USD grant</b> from Egypt's Ministry of Higher Education through the Innovators Support Fund, selected from projects across all Egyptian universities.</li>
+            <li><b>Funding:</b> won a <b>$1,600 USD grant</b> from Egypt's Ministry of Higher Education through the Innovators Support Fund, selected from projects across all Egyptian universities. <a href="project-rafeeq.html">Read the full story &rarr;</a></li>
           </ul>
         </div>
+      </div>
+
+      <!-- SELECTED PROJECTS -->
+      <div class="cv-block reveal">
+        <h2>Selected Projects</h2>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">Arabic Advisory Chatbot</span>
+            <span class="entry-when">Takhail &middot; production</span>
+          </div>
+          <div class="entry-sub">RAG &middot; Egyptian dialect &middot; voice and text</div>
+          <ul>
+            <li>Answers personal questions from a corpus of classical Arabic texts, by text or voice, quoting sources verbatim rather than paraphrasing them and saying "I don't know" instead of inventing an answer.</li>
+            <li><b>23,512 indexed chunks</b>; roughly <b>5&times; lower cost per message</b> after reworking the retrieval layer. <a href="project-arabic-chatbot.html">Read the full story &rarr;</a></li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">Property-Sales AI Assistant</span>
+            <span class="entry-when">Takhail &middot; production</span>
+          </div>
+          <div class="entry-sub">Bilingual RAG &middot; visual catalogue</div>
+          <ul>
+            <li>A bilingual sales assistant for a large mixed-use development that answers with the right floor plans attached.</li>
+            <li><b>702 catalogued images</b> and a <b>66-case evaluation harness</b> to check answers against known-correct results. <a href="project-property-sales.html">Read the full story &rarr;</a></li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">FinVerse Agent</span>
+            <span class="entry-when">Research &middot; published</span>
+          </div>
+          <div class="entry-sub">LoRA fine-tuning &middot; agentic task routing</div>
+          <ul>
+            <li>Fifteen task-specific LoRA adapters on a single 4-bit quantized LLaMA-3.1-8B, with a Planner, Executor and Verifier routing loop that picks an adapter per task and validates its output.</li>
+            <li><b>93.07% on CFA Level I</b> (GPT-4o: 88.10%); <b>1st place, FinAI Contest 2025</b> (Task 2). <a href="project-finverse.html">Read the full story &rarr;</a></li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-top">
+            <span class="entry-title">Trading &amp; Market Assistant</span>
+            <span class="entry-when">Takhail &middot; production</span>
+          </div>
+          <div class="entry-sub">Bilingual RAG &middot; live market data</div>
+          <ul>
+            <li>A bilingual assistant answering market questions from live data and product questions from a curated store.</li>
+            <li><b>~11,500 lines of Python</b> across 19 services on a <b>9-container stack</b>. <a href="project-trading.html">Read the full story &rarr;</a></li>
+          </ul>
+        </div>
+
+        <p style="margin:14px 0 0;font-size:.9rem;color:var(--muted)">
+          Three more &mdash; multi-channel sales, energy forecasting and
+          multi-camera threat detection &mdash; are on the
+          <a href="projects.html">projects page</a>.
+        </p>
       </div>
 
       <!-- SKILLS -->

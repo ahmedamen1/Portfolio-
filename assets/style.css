@@ -590,6 +590,20 @@ html[data-theme="dark"] .msg .av { color: var(--bg); }
   width: 100%; height: 100%; object-fit: cover; display: block;
 }
 
+/* Content links on the CV: the accent colour, underlined only on hover, so a
+   reader can tell what is clickable without the page turning into a field of
+   blue. Scoped to CV prose - nav, buttons and cards keep their own styling. */
+.cv-contact a,
+.cv-block a {
+  color: var(--violet); font-weight: 650;
+  text-decoration: none; transition: color .18s var(--ease);
+}
+.cv-contact a:hover,
+.cv-block a:hover {
+  text-decoration: underline; text-underline-offset: 3px;
+  color: var(--violet-2);
+}
+
 /* A group holding a single card should not leave half the row empty. */
 .grid.g2 > .pcard:only-child { grid-column: 1 / -1; }
 .grid.g2 > .pcard:only-child .features { columns: 2; column-gap: 30px; }
