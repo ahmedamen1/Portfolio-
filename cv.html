@@ -134,7 +134,9 @@
           <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener">LinkedIn</a> &middot;
           <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener">IEEE paper</a>
         </div>
-        <button class="btn btn-primary" id="printCv" type="button">Save as PDF</button>
+        <a class="btn btn-primary" id="printCv"
+           href="assets/Ahmed_Mohamed_Amin_CV.pdf"
+           target="_blank" rel="noopener">Save as PDF</a>
       </div>
 
       <!-- EDUCATION -->
@@ -321,10 +323,8 @@
 
 <button id="toTop" aria-label="Back to top">↑</button>
 <script src="assets/main.js"></script>
-<script>
-  document.getElementById('printCv').addEventListener('click', function () {
-    window.print();
-  });
-</script>
+<!-- "Save as PDF" is a plain link to the LaTeX-rendered CV (compiled from
+     about/aminCv.tex), not a browser print of this page. -->
+
 </body>
 </html>
