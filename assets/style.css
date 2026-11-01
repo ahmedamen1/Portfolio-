@@ -381,6 +381,11 @@ html[data-theme="dark"] .blob { opacity: .18; }
   padding: 11px 14px; font-size: .88rem; font-weight: 650; color: var(--ink);
   margin-bottom: 15px; border-left: 3px solid var(--t, var(--violet));
 }
+/* Whole card links to its project page; real links sit above the overlay */
+.pcard .cardfill { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.pcard .cardfill:focus-visible { outline: 2px solid var(--t, var(--violet)); outline-offset: 3px; }
+.pcard .foot a, .pcard .tags { position: relative; z-index: 2; }
+
 .pcard .foot { margin-top: auto; display: flex; gap: 9px; flex-wrap: wrap; align-items: center; }
 
 /* "The call I made" block — the reasoning behind a project, not just its stack. */
