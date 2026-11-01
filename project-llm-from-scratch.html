@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Building My Own LLM — Ahmed Amin</title>
-<meta name="description" content="An ongoing project to write a small GPT from an empty file, one component at a time, then fine-tune it to answer questions. Arabic and English, trained on free GPUs.">
+<meta name="description" content="Writing a small GPT from an empty file, component by component, then fine-tuning it to answer questions. In progress: one of eleven phases done.">
 <meta name="theme-color" content="#6b4fba">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,110 +49,70 @@
     <div class="wrap">
       <a class="back" href="projects.html">← All projects</a>
       <h1>Building My Own LLM</h1>
-      <p class="p-sub">I finished a course on building a GPT from scratch in PyTorch. Now I am closing it and
-         writing the whole thing again from an empty file, because following along and being able to
-         rebuild it are not the same skill. Eleven phases, from the tokenizer up to preference tuning.</p>
+      <p class="p-sub">I finished a course on building a GPT from scratch in PyTorch. Now I am closing
+         it and writing the whole thing again from an empty file, because following along and being able
+         to rebuild it are not the same skill. Eleven phases, from the tokenizer up to preference tuning.</p>
       <div class="p-meta">
-        <span class="pill" style="--t:var(--sky)">Ongoing</span>
-        <span class="pill" style="--t:var(--amber)">Personal project</span>
+        <span class="pill" style="--t:var(--sky)">In progress</span>
+        <span class="pill" style="--t:var(--amber)">Free GPUs only</span>
         <span class="pill" style="--t:var(--violet)">Arabic and English</span>
       </div>
-      <div class="figures">
-        <div class="figure" style="--t:var(--mint)">
-          <div class="fv">1 / 11</div><div class="fl">phases done, course finished</div>
-        </div>
-        <div class="figure" style="--t:var(--sky)">
-          <div class="fv">10&ndash;125M</div><div class="fl">target parameter range</div>
-        </div>
-        <div class="figure" style="--t:var(--amber)">
-          <div class="fv">Free</div><div class="fl">GPUs only, Kaggle and Colab</div>
-        </div>
-        <div class="figure" style="--t:var(--coral)">
-          <div class="fv">0</div><div class="fl">lines copied in phase 1</div>
-        </div>
-      </div>
     </div>
   </section>
 
   <section class="p-section">
     <div class="wrap">
-      <h2>How I am approaching it</h2>
-      <p class="p-lede">The goal is understanding, not a competitive model. That changes what counts as progress, so I set rules before starting.</p>
+      <h2>Where I actually am</h2>
+      <p class="p-lede">One of eleven phases, and that phase was finishing someone else's course. There
+         is no trained model and no number to report yet. This page is here because the plan is the
+         interesting part; I will update it as it moves.</p>
+
+      <div class="cmp" role="img" aria-label="Progress: phase 0 of 11 complete.">
+        <div class="cmp-row is-key" style="--t:var(--sky)">
+          <span class="cmp-label">Phases done</span>
+          <div class="cmp-track"><div class="cmp-fill" style="width:9%"></div></div>
+          <span class="cmp-val">1 / 11</span>
+        </div>
+      </div>
+      <p class="cmp-note">Phase 0 (course) complete. Phase 1, rebuilding it alone, is current.</p>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>The rules I set first</h2>
+      <p class="p-lede">The goal is understanding, not a competitive model. That changes what counts as
+         progress.</p>
       <div class="fgrid">
-        <div class="fitem"><b>Write it first, read references after</b><span>I only look at the course code or nanoGPT once I am properly stuck. Getting stuck is the part that teaches, so skipping it wastes the exercise.</span></div>
-        <div class="fitem"><b>Explain every component in my own words</b><span>For each piece: what it does, why it exists, and what breaks without it. If I cannot write the third one, I have not understood it.</span></div>
-        <div class="fitem"><b>Verify against PyTorch, not against vibes</b><span>My attention gets compared to <i>F.scaled_dot_product_attention</i> on the same inputs. The causal mask gets tested by checking that future tokens cannot change earlier outputs.</span></div>
-        <div class="fitem"><b>Overfit something tiny first</b><span>A few KB of text, and the loss has to go near zero. If it does not, there is a bug, and finding it on a 2-minute run beats finding it on a 6-hour one.</span></div>
-        <div class="fitem"><b>Log every run</b><span>Settings, loss curves, sample outputs, and what I changed next. Free GPU quota is finite and an unlogged run is a run I have to repeat.</span></div>
-        <div class="fitem"><b>Make resume work before any long run</b><span>Sessions get wiped. Model, optimizer, scheduler, step and RNG state all have to checkpoint, or a disconnect costs the whole run.</span></div>
+        <div class="fitem"><b>Write it before reading it</b><span>I only look at the course code or nanoGPT once I am properly stuck. Getting stuck is the part that teaches, so skipping it wastes the exercise.</span></div>
+        <div class="fitem"><b>Verify against PyTorch, not vibes</b><span>My attention gets compared to <i>F.scaled_dot_product_attention</i> on the same inputs; the causal mask gets tested by confirming future tokens cannot change earlier outputs.</span></div>
+        <div class="fitem"><b>Overfit something tiny first</b><span>A few KB of text, and the loss has to go near zero. If it does not, there is a bug &mdash; and finding it on a 2-minute run beats finding it on a 6-hour one.</span></div>
+        <div class="fitem"><b>Make resume work before any long run</b><span>Free sessions get wiped. Model, optimizer, scheduler, step and RNG state all have to checkpoint, or a disconnect costs the whole run.</span></div>
       </div>
     </div>
   </section>
 
   <section class="p-section">
     <div class="wrap">
-      <h2>The plan</h2>
-      <p class="p-lede">Each phase produces something I can test, not just something I have read about.</p>
+      <h2>The eleven phases</h2>
+      <p class="p-lede">Each one has to produce something testable, not just something read about.</p>
 
-      <article class="story" style="--t:var(--mint)">
-        <h3>Phase 0 &mdash; the course · done</h3>
-        <div class="beat">
-          <span class="btag">Covered</span>
-          <p>A GPT built one component at a time in PyTorch: BPE tokenizer trained on Arabic and English Wikipedia, self-attention, multi-head attention, the KV cache, transformer blocks with weight tying and GPT-2 initialization, pretraining with AdamW and a cosine schedule, and sampling with temperature, top-k and top-p.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Where I actually am</span>
-          <p>I can follow all of it. The honest test is whether I can reproduce it cold, which is exactly what phase 1 is for.</p>
-        </div>
-      </article>
+      <div class="fgrid">
+        <div class="fitem"><b>0 &middot; Course &nbsp;✓</b><span>BPE tokenizer on Arabic and English Wikipedia, attention, KV cache, transformer blocks, pretraining, sampling. Done.</span></div>
+        <div class="fitem"><b>1 &middot; Rebuild alone</b><span>The whole model from an empty file. Pass condition: shape tests, a mask test, and a tiny-dataset overfit.</span></div>
+        <div class="fitem"><b>2 &middot; Modern architecture</b><span>RMSNorm, RoPE, SwiGLU and GQA swapped in one at a time. Deliverable is an ablation table: change, val loss, speed, memory.</span></div>
+        <div class="fitem"><b>3 &middot; Tokenizer</b><span>BPE in plain Python, checked against Hugging Face. Then tokens-per-word for Arabic vs English at 8k/16k/32k vocab &mdash; bad Arabic tokenization silently wastes context.</span></div>
+        <div class="fitem"><b>4 &middot; Data pipeline</b><span>Clean, dedup, language-filter, then tokenize once into a uint16 binary loaded by memmap. A split that never leaks.</span></div>
+        <div class="fitem"><b>5 &middot; Pretraining</b><span>10M params, then 30M, then 100&ndash;125M if quota allows. On T4s that means fp16 with a GradScaler and watching for NaN loss.</span></div>
+        <div class="fitem"><b>6 &middot; Evaluation</b><span>Val loss and perplexity, plus 20 fixed Arabic and English prompts after every checkpoint. Learning why falling loss ≠ useful model.</span></div>
+        <div class="fitem"><b>7 &middot; Fine-tuning</b><span>Chat template, loss masked to the assistant turn only, and 100&ndash;300 examples written by hand &mdash; that teaches more about data quality than reading does.</span></div>
+        <div class="fitem"><b>8&ndash;9 &middot; LoRA, then DPO</b><span>LoRA written from scratch before touching <i>peft</i>, QLoRA on a 4-bit base, then DPO on a small preference set.</span></div>
+        <div class="fitem"><b>10&ndash;11 &middot; Inference, Arabic</b><span>Clean KV-cache generation with batching, quantization measured for quality loss, then dialect and diacritics testing.</span></div>
+      </div>
 
-      <article class="story" style="--t:var(--sky)">
-        <h3>Phases 1&ndash;3 &mdash; rebuild, modernise, tokenize</h3>
-        <div class="beat">
-          <span class="btag">Rebuild</span>
-          <p>The whole model again from an empty file, with shape tests, a mask test, and a tiny-dataset overfit as the pass condition.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Modernise</span>
-          <p>Swap in RMSNorm, RoPE, SwiGLU and grouped-query attention one at a time against the GPT-2 style baseline. Deliverable is an ablation table: change, validation loss, speed, memory. One change at a time, or the table means nothing.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Tokenize</span>
-          <p>BPE training written in plain Python, then checked against Hugging Face <i>tokenizers</i>. Then measure tokens per word for Arabic against English at 8k, 16k and 32k vocab &mdash; bad Arabic tokenization silently wastes context, and I want the number rather than the impression.</p>
-        </div>
-      </article>
-
-      <article class="story" style="--t:var(--amber)">
-        <h3>Phases 4&ndash;6 &mdash; data, pretraining, evaluation</h3>
-        <div class="beat">
-          <span class="btag">Data</span>
-          <p>Clean, deduplicate, language-filter, then tokenize once into a uint16 binary and load by memmap. A train/validation split that never leaks.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Pretraining</span>
-          <p>Start near 10M parameters, then 30M, then 100&ndash;125M if the quota allows. Mixed precision, gradient accumulation and clipping. On T4s that means fp16 with a GradScaler and watching for NaN loss, since bf16 is not well supported there.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Evaluation</span>
-          <p>Validation loss and perplexity, plus a fixed list of 20 Arabic and English prompts run after every checkpoint. The thing I want to internalise here is why falling loss does not mean a useful model.</p>
-        </div>
-      </article>
-
-      <article class="story" style="--t:var(--violet)">
-        <h3>Phases 7&ndash;11 &mdash; making it answer questions</h3>
-        <div class="beat">
-          <span class="btag">Fine-tuning</span>
-          <p>A chat template, instruction data, and loss masking so the loss is computed on the assistant turn only. I plan to hand-write 100&ndash;300 examples, because that teaches more about data quality than reading about it does.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">The comparison I most want</span>
-          <p>Fine-tune my own small base model, then fine-tune an existing 0.5B-class open model on the same data. The gap is a direct measure of what pretraining scale buys, and I would rather see it on my own runs than take it on trust.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Then</span>
-          <p>LoRA written from scratch before using <i>peft</i>, QLoRA on a 4-bit base, DPO on a small preference set, and a clean KV-cache generation path with quantization measured for quality loss.</p>
-        </div>
-      </article>
+      <p style="margin-top:20px"><b>The comparison I most want:</b> fine-tune my own small base model, then fine-tune
+         an existing 0.5B-class open model on the same data. The gap is a direct measure of what
+         pretraining scale buys, and I would rather see it on my own runs than take it on trust.</p>
     </div>
   </section>
 
@@ -160,9 +120,8 @@
     <div class="wrap">
       <div class="limits">
         <h3>What I am not claiming</h3>
-        <p><b>This is a learning project in progress, not a result.</b> One of eleven phases is done, and that phase was finishing someone else's course. There is no trained model and no number to report yet. It is listed here because the process is the point, and I will update it as it moves.</p>
-        <p>The target is a model in the 10&ndash;125M range trained on free GPU quota. That is small enough to be genuinely educational and far too small to be useful for anything someone would ship.</p>
-        <p>Anything beyond that scale I plan to do with LoRA or QLoRA on an existing open model, not by pretraining.</p>
+        <p><b>This is a learning project in progress, not a result.</b> No trained model, no numbers yet.</p>
+        <p>The target is 10&ndash;125M parameters on free GPU quota &mdash; small enough to be genuinely educational and far too small to be useful for anything someone would ship. Anything beyond that scale I plan to do with LoRA or QLoRA on an existing open model, not by pretraining.</p>
       </div>
 
       <div class="pagenav-foot">

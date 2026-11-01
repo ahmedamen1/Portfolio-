@@ -903,3 +903,82 @@ html[data-theme="dark"] #toTop { color: var(--bg); }
     transition: none !important;
   }
 }
+
+/* ============================================================
+   COMPARISON BARS  —  emphasis form: one accent, rest recessive.
+   Pure CSS, no library. Used on project pages to replace prose
+   that was really just a comparison.
+   ============================================================ */
+
+.cmp {
+  margin: 18px 0 4px;
+  display: grid;
+  gap: 9px;
+}
+
+.cmp-row {
+  display: grid;
+  grid-template-columns: minmax(96px, 150px) 1fr auto;
+  gap: 12px;
+  align-items: center;
+  font-size: .9rem;
+}
+
+.cmp-row .cmp-label { color: var(--ink-2); }
+
+.cmp-track {
+  position: relative;
+  height: 11px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.cmp-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: var(--muted);
+  opacity: .55;
+}
+
+/* the one row that carries the point */
+.cmp-row.is-key .cmp-label { color: var(--ink); font-weight: 650; }
+.cmp-row.is-key .cmp-fill  { background: var(--t, var(--violet)); opacity: 1; }
+
+.cmp-val {
+  font-family: var(--font-mono);
+  font-size: .86rem;
+  color: var(--muted);
+  min-width: 52px;
+  text-align: right;
+}
+.cmp-row.is-key .cmp-val { color: var(--ink); font-weight: 500; }
+
+.cmp-note {
+  font-size: .85rem;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+
+@media (max-width: 560px) {
+  .cmp-row { grid-template-columns: 1fr auto; }
+  .cmp-track { grid-column: 1 / -1; order: 3; }
+}
+
+/* direction label, so a comparison never relies on hue alone
+   (mint vs coral sits below the CVD separation floor for deuteranopia) */
+.cmp-delta {
+  display: inline-block;
+  font-family: var(--font);
+  font-size: .76rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: 5px;
+  white-space: nowrap;
+}
+.cmp-row.is-key .cmp-delta { color: var(--t, var(--violet)); }
+
+@media (max-width: 560px) {
+  .cmp-delta { display: block; margin-left: 0; }
+}
