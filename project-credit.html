@@ -89,21 +89,6 @@
     </div>
   </section>
 
-  <section class="p-section">
-    <div class="wrap">
-      <h2>Three problems worth the write-up</h2>
-      <p class="p-lede">On a dataset that is 96.6% one class, the headline metric is the thing most
-         likely to mislead you.</p>
-
-      <div class="fgrid">
-        <div class="fitem"><b>The dataset had no target variable</b><span>Neither table says whether a client is creditworthy &mdash; just applicants and monthly status codes. I weighted the codes by severity, summed them per client, and thresholded. That threshold is a modelling choice, not ground truth: move it and both the class balance and every score on this page move with it.</span></div>
-
-        <div class="fitem"><b>Why 95.6% accuracy is not the achievement</b><span>Only 1,401 of 41,449 clients are bad, so predicting "good" for everyone scores about 96.6% while learning nothing. Accuracy cannot separate a working model from that constant, so the comparison worth reporting is against a real learner: logistic regression managed 58.5% on balanced data against XGBoost's 95.6%. SMOTE stops the training distribution rewarding the lazy answer, and the per-class precision and recall are what I actually read.</span></div>
-
-        <div class="fitem"><b>Picking the model that was not the top scorer</b><span>Random forest beat the tuned XGBoost on raw accuracy, 96.0% to 95.6%. I chose XGBoost anyway, on per-class precision and recall and on interpretability &mdash; its feature importances were already driving the pruning step. A four-tenths gap on an imbalanced dataset is noise, and picking on it would be fitting the decision to the test split.</span></div>
-      </div>
-    </div>
-  </section>
 
   <section class="p-section">
     <div class="wrap">

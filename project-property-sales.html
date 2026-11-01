@@ -136,35 +136,6 @@
     </div>
   </section>
 
-  <section class="p-section">
-    <div class="wrap">
-      <h2>Four problems worth the write-up</h2>
-      <p class="p-lede">In each case the fix depended on understanding exactly why the obvious
-         approach fails.</p>
-
-      <div class="fgrid">
-        <div class="fitem"><b>A guard that fails closed on one category only</b><span>Checking every claim against the retrieved context blocks a large share of good answers, because natural sales phrasing legitimately rephrases and connects facts. So the guard intercepts only explicit financial claims &mdash; prices, instalments, "sold out", and their Arabic equivalents. A loose description of a garden is recoverable in the next message; an invented price is a commercial liability. Asymmetric risk, asymmetric guard.</span></div>
-
-        <div class="fitem"><b>Resolving a bare "yes"</b><span>A buyer answering "yes" to "would you like the floor plans?" sends a message with no content of its own, so the system keeps compact session state and rewrites confirmations into self-contained queries. The rewrite has to happen <i>before</i> the cache key is computed &mdash; otherwise the key is built from "yes" and a cache hit returns images for whatever the last person who said "yes" wanted.</span></div>
-
-        <div class="fitem"><b>Checking an LLM with a cheap deterministic tool</b><span>The query analyzer reports <code>language: en</code> when it classifies a query as out of scope, even for a plainly French question &mdash; so the refusal arrives in the wrong language and reads as broken. Fix: cross-check with langdetect, but only when the analyzer said "en", because that is the only direction the bias was ever observed in.</span></div>
-
-        <div class="fitem"><b>A string bug that only corrupts Arabic</b><span><code>str.strip(chars)</code> strips individual characters, not words, so leading filler was stripped from the middle of adjacent words too. Invisible in English, where the stripped letters rarely start the next word; constant in Arabic, where short function words are built from very common letters.</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="p-section">
-    <div class="wrap">
-      <h2>The evaluation is the part I would ask about</h2>
-      <div class="fgrid">
-        <div class="fitem"><b>My judge certified a hallucination</b><span>The 66-case LLM-as-judge harness scored one answer faithful 1.0 and relevant 1.0 &mdash; while its own context-recall metric for the same span read 0.0. The answer confidently stated a travel time that appears nowhere in the retrieved context. That single case is the strongest argument here for keeping deterministic checks alongside LLM judging: only 20 of 61 cases passed the strict deterministic gate.</span></div>
-
-        <div class="fitem"><b>A flaw in my own benchmark</b><span>I ran a controlled comparison across 25 scenarios to separate generation quality from retrieval, and the <code>judge_score</code> column came back N/A throughout &mdash; the harness supports it, but it was not enabled for that run. So I do not present that benchmark as judge-validated. The numbers still compare generation behaviour; the claim they support is narrower than it looks.</span></div>
-      </div>
-    </div>
-  </section>
-
 
   <section class="p-section">
     <div class="wrap">

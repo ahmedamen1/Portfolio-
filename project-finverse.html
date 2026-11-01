@@ -88,17 +88,6 @@
     </div>
   </section>
 
-  <section class="p-section">
-    <div class="wrap">
-      <h2>Two decisions that shaped it</h2>
-
-      <div class="fgrid">
-        <div class="fitem"><b>Fifteen adapters on one model, not fifteen models</b><span>Specialisation usually means one fine-tuned model per task &mdash; fifteen deployments, fifteen sets of weights, fifteen things to keep in sync. Instead: one frozen 4-bit base with fifteen LoRA adapters on the key projection layers, all pre-loaded so switching is cheap, plus a routing cache keyed on query embeddings. Specialisation without paying for fifteen deployments.</span></div>
-
-        <div class="fitem"><b>A Verifier, because a confident wrong number is the failure mode</b><span>In financial reasoning a fluent answer with an implausible magnitude is worse than a refusal, because it looks usable. The Verifier applies per-task constraints &mdash; exam answers must be a discrete option, calculations must be numerically plausible &mdash; and re-routes invalid outputs to another adapter rather than returning them.</span></div>
-      </div>
-    </div>
-  </section>
 
   <section class="p-section">
     <div class="wrap">

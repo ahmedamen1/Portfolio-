@@ -129,19 +129,6 @@
     </div>
   </section>
 
-  <section class="p-section">
-    <div class="wrap">
-      <h2>Three problems worth the write-up</h2>
-
-      <div class="fgrid">
-        <div class="fitem"><b>A threshold silently discarding every vector result</b><span>Broad questions returned arbitrary images while the ranking code looked correct. Instrumenting the legs separately showed why: a specific query scored 0.64&ndash;0.68, but "tell me about the project" scored 1.38&ndash;1.43 against a 1.35 ceiling. Every image describes one building, so nothing sits close to a question about the whole development &mdash; all 36 candidates were dropped and retrieval ran on keyword overlap alone. Raised the ceiling to 1.55, calibrated from the measurements rather than guessed.</span></div>
-
-        <div class="fitem"><b>143 images I wrongly reported as missing</b><span>I told the client twice that the residential towers lacked imagery and recommended sourcing more renders. I was wrong: 143 images were on disk but absent from the description CSV, so nothing embedded them and no query could reach them &mdash; the per-unit floor plans for exactly the buildings I had written off. I generated descriptions from the structured filenames and re-ingested, 702 to 845 embeddings. I diagnosed "the data doesn't exist" from inside the system's own index without checking the filesystem, and that is the mistake here I would most want back.</span></div>
-
-        <div class="fitem"><b>Rate limits shaped around how bans happen</b><span>Platforms ban business accounts that behave like broadcasters. A global message cap is the obvious implementation and the wrong one &mdash; it throttles real conversations while still permitting a burst pattern that looks automated. Limits are per-recipient instead, so an active customer gets fast replies and the account-wide pattern never resembles a broadcast.</span></div>
-      </div>
-    </div>
-  </section>
 
   <section class="p-section">
     <div class="wrap">

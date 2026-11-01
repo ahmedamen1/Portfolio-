@@ -139,36 +139,6 @@
     </div>
   </section>
 
-  <section class="p-section">
-    <div class="wrap">
-      <h2>Four bugs worth the write-up</h2>
-      <p class="p-lede">In each case the symptom pointed somewhere other than the cause. Three of
-         the four looked like "the retriever is weak" &mdash; the most common and most misleading
-         diagnosis in RAG work.</p>
-
-      <div class="fgrid">
-        <div class="fitem"><b>A regex that deleted Arabic letters</b><span>The diacritics-stripping range ran continuously to U+06E8, which swallows U+06E5&ndash;U+06E6 &mdash; small waw and small ya, real letters. <span dir="rtl">الرازي</span> normalised to an empty string, so any query naming al-Razi searched for nothing. Split the range with a deliberate gap, verified against Unicode's nonspacing-mark category for the whole Arabic block.</span></div>
-
-        <div class="fitem"><b>False "I don't know" answers</b><span>About 56% of real questions describe the shape of the answer, not its topic &mdash; "give me a hadith that talks about marriage". The lexical query required <i>hadith</i> and <i>talks about</i> to co-occur with the topic, and no source chunk narrates "here is a hadith about&hellip;". Fix: strip meta-request words from the lexical query only. Embeddings tolerate them; lexical search does not. The same word is noise in one system and signal in the other.</span></div>
-
-        <div class="fitem"><b>An author name is an identifier, not text</b><span>Scoped queries failed because they required the literal word <span dir="rtl">الرازي</span> inside the matched chunk &mdash; but a chunk from al-Razi's own book never repeats his name. Author aliases now scope the query and are excluded from the words required to appear in the text.</span></div>
-
-        <div class="fitem"><b>The hub chunk</b><span>One chunk was the top result for three unrelated questions: its embedding sits near the centre of the corpus's semantic space, so it became the default whenever nothing scored strongly. Not a filter bug &mdash; a chunking problem. I shipped the diagnosis and four costed options rather than a rushed fix.</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="p-section">
-    <div class="wrap">
-      <h2>Two things I would defend</h2>
-      <div class="fgrid">
-        <div class="fitem"><b>Normalisation carries everything</b><span>The corpus is diacritized Classical Arabic (<span dir="rtl">مِعْرَاجُ</span>); users type plain Egyptian (<span dir="rtl">معراج</span>). Byte for byte these never match, so lexical search fires essentially never without normalisation on both sides. The function is duplicated in the index builder and the query path, and if the two drift, retrieval degrades silently instead of erroring &mdash; the most dangerous class of bug in a retrieval system.</span></div>
-
-        <div class="fitem"><b>Three things I built and deleted</b><span>A keyword-boost layer that worked and cost 78 seconds per request, reverted two commits later and rebuilt properly as an FTS5 index. In-memory BM25, narrowed from nine books to one when RAM ran out, then replaced entirely. A metrics library that errored on every request, dropped after two failed version pins &mdash; both still visible in the history.</span></div>
-      </div>
-    </div>
-  </section>
-
 
   <section class="p-section">
     <div class="wrap">
