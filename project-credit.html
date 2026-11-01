@@ -83,7 +83,7 @@
         <div class="fitem"><b>Engineers a weighted credit score</b><span>Not every late month means the same thing, so statuses are weighted rather than counted, giving one composite <i>weighted_points</i> feature per client.</span></div>
         <div class="fitem"><b>Corrects a 29:1 class imbalance</b><span>40,048 good clients against 1,401 bad. SMOTE synthesises minority examples on the training split so the model sees a balanced problem.</span></div>
         <div class="fitem"><b>Prunes features that carry nothing</b><span>Dropped zero-importance columns, including a mobile-phone flag that was constant across the dataset, using XGBoost feature importances.</span></div>
-        <div class="fitem"><b>Compares six model families</b><span>Logistic regression, k-nearest neighbours, SVM, decision tree, random forest and XGBoost, each on the same split.</span></div>
+        <div class="fitem"><b>Compares six model families</b><span>Logistic regression, k-nearest neighbours, SVM, decision tree, random forest and XGBoost, each on the same split. Random forest scored highest at 96.0%, ahead of the tuned XGBoost at 95.6%.</span></div>
         <div class="fitem"><b>Tunes the finalist</b><span>Grid search with cross-validation over depth, learning rate, estimator count, subsample ratio and minimum child weight.</span></div>
       </div>
     </div>
