@@ -51,9 +51,8 @@
         <span class="eyebrow">Projects</span>
         <h1>Things I built and shipped</h1>
         <p class="lede">
-          Each one below says what the system does, <b>the call I made and why</b>, and
-          what it measured. Every number is read from the work, not estimated. Where
-          something failed or a baseline still beats me, it says so.
+          What each system does, <b>the call I made and why</b>, and what it measured.
+          Every number is read from the work. Where something failed, it says so.
         </p>
       </div>
 
@@ -71,7 +70,7 @@
         <div class="group-head reveal">
           <h2>AI Chatbots &amp; Assistants</h2>
           <span class="count">4 production systems</span>
-          <p>Four conversational systems in production, all built on the same core problem: making an LLM answer from a specific body of knowledge instead of from its own memory, in Arabic as well as English, by text and by voice.</p>
+          <p>Four systems in production, all solving one problem: making an LLM answer from a specific body of knowledge rather than from its own memory &mdash; in Arabic as well as English, by text and by voice.</p>
         </div>
 
         <div class="grid g2">
@@ -79,18 +78,17 @@
           <article class="card pcard reveal" data-kind="rag" style="--t:var(--pink)">
             <div class="top">
               <div>
-                <h3>Arabic Advisory Chatbot</h3>
-                <div class="sub">Client work &middot; production</div>
+                <h3>Dr. Sherine</h3>
+                <div class="sub">Arabic advisory voice agent &middot; in production</div>
               </div>
               <span class="pill" style="--t:var(--pink)">Assistant</span>
             </div>
-            <p>Answers personal questions from a corpus of classical Arabic texts, in Egyptian dialect, by text or voice.</p>
+            <p>Answers personal questions from classical Arabic texts, in Egyptian dialect, by text or voice.</p>
             <ul class="features">
-              <li>Quotes scripture verbatim and refuses to paraphrase it</li>
-              <li>Says "I don't know" instead of inventing an answer</li>
-              <li>Diagnosed a regex that deleted real Arabic letters</li>
+              <li>Quotes the source verbatim instead of paraphrasing it</li>
+              <li>Says "I don't know" rather than inventing an answer</li>
             </ul>
-            <div class="result">23,512 indexed chunks &middot; ~5&times; cost reduction per message</div>
+            <div class="result">23,512 indexed chunks &middot; ~5&times; cheaper per message</div>
             <div class="tags">
               <span class="tag">ChromaDB</span>
               <span class="tag">SQLite FTS5</span>
@@ -105,16 +103,15 @@
           <article class="card pcard reveal" data-kind="rag" style="--t:var(--sky)">
             <div class="top">
               <div>
-                <h3>Property-Sales AI Assistant</h3>
-                <div class="sub">Client work &middot; production</div>
+                <h3>The Spine by TMG</h3>
+                <div class="sub">Multilingual property assistant &middot; in production</div>
               </div>
               <span class="pill" style="--t:var(--sky)">Assistant</span>
             </div>
-            <p>A bilingual sales assistant for a large mixed-use development, answering with the right floor plans attached.</p>
+            <p>Answers buyer questions about a mixed-use development, with the right floor plans attached.</p>
             <ul class="features">
-              <li>Retrieves the right drawings, suppressing ones already shown</li>
-              <li>Blocks invented prices while letting good answers through</li>
-              <li>Caught my own LLM judge certifying a hallucination</li>
+              <li>Picks the right drawings and skips ones already shown</li>
+              <li>Blocks invented prices without blocking good answers</li>
             </ul>
             <div class="result">702 catalogued images &middot; 66-case evaluation harness</div>
             <div class="tags">
@@ -131,18 +128,17 @@
           <article class="card pcard reveal" data-kind="rag" style="--t:var(--violet)">
             <div class="top">
               <div>
-                <h3>Multi-Channel Sales Assistant</h3>
-                <div class="sub">Client work &middot; three platforms</div>
+                <h3>The Spine on WhatsApp</h3>
+                <div class="sub">Messaging channels &middot; Meta platforms</div>
               </div>
               <span class="pill" style="--t:var(--violet)">Assistant</span>
             </div>
-            <p>One assistant reachable from WhatsApp, Messenger and Instagram, in whichever language the customer writes.</p>
+            <p>The same assistant on WhatsApp, Messenger and Instagram, in whichever language the customer writes.</p>
             <ul class="features">
-              <li>Reports real inventory, not three illustrative examples</li>
+              <li>Reports real inventory, not a few illustrative examples</li>
               <li>Rate limits shaped around how platform bans actually happen</li>
-              <li>Found a threshold silently discarding every vector result</li>
             </ul>
-            <div class="result">845 indexed images across 43 buildings &middot; Kafka, 7 containers</div>
+            <div class="result">845 indexed images across 43 buildings</div>
             <div class="tags">
               <span class="tag">Kafka</span>
               <span class="tag">LangChain</span>
@@ -157,18 +153,17 @@
           <article class="card pcard reveal" data-kind="rag" style="--t:var(--mint)">
             <div class="top">
               <div>
-                <h3>Trading &amp; Market Assistant</h3>
-                <div class="sub">Client work &middot; online brokerage</div>
+                <h3>InfinityECN</h3>
+                <div class="sub">Trading assistant &middot; web and phone</div>
               </div>
               <span class="pill" style="--t:var(--mint)">Assistant</span>
             </div>
-            <p>A bilingual assistant answering market questions with live data and product questions from a curated store.</p>
+            <p>Answers market questions from live data and product questions from a curated store, in English and Gulf Arabic.</p>
             <ul class="features">
-              <li>Routes between live tools and retrieval by kind of question</li>
-              <li>Writes a real regional dialect, not Modern Standard Arabic</li>
-              <li>Speaks to customers over the phone through a voice agent</li>
+              <li>Routes between live market tools and retrieval by question type</li>
+              <li>Writes real Gulf dialect, not Modern Standard Arabic</li>
             </ul>
-            <div class="result">~11,500 lines of Python &middot; 19 services on a 9-container stack</div>
+            <div class="result">Live market data &middot; voice over web and phone</div>
             <div class="tags">
               <span class="tag">OpenAI Responses API</span>
               <span class="tag">Tool calling</span>
@@ -187,7 +182,7 @@
         <div class="group-head reveal">
           <h2>Research</h2>
           <span class="count">1 published paper &middot; 1 written up</span>
-          <p>Work where the deliverable is a paper: making a small model beat a much larger one, and deriving a recommender from scratch to understand it rather than call it.</p>
+          <p>Work where the deliverable is a paper.</p>
         </div>
 
         <div class="grid g2">
@@ -200,11 +195,10 @@
               </div>
               <span class="pill" style="--t:var(--violet)">Research</span>
             </div>
-            <p>Fifteen task-specific LoRA adapters on a single 4-bit quantized LLaMA-3.1-8B, with a Planner, Executor and Verifier routing loop.</p>
+            <p>Fifteen task-specific LoRA adapters on one 4-bit LLaMA-3.1-8B, routed by a Planner, Executor and Verifier loop.</p>
             <ul class="features">
               <li>Fifteen adapters on one base model, not fifteen models</li>
               <li>A Verifier that re-routes implausible answers before returning them</li>
-              <li>Beats GPT-4o on CFA exams and BloombergGPT on NER</li>
             </ul>
             <div class="result">93.07% CFA Level I (GPT-4o: 88.10%) &middot; 1st place, FinAI 2025 Task 2</div>
             <div class="tags">
@@ -228,11 +222,10 @@
               </div>
               <span class="pill" style="--t:var(--amber)">Research</span>
             </div>
-            <p>Matrix factorization derived by hand and written without a recommender library, trained on all 32 million MovieLens ratings.</p>
+            <p>Matrix factorization derived by hand, no recommender library, trained on all 32 million MovieLens ratings.</p>
             <ul class="features">
               <li>Update equations derived from the log joint, not imported</li>
-              <li>55&times; faster after compiling the inner loops with Numba</li>
-              <li>Reported a genre prior that helped one cold-start test and hurt the other</li>
+              <li>A genre prior that helped one cold-start test and hurt the other</li>
             </ul>
             <div class="result">0.78 test RMSE vs 1.06 baseline &middot; 32M ratings &middot; ICML-format write-up</div>
             <div class="tags">
@@ -254,7 +247,7 @@
         <div class="group-head reveal">
           <h2>Learning in Public</h2>
           <span class="count">1 ongoing</span>
-          <p>Work in progress, listed because the process is the point. Updated as it moves.</p>
+          <p>In progress, listed because the process is the point.</p>
         </div>
 
         <div class="grid g2">
@@ -270,10 +263,9 @@
             <p>Writing a small GPT from an empty file, one component at a time, then fine-tuning it to answer questions.</p>
             <ul class="features">
               <li>Course finished; now rebuilding it with the course closed</li>
-              <li>Every component tested against PyTorch's own implementation</li>
-              <li>Planned ablations: RoPE, RMSNorm, SwiGLU, GQA</li>
+              <li>Every component checked against PyTorch's own implementation</li>
             </ul>
-            <div class="result">Phase 0 of 11 done &middot; targeting Arabic and English on free GPUs</div>
+            <div class="result">1 of 11 phases done &middot; Arabic and English, free GPUs</div>
             <div class="tags">
               <span class="tag">PyTorch</span>
               <span class="tag">BPE</span>
@@ -305,10 +297,9 @@
               </div>
               <span class="pill" style="--t:var(--amber)">Optimization</span>
             </div>
-            <p>Day-ahead load forecasting feeding a rolling-horizon controller that schedules a 16 kWh battery against a rooftop solar array.</p>
+            <p>Day-ahead load forecasting feeding a controller that schedules a 16 kWh battery against a rooftop solar array.</p>
             <ul class="features">
               <li>Re-solves a linear program at every step over a 24-hour horizon</li>
-              <li>Models the Italian holiday calendar, since holidays bill cheapest</li>
               <li>Caught a validation score that was leaking the answer</li>
             </ul>
             <div class="result">Within &euro;0.33 of a perfect-information oracle &middot; &euro;10.51 better than the site controller</div>
@@ -334,7 +325,6 @@
             <p>Predicting loan repayment risk on a dataset that ships with no label column and only 3.4% bad clients.</p>
             <ul class="features">
               <li>Built the labels from weighted monthly repayment statuses</li>
-              <li>Corrected a 29:1 class imbalance with SMOTE</li>
               <li>Chose the model that was not the top scorer, and says why</li>
             </ul>
             <div class="result">95.6% tuned XGBoost &middot; 58.5% logistic-regression baseline</div>
@@ -369,11 +359,10 @@
               </div>
               <span class="pill" style="--t:var(--coral)">Vision</span>
             </div>
-            <p>Watches several camera feeds at once for weapons, falls and violence, with automatic evidence capture and escalation.</p>
+            <p>Watches several camera feeds for weapons, falls and violence, with automatic evidence capture and escalation.</p>
             <ul class="features">
               <li>Two-stage detection: a permissive detector, then CLIP to verify</li>
               <li>Negative prompts so a phone is labelled a phone, not a weapon</li>
-              <li>Logs revealed an alerting problem, not a detection one</li>
             </ul>
             <div class="result">mAP@0.50 = 0.844 &middot; 81% violence classifier on 680 samples</div>
             <div class="tags">
@@ -408,11 +397,10 @@
               </div>
               <span class="pill" style="--t:var(--mint)">Hardware</span>
             </div>
-            <p>A kit that upgrades the manual wheelchair someone already owns, because imported smart chairs cost more than most Egyptian families can pay.</p>
+            <p>Upgrades the manual wheelchair someone already owns, because imported smart chairs cost more than most Egyptian families can pay.</p>
             <ul class="features">
               <li>Offline Egyptian Arabic voice control on a Raspberry Pi 5</li>
-              <li>An assistant that knows the patient's medications and compliance</li>
-              <li>A separate caregiver assistant, including burnout guidance</li>
+              <li>Separate assistants for the patient and the caregiver</li>
             </ul>
             <div class="result">87% offline command accuracy &middot; &lt;20ms to motor movement &middot; $1,600 grant</div>
             <div class="tags">
