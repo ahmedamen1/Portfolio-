@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Academic Transcript Analysis</title>
+<style>
+:root{
+  --bg:#f6f7fb;--card:#fff;--ink:#14182b;--muted:#5d6580;--line:#e3e6f0;
+  --accent:#3b5bdb;--accent2:#0ca678;--warn:#f08c00;--bad:#e03131;
+  --g-a:#0ca678;--g-am:#38b48b;--g-bp:#3b5bdb;--g-b:#5c7cfa;--g-bm:#8fa5f7;--g-c:#f08c00;--g-f:#e03131;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1220;--card:#181c30;--ink:#eef0fa;--muted:#9aa2c2;--line:#2a2f4a;--accent:#7c93ff;--accent2:#3dd6a3}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+header.hero{background:linear-gradient(135deg,#243b9b,#3b5bdb 60%,#0ca678);color:#fff;border-radius:20px;padding:36px 32px;margin-bottom:24px}
+.hero h1{margin:0 0 6px;font-size:clamp(1.6rem,4vw,2.4rem)}
+.hero p{margin:4px 0;opacity:.92}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);padding:5px 12px;border-radius:999px;font-size:.85rem}
+h2{font-size:1.3rem;margin:36px 0 6px}
+.sub{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+.grid{display:grid;gap:14px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.kpi .v{font-size:1.9rem;font-weight:700;color:var(--accent)}
+.kpi .l{color:var(--muted);font-size:.85rem}
+.two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+svg{width:100%;height:auto;display:block}
+svg text{fill:var(--muted);font-size:12px;font-family:inherit}
+.bar-row{display:grid;grid-template-columns:44px 1fr 90px;gap:10px;align-items:center;margin:7px 0;font-size:.9rem}
+.bar-track{background:var(--line);border-radius:8px;height:20px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px}
+.cat-row{display:grid;grid-template-columns:1.3fr 2fr 70px;gap:10px;align-items:center;margin:10px 0;font-size:.9rem}
+.cat-row small{color:var(--muted);display:block}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600;cursor:pointer;user-select:none;white-space:nowrap}
+tr:hover td{background:rgba(124,147,255,.07)}
+.pill{display:inline-block;min-width:34px;text-align:center;padding:2px 8px;border-radius:999px;font-weight:600;color:#fff;font-size:.8rem}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.controls input,.controls select{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+.controls input{flex:1;min-width:180px}
+.tablewrap{overflow-x:auto}
+ul.ins{margin:0;padding-left:20px}
+ul.ins li{margin:8px 0}
+.note{color:var(--muted);font-size:.85rem;margin-top:10px}
+.honor{color:var(--accent2);font-weight:600}
+footer{margin-top:40px;color:var(--muted);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Ahmed Mohamed Mohamed Amin</h1>
+  <p>B.Sc. Communication and Information Engineering</p>
+  <p>University of Science and Technology, Zewail City, Egypt</p>
+  <div class="badges">
+    <span class="badge">Graduated 30 June 2026</span>
+    <span class="badge">Cum Laude</span>
+    <span class="badge">Cumulative GPA 3.6438 / 4.00</span>
+    <span class="badge">162 credit hours</span>
+  </div>
+</header>
+
+<section>
+  <h2>At a glance</h2>
+  <p class="sub">Every number below is calculated from the course data in this page.</p>
+  <div class="grid kpis" id="kpis"></div>
+</section>
+
+<section>
+  <h2>Grade distribution</h2>
+  <p class="sub">Graded courses only. Pass (P) courses are not counted in the GPA.</p>
+  <div class="grid two">
+    <div class="card"><h3 style="margin-top:0">By number of courses</h3><div id="dist"></div><p class="note" id="distNote"></p></div>
+    <div class="card"><h3 style="margin-top:0">By credit hours</h3><div id="distCr"></div><p class="note">Shows how much of the degree was earned at each grade level.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>GPA progression</h2>
+  <p class="sub">Term GPA and cumulative GPA, from the official semester summaries.</p>
+  <div class="card"><div id="trend"></div></div>
+  <div class="grid two" style="margin-top:14px">
+    <div class="card"><h3 style="margin-top:0">GPA by academic year</h3><div id="yearChart"></div></div>
+    <div class="card"><h3 style="margin-top:0">Key observations</h3><ul class="ins" id="insights"></ul></div>
+  </div>
+</section>
+
+<section>
+  <h2>Analysis by subject area</h2>
+  <p class="sub">Courses are grouped by department prefix. Averages are weighted by credit hours.</p>
+  <div class="card" id="cats"></div>
+</section>
+
+<section>
+  <h2>All courses</h2>
+  <p class="sub">Search, filter and sort. Click a column title to sort.</p>
+  <div class="controls">
+    <input id="q" placeholder="Search by code or title">
+    <select id="fTerm"></select>
+    <select id="fCat"></select>
+    <select id="fGrade"></select>
+  </div>
+  <div class="card tablewrap"><table id="tbl"><thead><tr>
+    <th data-k="term">Term</th><th data-k="code">Code</th><th data-k="title">Course</th>
+    <th data-k="grade">Grade</th><th data-k="cr">Credits</th><th data-k="qp">Quality pts</th>
+  </tr></thead><tbody></tbody></table></div>
+  <p class="note" id="tblNote"></p>
+</section>
+
+<section>
+  <h2>Grading system</h2>
+  <p class="sub">As printed on the official transcript of the University of Science and Technology, Zewail City.</p>
+  <div class="grid two">
+    <div class="card"><h3 style="margin-top:0">Grade points</h3><table id="scale"></table></div>
+    <div class="card">
+      <h3 style="margin-top:0">Grades not in the GPA</h3>
+      <table>
+        <tr><td>P</td><td>Pass</td></tr><tr><td>W</td><td>Withdrew</td></tr><tr><td>WP</td><td>Withdrew Passing</td></tr>
+        <tr><td>WF</td><td>Withdrew Failing</td></tr><tr><td>WE</td><td>Withdrew for National Emergency</td></tr>
+        <tr><td>I</td><td>Incomplete</td></tr><tr><td>IP</td><td>In Progress</td></tr><tr><td>TR</td><td>Transfer Credit</td></tr>
+        <tr><td>AU</td><td>Audit</td></tr><tr><td>NG</td><td>No Grade</td></tr><tr><td>CC</td><td>Continuing Course</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Cumulative GPA and rank</h3>
+      <p class="note" style="margin-top:0">CGPA = total quality points divided by total GPA credit hours. A CGPA of 2.00 or more is required to graduate.</p>
+      <table>
+        <tr><td>3.67 to 4.00</td><td>Excellent</td></tr><tr><td>3.00 to less than 3.67</td><td>Very Good</td></tr>
+        <tr><td>2.00 to less than 3.00</td><td>Good</td></tr><tr><td>1.67 to less than 2.00</td><td>Pass</td></tr>
+        <tr><td>Less than 1.67</td><td>Fail</td></tr>
+      </table>
+      <p class="note">Engineering bachelor's degree requires at least 162 credit hours.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Graduation honors</h3>
+      <table>
+        <tr><th colspan="2">Graduating in Spring 2025 or later</th></tr>
+        <tr><td>3.85 to 4.00</td><td>Summa Cum Laude</td></tr>
+        <tr><td>3.70 to less than 3.85</td><td>Magna Cum Laude</td></tr>
+        <tr class="honor"><td>3.50 to less than 3.70</td><td>Cum Laude (awarded)</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>Data taken from the official transcript printed 13 July 2026. Personal identifiers were left out on purpose.</footer>
+</div>
+
+<script>
+/* ===== DATA ===== */
+const SCALE = {"A":4.00,"A-":3.67,"B+":3.33,"B":3.00,"B-":2.67,"C+":2.33,"C":2.00,"C-":1.67,"F":0};
+const SCALE_RANGE = {"A":"95 to 100","A-":"90 to under 95","B+":"85 to under 90","B":"80 to under 85","B-":"75 to under 80","C+":"70 to under 75","C":"65 to under 70","C-":"60 to under 65","F":"under 60"};
+/* terms: id, label, academic year, official term GPA, official cumulative GPA, honors roll */
+const TERMS = [
+ ["F21","Fall 2021","2021-22",3.7533,3.7533,true],
+ ["S22","Spring 2022","2021-22",3.5769,3.6714,true],
+ ["U22","Summer 2022","2021-22",3.2000,3.6125,false],
+ ["F22","Fall 2022","2022-23",2.9611,3.3780,false],
+ ["S23","Spring 2023","2022-23",3.7706,3.4776,false],
+ ["F23","Fall 2023","2023-24",3.7059,3.5238,true],
+ ["S24","Spring 2024","2023-24",3.6667,3.5513,true],
+ ["U24","Summer 2024","2023-24",4.0000,3.5679,false],
+ ["F24","Fall 2024","2024-25",3.7451,3.5920,true],
+ ["S25","Spring 2025","2024-25",3.8333,3.6224,true],
+ ["U25","Summer 2025","2024-25",null,3.6224,false],
+ ["F25","Fall 2025","2025-26",3.7857,3.6370,true],
+ ["S26","Spring 2026","2025-26",4.0000,3.6438,false]
+];
+/* courses: term, code, title, grade, credits, area */
+const C = [
+ ["F21","BIOL 101","Biology I","B+",3,"Basic Sciences"],
+ ["F21","BIOL 111","Biology I Lab","B+",1,"Basic Sciences"],
+ ["F21","CHEM 101","Chemistry I","A-",3,"Basic Sciences"],
+ ["F21","CHEM 111","Chemistry I Lab","A",1,"Basic Sciences"],
+ ["F21","ENGL 003","Remedial English for Science","P",0,"English"],
+ ["F21","MATH 101","Calculus I","A",3,"Mathematics"],
+ ["F21","PHYS 101","Introduction to Classical Mechanics","A",3,"Basic Sciences"],
+ ["F21","PHYS 111","Introduction to Classical Mechanics Lab","A",1,"Basic Sciences"],
+ ["S22","CSCI 101","Introduction to Computer Science","A-",2,"Programming and Data"],
+ ["S22","ENGL 004","Advanced Academic Speaking and Writing","F",0,"English"],
+ ["S22","ENGR 102","Introduction to Engineering Design","B+",2,"Engineering Foundations"],
+ ["S22","ENGR 221","Engineering Drawing","B-",2,"Engineering Foundations"],
+ ["S22","MATH 102","Calculus II","A",3,"Mathematics"],
+ ["S22","PHYS 102","Introduction to Electromagnetism","A-",3,"Basic Sciences"],
+ ["S22","PHYS 112","Introduction to Electromagnetism Lab","A",1,"Basic Sciences"],
+ ["U22","ENGL 004","Advanced Academic Speaking and Writing (retake)","P",0,"English"],
+ ["U22","SCH 258","Arabic Literature","A-",2,"Humanities and Professional"],
+ ["U22","SCH 261","Engineering Project Management","B-",2,"Humanities and Professional"],
+ ["F22","CIE 202","Fundamentals of Computer Programming","B+",3,"Programming and Data"],
+ ["F22","CIE 239","Digital Design and Computer Architecture","C-",3,"Computer Engineering"],
+ ["F22","ENGR 210","Electric Circuits","B",3,"Electronics and Circuits"],
+ ["F22","MATH 201","Linear Algebra and Vector Geometry","B+",3,"Mathematics"],
+ ["F22","PEU 228","Vector Calculus","C+",2,"Mathematics"],
+ ["F22","PHYS 201","Thermodynamics, Wave Motion and Optics","A-",3,"Basic Sciences"],
+ ["F22","PHYS 211","Thermodynamics, Wave Motion and Optics Lab","A-",1,"Basic Sciences"],
+ ["S23","CIE 205","Data Structures and Algorithm Analysis","B+",3,"Programming and Data"],
+ ["S23","CIE 206","Database Management System","A",3,"Programming and Data"],
+ ["S23","CIE 212","Introduction to Electronics","A-",3,"Electronics and Circuits"],
+ ["S23","CIE 227","Signals and Systems","A-",3,"Signals and Communications"],
+ ["S23","MATH 202","Ordinary Differential Equations","A",3,"Mathematics"],
+ ["S23","SCH 244","Leadership and Professionalism","A",2,"Humanities and Professional"],
+ ["F23","CIE 301","Advanced Electric Circuits","A-",3,"Electronics and Circuits"],
+ ["F23","CIE 302","Operating Systems","A",3,"Computer Engineering"],
+ ["F23","CIE 327","Probability and Stochastic Processes","A",3,"Signals and Communications"],
+ ["F23","CIE 328","Electromagnetic Fields and Waves I","B+",3,"Electromagnetics"],
+ ["F23","MATH 302","Partial Differential Equations","B+",3,"Mathematics"],
+ ["F23","SCH 277","Positive Psychology","A",2,"Humanities and Professional"],
+ ["S24","CIE 318","Control Systems","A-",3,"Electronics and Circuits"],
+ ["S24","CIE 320","Analog Electronics","B+",3,"Electronics and Circuits"],
+ ["S24","CIE 337","Communications Theory and Systems","A",3,"Signals and Communications"],
+ ["S24","CIE 338","Electromagnetic Fields and Waves II","A-",3,"Electromagnetics"],
+ ["S24","CIE 457","Statistical Inference and Data Analysis","A",3,"AI and Data"],
+ ["S24","MATH 308","Discrete Mathematics","A",3,"Mathematics"],
+ ["S24","SCH 264","Introduction to Entrepreneurship and Small Management","B-",2,"Humanities and Professional"],
+ ["U24","SCH 262","Engineering Project Economics","A",2,"Humanities and Professional"],
+ ["U24","SCH 299","Special Topics in Humanities","A",2,"Humanities and Professional"],
+ ["F24","CIE 417","Machine Learning","A-",3,"AI and Data"],
+ ["F24","CIE 425","Information Theory and Coding","A",3,"Signals and Communications"],
+ ["F24","CIE 437","Digital and Wireless Communications","A-",3,"Signals and Communications"],
+ ["F24","CIE 439","Computer Architecture and Assembly Language","A-",3,"Computer Engineering"],
+ ["F24","CIE 442","Digital Signal Processing","A",3,"Signals and Communications"],
+ ["F24","ENGL 152","Effective Speaking and Composition","B+",2,"English"],
+ ["S25","CIE 405","Electric Machines","A",3,"Electronics and Circuits"],
+ ["S25","CIE 408","Embedded Systems","A",3,"Computer Engineering"],
+ ["S25","CIE 447","Computer Networks","B+",3,"Computer Engineering"],
+ ["S25","CIE 552","Computer Vision","A",3,"AI and Data"],
+ ["S25","CIE 553","Natural Language Processing","A",3,"AI and Data"],
+ ["S25","CIE 597","Selected Topics: AI Applications in Telecom","A-",3,"AI and Data"],
+ ["U25","ENGR 444","Industrial Training II (CIE)","P",2,"Engineering Foundations"],
+ ["F25","CIE 427","Big Data Analytics","A-",3,"AI and Data"],
+ ["F25","CIE 460","Software Engineering Fundamentals","A",3,"Programming and Data"],
+ ["F25","CIE 555","Neural Networks and Deep Learning","A",3,"AI and Data"],
+ ["F25","CIE 598","Senior Design Project I","A",1,"Capstone"],
+ ["F25","ENGL 153","Scientific Writing","A-",2,"English"],
+ ["F25","SCH 263","Engineering Ethics and Safety","B+",2,"Humanities and Professional"],
+ ["S26","CIE 599","Senior Design Project II","A",3,"Capstone"]
+];
+const TM = Object.fromEntries(TERMS.map((t,i)=>[t[0],{label:t[1],year:t[2],tgpa:t[3],cgpa:t[4],hon:t[5],idx:i}]));
+/* The transcript computed quality points with one-decimal values up to Spring 2023 (A- = 3.7, B+ = 3.3, B- = 2.7, C+ = 2.3, C- = 1.7)
+   and with exact thirds from Fall 2023 on (A- = 3.6667, B+ = 3.3333, B- = 2.6667). Using the same values reproduces the official GPA. */
+const OLDP = {"A":4,"A-":3.7,"B+":3.3,"B":3,"B-":2.7,"C+":2.3,"C":2,"C-":1.7,"F":0};
+const NEWP = {"A":4,"A-":11/3,"B+":10/3,"B":3,"B-":8/3,"C+":7/3,"C":2,"C-":5/3,"F":0};
+const pts = (g,ti)=> (g in SCALE) ? (ti<=4 ? OLDP[g] : NEWP[g]) : null;
+const courses = C.map(r=>{const ti=TM[r[0]].idx,p=pts(r[3],ti);return {term:r[0],termLabel:TM[r[0]].label,tIdx:ti,year:TM[r[0]].year,code:r[1],title:r[2],grade:r[3],cr:r[4],area:r[5],
+  gp:p, qp:(p??0)*r[4]}});
+const graded = courses.filter(c=>c.gp!==null && c.cr>0);
+const GCOL = {"A":"var(--g-a)","A-":"var(--g-am)","B+":"var(--g-bp)","B":"var(--g-b)","B-":"var(--g-bm)","C+":"var(--g-c)","C":"var(--g-c)","C-":"var(--g-c)","F":"var(--g-f)","P":"#868e96"};
+const $ = id=>document.getElementById(id);
+const wavg = a=>{const cr=a.reduce((s,c)=>s+c.cr,0);return cr?a.reduce((s,c)=>s+c.qp,0)/cr:0};
+const f2 = x=>x.toFixed(2);
+
+/* ===== KPIs ===== */
+const totalCr = graded.reduce((s,c)=>s+c.cr,0);
+const cgpa = wavg(graded);
+const aRange = graded.filter(c=>c.grade==="A"||c.grade==="A-").length;
+const aCnt = graded.filter(c=>c.grade==="A").length;
+const honorTerms = TERMS.filter(t=>t[5]).length;
+const perfect = TERMS.filter(t=>t[3]===4).length;
+const allCr = courses.reduce((s,c)=>s+c.cr,0);
+[
+ [f2(cgpa),"Computed CGPA (official 3.6438)"],
+ [allCr,"Total credit hours"],
+ [courses.length,"Course entries"],
+ [Math.round(aRange/graded.length*100)+"%","Graded courses at A or A-"],
+ [aCnt,"Courses with a full A"],
+ [honorTerms,"Provost's Honors Roll terms"],
+ [perfect,"Terms with a 4.00 GPA"]
+].forEach(([v,l])=>{$("kpis").insertAdjacentHTML("beforeend",`<div class="card kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`)});
+
+/* ===== Distribution ===== */
+const order = ["A","A-","B+","B","B-","C+","C","C-","F"];
+function distBars(el,getVal,fmt){
+  const vals = order.map(g=>[g,getVal(g)]);
+  const max = Math.max(...vals.map(v=>v[1]));
+  const tot = vals.reduce((s,v)=>s+v[1],0);
+  vals.forEach(([g,v])=>{
+    $(el).insertAdjacentHTML("beforeend",`<div class="bar-row"><b>${g}</b><div class="bar-track"><div class="bar-fill" style="width:${max?v/max*100:0}%;background:${GCOL[g]}"></div></div><span>${fmt(v)} (${tot?Math.round(v/tot*100):0}%)</span></div>`);
+  });
+}
+distBars("dist",g=>graded.filter(c=>c.grade===g).length,v=>v);
+distBars("distCr",g=>graded.filter(c=>c.grade===g).reduce((s,c)=>s+c.cr,0),v=>v+" cr");
+const pCount = courses.filter(c=>c.grade==="P").length;
+$("distNote").textContent = `${graded.length} graded courses. ${pCount} courses were Pass only. One early F (ENGL 004, 0 credits) was retaken and passed in Summer 2022, and it carries no GPA credit.`;
+
+/* ===== Trend chart ===== */
+(function(){
+  const pts = TERMS.filter(t=>t[3]!==null);
+  const W=900,H=330,L=48,R=20,T=20,B=60;
+  const x=i=>L+(W-L-R)*(i/(pts.length-1));
+  const y=v=>T+(H-T-B)*(1-(v-2.5)/(4.0-2.5));
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="GPA by term">`;
+  for(let v=2.5;v<=4.001;v+=0.5){s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end">${v.toFixed(1)}</text>`}
+  const path=k=>pts.map((p,i)=>`${i?"L":"M"}${x(i)},${y(p[k])}`).join(" ");
+  s+=`<path d="${path(3)}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>`;
+  s+=`<path d="${path(4)}" fill="none" stroke="var(--accent2)" stroke-width="2.5" stroke-dasharray="6 4"/>`;
+  pts.forEach((p,i)=>{
+    s+=`<circle cx="${x(i)}" cy="${y(p[3])}" r="4.5" fill="var(--accent)"><title>${p[1]}: term GPA ${p[3].toFixed(4)}</title></circle>`;
+    s+=`<circle cx="${x(i)}" cy="${y(p[4])}" r="4" fill="var(--accent2)"><title>${p[1]}: cumulative ${p[4].toFixed(4)}</title></circle>`;
+    s+=`<text transform="translate(${x(i)},${H-B+16}) rotate(-35)" text-anchor="end">${p[1]}</text>`;
+  });
+  s+=`<g transform="translate(${L+10},${T+4})"><circle r="5" fill="var(--accent)"/><text x="10" y="4">Term GPA</text><circle cx="100" r="5" fill="var(--accent2)"/><text x="110" y="4">Cumulative GPA</text></g></svg>`;
+  $("trend").innerHTML=s;
+})();
+
+/* ===== Year chart ===== */
+const years=[...new Set(TERMS.map(t=>t[2]))];
+const yData=years.map(y=>{const a=graded.filter(c=>c.year===y);return [y,wavg(a),a.reduce((s,c)=>s+c.cr,0)]});
+(function(){
+  const W=420,H=260,L=40,B=40,T=16;
+  const bw=(W-L-10)/yData.length;
+  const y=v=>T+(H-T-B)*(1-(v-2.5)/1.5);
+  let s=`<svg viewBox="0 0 ${W} ${H}">`;
+  for(let v=2.5;v<=4.001;v+=0.5)s+=`<line x1="${L}" x2="${W-10}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v.toFixed(1)}</text>`;
+  yData.forEach((d,i)=>{const bx=L+i*bw+bw*0.18,w=bw*0.64;
+    s+=`<rect x="${bx}" y="${y(d[1])}" width="${w}" height="${y(2.5)-y(d[1])}" rx="6" fill="var(--accent)"><title>${d[0]}: ${f2(d[1])} over ${d[2]} credits</title></rect>`;
+    s+=`<text x="${bx+w/2}" y="${y(d[1])-6}" text-anchor="middle" style="fill:var(--ink);font-weight:600">${f2(d[1])}</text>`;
+    s+=`<text x="${bx+w/2}" y="${H-B+18}" text-anchor="middle">${d[0]}</text>`;
+  });
+  $("yearChart").innerHTML=s+"</svg>";
+})();
+
+/* ===== Insights ===== */
+(function(){
+  const ins=[];
+  const worst=TERMS.filter(t=>t[3]!==null).sort((a,b)=>a[3]-b[3])[0];
+  const best=yData.slice().sort((a,b)=>b[1]-a[1])[0];
+  ins.push(`Lowest term was ${worst[1]} at ${worst[3].toFixed(2)}. Since then the cumulative GPA rose from ${TM.F22.cgpa.toFixed(2)} to ${TM.S26.cgpa.toFixed(2)}.`);
+  const post=graded.filter(c=>c.tIdx>TM.F22.idx);
+  ins.push(`After Fall 2022, the credit-weighted GPA is ${f2(wavg(post))} across ${post.reduce((s,c)=>s+c.cr,0)} credits.`);
+  ins.push(`Best academic year: ${best[0]} with ${f2(best[1])}.`);
+  const ai=graded.filter(c=>c.area==="AI and Data");
+  ins.push(`AI and Data courses average ${f2(wavg(ai))} over ${ai.length} courses, with no grade below A-.`);
+  const cie=graded.filter(c=>c.code.startsWith("CIE")||c.area==="Capstone");
+  ins.push(`Major courses (CIE and capstone) average ${f2(wavg(cie))} over ${cie.reduce((s,c)=>s+c.cr,0)} credits.`);
+  ins.push(`Both capstone courses (Senior Design Project I and II) earned an A.`);
+  $("insights").innerHTML=ins.map(t=>`<li>${t}</li>`).join("");
+})();
+
+/* ===== Categories ===== */
+(function(){
+  const areas=[...new Set(graded.map(c=>c.area))].map(a=>{const x=graded.filter(c=>c.area===a);return {a,gpa:wavg(x),n:x.length,cr:x.reduce((s,c)=>s+c.cr,0),best:x.filter(c=>c.grade==="A"||c.grade==="A-").length}}).sort((p,q)=>q.gpa-p.gpa);
+  $("cats").innerHTML=areas.map(r=>`<div class="cat-row"><div><b>${r.a}</b><small>${r.n} courses, ${r.cr} credits, ${r.best} at A or A-</small></div><div class="bar-track"><div class="bar-fill" style="width:${r.gpa/4*100}%;background:var(--accent)"></div></div><b>${f2(r.gpa)}</b></div>`).join("");
+})();
+
+/* ===== Table ===== */
+(function(){
+  const fT=$("fTerm"),fC=$("fCat"),fG=$("fGrade");
+  fT.innerHTML='<option value="">All terms</option>'+TERMS.map(t=>`<option value="${t[0]}">${t[1]}</option>`).join("");
+  fC.innerHTML='<option value="">All subject areas</option>'+[...new Set(courses.map(c=>c.area))].sort().map(a=>`<option>${a}</option>`).join("");
+  fG.innerHTML='<option value="">All grades</option>'+[...order,"P"].map(g=>`<option>${g}</option>`).join("");
+  let key="term",dir=1;
+  function render(){
+    const q=$("q").value.toLowerCase();
+    let rows=courses.filter(c=>(!fT.value||c.term===fT.value)&&(!fC.value||c.area===fC.value)&&(!fG.value||c.grade===fG.value)&&(!q||(c.code+" "+c.title).toLowerCase().includes(q)));
+    rows.sort((a,b)=>{let A=key==="term"?a.tIdx:a[key],B=key==="term"?b.tIdx:b[key];if(key==="grade"){A=a.gp??-1;B=b.gp??-1}return (A>B?1:A<B?-1:a.tIdx-b.tIdx)*dir});
+    $("tbl").querySelector("tbody").innerHTML=rows.map(c=>`<tr><td>${c.termLabel}</td><td>${c.code}</td><td>${c.title}</td><td><span class="pill" style="background:${GCOL[c.grade]}">${c.grade}</span></td><td>${c.cr}</td><td>${c.gp===null?"-":c.qp.toFixed(2)}</td></tr>`).join("");
+    const g=rows.filter(c=>c.gp!==null&&c.cr>0);
+    $("tblNote").textContent=`${rows.length} rows shown. Credit-weighted GPA of graded rows: ${g.length?f2(wavg(g)):"-"}. Quality points follow the transcript's own rounding.`;
+  }
+  document.querySelectorAll("th[data-k]").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.k;dir=(key===k)?-dir:1;key=k;render()}));
+  [$("q"),fT,fC,fG].forEach(e=>e.addEventListener("input",render));
+  render();
+})();
+
+/* ===== Scale table ===== */
+$("scale").innerHTML='<tr><th>Course score %</th><th>Grade</th><th>Quality points</th></tr>'+order.map(g=>`<tr><td>${SCALE_RANGE[g]}</td><td><span class="pill" style="background:${GCOL[g]}">${g}</span></td><td>${SCALE[g].toFixed(2)}</td></tr>`).join("");
+</script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building My Own LLM — Ahmed Amin</title>
+<meta name="description" content="An ongoing project to write a small GPT from an empty file, one component at a time, then fine-tune it to answer questions. Arabic and English, trained on free GPUs.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--sky)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Building My Own LLM</h1>
+      <p class="p-sub">I finished a course on building a GPT from scratch in PyTorch. Now I am closing it and
+         writing the whole thing again from an empty file, because following along and being able to
+         rebuild it are not the same skill. Eleven phases, from the tokenizer up to preference tuning.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--sky)">Ongoing</span>
+        <span class="pill" style="--t:var(--amber)">Personal project</span>
+        <span class="pill" style="--t:var(--violet)">Arabic and English</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">1 / 11</div><div class="fl">phases done, course finished</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">10&ndash;125M</div><div class="fl">target parameter range</div>
+        </div>
+        <div class="figure" style="--t:var(--amber)">
+          <div class="fv">Free</div><div class="fl">GPUs only, Kaggle and Colab</div>
+        </div>
+        <div class="figure" style="--t:var(--coral)">
+          <div class="fv">0</div><div class="fl">lines copied in phase 1</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>How I am approaching it</h2>
+      <p class="p-lede">The goal is understanding, not a competitive model. That changes what counts as progress, so I set rules before starting.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Write it first, read references after</b><span>I only look at the course code or nanoGPT once I am properly stuck. Getting stuck is the part that teaches, so skipping it wastes the exercise.</span></div>
+        <div class="fitem"><b>Explain every component in my own words</b><span>For each piece: what it does, why it exists, and what breaks without it. If I cannot write the third one, I have not understood it.</span></div>
+        <div class="fitem"><b>Verify against PyTorch, not against vibes</b><span>My attention gets compared to <i>F.scaled_dot_product_attention</i> on the same inputs. The causal mask gets tested by checking that future tokens cannot change earlier outputs.</span></div>
+        <div class="fitem"><b>Overfit something tiny first</b><span>A few KB of text, and the loss has to go near zero. If it does not, there is a bug, and finding it on a 2-minute run beats finding it on a 6-hour one.</span></div>
+        <div class="fitem"><b>Log every run</b><span>Settings, loss curves, sample outputs, and what I changed next. Free GPU quota is finite and an unlogged run is a run I have to repeat.</span></div>
+        <div class="fitem"><b>Make resume work before any long run</b><span>Sessions get wiped. Model, optimizer, scheduler, step and RNG state all have to checkpoint, or a disconnect costs the whole run.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>The plan</h2>
+      <p class="p-lede">Each phase produces something I can test, not just something I have read about.</p>
+
+      <article class="story" style="--t:var(--mint)">
+        <h3>Phase 0 &mdash; the course · done</h3>
+        <div class="beat">
+          <span class="btag">Covered</span>
+          <p>A GPT built one component at a time in PyTorch: BPE tokenizer trained on Arabic and English Wikipedia, self-attention, multi-head attention, the KV cache, transformer blocks with weight tying and GPT-2 initialization, pretraining with AdamW and a cosine schedule, and sampling with temperature, top-k and top-p.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Where I actually am</span>
+          <p>I can follow all of it. The honest test is whether I can reproduce it cold, which is exactly what phase 1 is for.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--sky)">
+        <h3>Phases 1&ndash;3 &mdash; rebuild, modernise, tokenize</h3>
+        <div class="beat">
+          <span class="btag">Rebuild</span>
+          <p>The whole model again from an empty file, with shape tests, a mask test, and a tiny-dataset overfit as the pass condition.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Modernise</span>
+          <p>Swap in RMSNorm, RoPE, SwiGLU and grouped-query attention one at a time against the GPT-2 style baseline. Deliverable is an ablation table: change, validation loss, speed, memory. One change at a time, or the table means nothing.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Tokenize</span>
+          <p>BPE training written in plain Python, then checked against Hugging Face <i>tokenizers</i>. Then measure tokens per word for Arabic against English at 8k, 16k and 32k vocab &mdash; bad Arabic tokenization silently wastes context, and I want the number rather than the impression.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--amber)">
+        <h3>Phases 4&ndash;6 &mdash; data, pretraining, evaluation</h3>
+        <div class="beat">
+          <span class="btag">Data</span>
+          <p>Clean, deduplicate, language-filter, then tokenize once into a uint16 binary and load by memmap. A train/validation split that never leaks.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Pretraining</span>
+          <p>Start near 10M parameters, then 30M, then 100&ndash;125M if the quota allows. Mixed precision, gradient accumulation and clipping. On T4s that means fp16 with a GradScaler and watching for NaN loss, since bf16 is not well supported there.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Evaluation</span>
+          <p>Validation loss and perplexity, plus a fixed list of 20 Arabic and English prompts run after every checkpoint. The thing I want to internalise here is why falling loss does not mean a useful model.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--violet)">
+        <h3>Phases 7&ndash;11 &mdash; making it answer questions</h3>
+        <div class="beat">
+          <span class="btag">Fine-tuning</span>
+          <p>A chat template, instruction data, and loss masking so the loss is computed on the assistant turn only. I plan to hand-write 100&ndash;300 examples, because that teaches more about data quality than reading about it does.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">The comparison I most want</span>
+          <p>Fine-tune my own small base model, then fine-tune an existing 0.5B-class open model on the same data. The gap is a direct measure of what pretraining scale buys, and I would rather see it on my own runs than take it on trust.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Then</span>
+          <p>LoRA written from scratch before using <i>peft</i>, QLoRA on a 4-bit base, DPO on a small preference set, and a clean KV-cache generation path with quantization measured for quality loss.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p><b>This is a learning project in progress, not a result.</b> One of eleven phases is done, and that phase was finishing someone else's course. There is no trained model and no number to report yet. It is listed here because the process is the point, and I will update it as it moves.</p>
+        <p>The target is a model in the 10&ndash;125M range trained on free GPU quota. That is small enough to be genuinely educational and far too small to be useful for anything someone would ship.</p>
+        <p>Anything beyond that scale I plan to do with LoRA or QLoRA on an existing open model, not by pretraining.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-recommender.html">← Movie Recommender from Scratch</a>
+        <a href="project-energy.html">Energy Forecasting &amp; Battery Dispatch →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>

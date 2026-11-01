@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Recommender from Scratch — Ahmed Amin</title>
+<meta name="description" content="Matrix factorization derived by hand and written without a recommender library, trained on all 32 million MovieLens ratings. 0.78 test RMSE, 55x faster with Numba, written up in ICML format.">
+<meta name="theme-color" content="#6b4fba">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span> Ahmed Amin</a>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn js-theme" aria-label="Switch theme">☾</button>
+      <button class="iconbtn burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilemenu">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="main" style="--t:var(--amber)">
+
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="back" href="projects.html">← All projects</a>
+      <h1>Movie Recommender from Scratch</h1>
+      <p class="p-sub">A matrix factorization recommender with no recommender library in it. I derived the
+         update equations from the log joint, wrote them in NumPy, compiled the inner loops with Numba,
+         and trained on all 32 million MovieLens ratings. The point was to understand the method
+         instead of calling it.</p>
+      <div class="p-meta">
+        <span class="pill" style="--t:var(--amber)">AIMS coursework</span>
+        <span class="pill" style="--t:var(--violet)">Sole author</span>
+        <span class="pill" style="--t:var(--mint)">ICML-format write-up</span>
+      </div>
+      <div class="figures">
+        <div class="figure" style="--t:var(--amber)">
+          <div class="fv">32M</div><div class="fl">ratings, the full dataset</div>
+        </div>
+        <div class="figure" style="--t:var(--mint)">
+          <div class="fv">0.78</div><div class="fl">test RMSE, against 1.06 baseline</div>
+        </div>
+        <div class="figure" style="--t:var(--sky)">
+          <div class="fv">55&times;</div><div class="fl">faster after compiling with Numba</div>
+        </div>
+        <div class="figure" style="--t:var(--coral)">
+          <div class="fv">K=10</div><div class="fl">factors, after K=20 bought nothing</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="p-lede">You search for films, rate a few, and get recommendations. Behind that, three models stacked so each one fixes what the last one misses.</p>
+      <div class="fgrid">
+        <div class="fitem"><b>Learns taste as two sets of vectors</b><span>Every user and every movie gets a short vector. Their inner product is the predicted taste match, and alternating between solving for users and for movies is the whole training loop.</span></div>
+        <div class="fitem"><b>Separates generosity from quality</b><span>Two bias terms absorb the fact that some people rate everything highly and some films are simply better. Without them the factor model wastes its capacity relearning both.</span></div>
+        <div class="fitem"><b>Gives unrated films a starting point</b><span>A movie with no ratings has no signal, so its vector is pulled toward a mean predicted from its genres instead of toward zero. The genre vectors are learned too.</span></div>
+        <div class="fitem"><b>Fits one new user without retraining</b><span>The movie vectors are frozen and exported. Adding your ratings solves a single small system for your vector only, which is why the app answers immediately.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Problems I solved</h2>
+      <p class="p-lede">The useful results here were mostly the ones that contradicted what I expected going in.</p>
+
+      <article class="story" style="--t:var(--sky)">
+        <h3>Compiling beat parallelizing, which I had backwards</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>One user-side update over 64,301 ratings took <b>0.81 s</b> in plain NumPy. At 200,948 users per sweep and 20 sweeps, that is not a training run anyone waits for.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Assumption</span>
+          <p>Each user solves independently, so I expected this to be embarrassingly parallel and to scale with thread count.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Result</span>
+          <p>Numba compilation alone took it to <b>0.0148 s</b> &mdash; a <b>55&times;</b> speedup. Adding threads made it marginally <i>slower</i>, at 0.0153 s.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Why</span>
+          <p>The per-user work is a 10&times;10 solve. It is real parallelism, but each task is far too small to pay back the scheduling overhead. Compilation had already removed the actual bottleneck, which was Python loop dispatch.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--coral)">
+        <h3>Two cold-start experiments disagreed, and the pessimistic one was right</h3>
+        <div class="beat">
+          <span class="btag">Controlled test</span>
+          <p>I held out every rating for 1,063 movies. The genre prior improved them: RMSE <b>0.989 → 0.967</b>. A clean win for the idea.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Natural test</span>
+          <p>On the films that were genuinely unrated in the split, the same prior made things slightly <b>worse</b>: 1.031 → 1.045.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Reading</span>
+          <p>Naturally-unrated films are not a random sample. They are obscure, and genre is a weaker guide for an obscure film than for a popular one that merely happened to be held out. My controlled experiment had quietly built in the assumption it was meant to test.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Decision</span>
+          <p>I reported both, and said in the paper that the observational result is the one that reflects deployment. It would have been easy to publish only the first table.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--violet)">
+        <h3>More capacity did nothing, and the regularizer did everything</h3>
+        <div class="beat">
+          <span class="btag">Result</span>
+          <p>Doubling the factors from K=10 to K=20 moved test RMSE by <b>0.001</b> (0.7785 → 0.7777) for 2.2&times; the training time, while train RMSE fell much further, 0.712 → 0.663.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Reading</span>
+          <p>The extra capacity went into memorising the training set. Meanwhile the prior strength mattered a lot: a weak setting gave 0.786 and a strong one 0.801, against 0.778 at the value I kept.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">What deriving it taught me</span>
+          <p>Writing the normal equations by hand made clear that the effective penalties are the <i>ratios</i> &tau;/&lambda; and &tau;<sub>b</sub>/&lambda;. So changing &lambda; alone silently moves both &mdash; easy to miss when a library exposes them as three independent knobs.</p>
+        </div>
+      </article>
+
+      <article class="story" style="--t:var(--mint)">
+        <h3>A logging bug I wrote up instead of quietly fixing</h3>
+        <div class="beat">
+          <span class="btag">Problem</span>
+          <p>The bias training run logged 8 updates, then restarted its counter and logged 20 more. The learning curve was wrong and so was the update count in my notes.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Fix</span>
+          <p>I refit the bias model independently to confirm all 28 updates really happened, corrected only the axis, and left the factor models at their genuine 20 sweeps.</p>
+        </div>
+        <div class="beat">
+          <span class="btag">Decision</span>
+          <p>It became a labelled subsection of the paper rather than a silent re-plot. A corrected figure with no explanation is indistinguishable from one that was always right.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <h2>Engineering details that mattered</h2>
+      <div class="fgrid">
+        <div class="fitem"><b>Mixed precision by role</b><span>Ratings in float32 to halve the memory of the one huge array; parameters and error accumulators in float64, because summing millions of residuals in float32 loses accuracy exactly where it counts.</span></div>
+        <div class="fitem"><b>Never allocate the full prediction matrix</b><span>Evaluation is batched. A ratings-by-factors matrix at this scale does not fit, so the naive vectorised version is not an option.</span></div>
+        <div class="fitem"><b>Solve, don't invert</b><span>The regularizer keeps the normal matrix positive definite, so each update is a direct solve. Forming an explicit inverse would be slower and less stable.</span></div>
+        <div class="fitem"><b>Reproducible by record</b><span>Seed 42 throughout, plus a run manifest capturing library versions, platform, and SHA-256 hashes of both input CSVs.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="wrap">
+      <div class="limits">
+        <h3>What I am not claiming</h3>
+        <p>This is <b>coursework</b> for Prof. Ulrich Paquet's course at AIMS, written up in the ICML template as a draft. It is not a peer-reviewed publication.</p>
+        <p><b>There is no validation set.</b> Hyperparameters were chosen while test RMSE was being monitored, so the test set is not an untouched holdout and 0.78 is mildly optimistic as an estimate on genuinely new data. The paper states this in the evaluation protocol rather than burying it. The fix is a three-way split, selecting on validation only.</p>
+        <p><b>Cold users were never tested.</b> The natural split happened to leave zero cold users, so that row of the results table is empty. A brand-new user still needs ratings or a fallback.</p>
+        <p>RMSE measures rating prediction, not recommendation quality. Nobody sees a predicted rating &mdash; they see a ranked list, and a model can improve one while leaving the other unchanged.</p>
+      </div>
+
+      <div class="pagenav-foot">
+        <a href="project-finverse.html">← FinVerse Agent</a>
+        <a href="project-llm-from-scratch.html">Building My Own LLM →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span class="js-year">2026</span> Ahmed Mohamed Amin · Built from scratch, no frameworks.</div>
+    <div class="social">
+      <a href="https://github.com/ahmedamen1" target="_blank" rel="noopener" title="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/ahmed-amin-47196321a/" target="_blank" rel="noopener" title="LinkedIn">IN</a>
+      <a href="https://ieeexplore.ieee.org/document/11261453" target="_blank" rel="noopener" title="IEEE paper">DOI</a>
+      <a href="mailto:ahmed.m.amin2003@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script src="assets/main.js"></script>
+</body>
+</html>
