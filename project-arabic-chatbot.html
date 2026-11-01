@@ -141,126 +141,34 @@
 
   <section class="p-section">
     <div class="wrap">
-      <h2>Problems I solved</h2>
-      <p class="p-lede">
-        Four that were worth the investigation. In each case the symptom pointed
-        somewhere other than the cause.
-      </p>
+      <h2>Four bugs worth the write-up</h2>
+      <p class="p-lede">In each case the symptom pointed somewhere other than the cause. Three of
+         the four looked like "the retriever is weak" &mdash; the most common and most misleading
+         diagnosis in RAG work.</p>
 
-      <article class="story" style="--t:var(--coral)">
-        <h3>A regex that deleted real Arabic letters</h3>
-        <div class="beat">
-          <span class="btag">Symptom</span>
-          <p>Queries naming a scholar returned poor results. For a long time this looked exactly like a weak retriever, which is the most common and most misleading diagnosis in RAG work.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Cause</span>
-          <p>The diacritics-stripping regex used a character range running continuously up to <code>U+06E8</code>. That range spans <code>U+06E5–U+06E6</code>, which are <b>not diacritics</b> — they are real Arabic letters, small waw and small ya. The pattern was deleting base letters. The word <code>الرازي</code> ("al-Razi") normalized to an <b>empty string</b>, so any query naming him produced an empty search and matched nothing.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Fix</span>
-          <p>Split the range in two with a deliberate gap, verified against Python's <code>unicodedata</code> nonspacing-mark category for the whole <code>U+0600–U+06FF</code> block. The index builder now writes ranges as explicit <code>\uXXXX</code> escapes rather than literal characters, because visually similar Arabic combining marks are near-impossible to proofread when typed directly — that had already produced one silently broken, order-scrambled range.</p>
-        </div>
-      </article>
+      <div class="fgrid">
+        <div class="fitem"><b>A regex that deleted Arabic letters</b><span>The diacritics-stripping range ran continuously to U+06E8, which swallows U+06E5&ndash;U+06E6 &mdash; small waw and small ya, real letters. <span dir="rtl">الرازي</span> normalised to an empty string, so any query naming al-Razi searched for nothing. Split the range with a deliberate gap, verified against Unicode's nonspacing-mark category for the whole Arabic block.</span></div>
 
-      <article class="story" style="--t:var(--violet)">
-        <h3>False "I don't know" answers, traced to how people actually ask</h3>
-        <div class="beat">
-          <span class="btag">Symptom</span>
-          <p>The system reported "my sources don't contain this" on questions it could clearly answer.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Analysis</span>
-          <p>Roughly <b>56% of real user questions describe the shape of the answer they want, not its topic</b> — "give me a hadith that talks about marriage". The lexical query was built from all content words, so it required <i>hadith</i> and <i>talks about</i> to co-occur with the actual topic. Source chunks never narrate "here is a hadith about…", so the strict match found nothing, fell back to a weak match, and surfaced chunks about the <i>concept</i> of hadith instead of about marriage.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Decision</span>
-          <p>Strip a curated set of meta-request words, including Egyptian dialect verb forms (<code>بيتكلم</code>, <code>بيتحدث</code>), from the <b>lexical query only</b>. Semantic search keeps the full query, because embeddings tolerate the extra words and stripping them risks shifting vector results. Two words were deliberately left in (<code>قرآن</code>, <code>سورة</code>) because they can legitimately <i>be</i> the topic.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Why it matters</span>
-          <p>The same word is noise in one search system and signal in the other, so it is handled differently in each. That is the part I would defend in an interview.</p>
-        </div>
-      </article>
+        <div class="fitem"><b>False "I don't know" answers</b><span>About 56% of real questions describe the shape of the answer, not its topic &mdash; "give me a hadith that talks about marriage". The lexical query required <i>hadith</i> and <i>talks about</i> to co-occur with the topic, and no source chunk narrates "here is a hadith about&hellip;". Fix: strip meta-request words from the lexical query only. Embeddings tolerate them; lexical search does not. The same word is noise in one system and signal in the other.</span></div>
 
-      <article class="story" style="--t:var(--sky)">
-        <h3>An author's name is an identifier, not text to search for</h3>
-        <div class="beat">
-          <span class="btag">Symptom</span>
-          <p>"What does al-Razi say about prayer being the ascent of the knower" failed, even though the target passage was correctly indexed.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Cause</span>
-          <p>The query required the literal word <code>الرازي</code> to appear inside the matched chunk. But <b>a chunk from al-Razi's own book does not repeat his name inline.</b> No chunk satisfied the constraint, so it degraded to a weak match that ranked unrelated books above the correct one.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Fix</span>
-          <p>When a book or author alias is detected, those tokens <b>scope</b> the SQL query and are simultaneously <b>excluded</b> from the words required to co-occur inside the chunk text. I confirmed live that the target chunk existed and was indexed: the retrieval logic was asking the wrong question.</p>
-        </div>
-      </article>
+        <div class="fitem"><b>An author name is an identifier, not text</b><span>Scoped queries failed because they required the literal word <span dir="rtl">الرازي</span> inside the matched chunk &mdash; but a chunk from al-Razi's own book never repeats his name. Author aliases now scope the query and are excluded from the words required to appear in the text.</span></div>
 
-      <article class="story" style="--t:var(--amber)">
-        <h3>The hub chunk — a vector-space problem wearing a code costume</h3>
-        <div class="beat">
-          <span class="btag">Symptom</span>
-          <p>Questions about a specific large tafsir returned passages from the right book that were unrelated to the question. My first instinct was that the book filter was broken.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Evidence</span>
-          <p>I tested five questions systematically. The filter was working: logs confirmed retrieval was correctly scoped. The problem was <b>inside</b> the correct book. The decisive finding: <b>the same chunk</b> was the top result for three completely unrelated questions. Its embedding sits near the centre of the semantic space for this corpus, so it becomes a near-default result whenever search finds nothing genuinely strong.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Root cause</span>
-          <p>Chunking. That tafsir's commentary on a single famous verse spans many pages and was split unevenly, so no chunk cleanly represents it.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Decision</span>
-          <p>I wrote up four candidate fixes with costs and trade-offs, and <b>changed no code in that pass</b> — the deliverable was the diagnosis. The recommendation was staged: prompt hardening as an immediate defensive measure (acknowledged in the writeup as papering over the retrieval problem), stronger lexical weighting next, and metadata-precise re-chunking as the real long-term fix.</p>
-        </div>
-      </article>
+        <div class="fitem"><b>The hub chunk</b><span>One chunk was the top result for three unrelated questions: its embedding sits near the centre of the corpus's semantic space, so it became the default whenever nothing scored strongly. Not a filter bug &mdash; a chunking problem. I shipped the diagnosis and four costed options rather than a rushed fix.</span></div>
+      </div>
     </div>
   </section>
 
   <section class="p-section">
     <div class="wrap">
-      <h2>How I think about this</h2>
-      <p class="p-lede">
-        Three principles this project taught me, each paid for with a bug.
-      </p>
+      <h2>Two things I would defend</h2>
+      <div class="fgrid">
+        <div class="fitem"><b>Normalisation carries everything</b><span>The corpus is diacritized Classical Arabic (<span dir="rtl">مِعْرَاجُ</span>); users type plain Egyptian (<span dir="rtl">معراج</span>). Byte for byte these never match, so lexical search fires essentially never without normalisation on both sides. The function is duplicated in the index builder and the query path, and if the two drift, retrieval degrades silently instead of erroring &mdash; the most dangerous class of bug in a retrieval system.</span></div>
 
-      <article class="story" style="--t:var(--mint)">
-        <h3>Normalization is the foundation everything else stands on</h3>
-        <div class="beat">
-          <span class="btag">Context</span>
-          <p>The corpus is fully diacritized Classical Arabic (<code>مِعْرَاجُ</code>). Users type plain undiacritized Egyptian (<code>معراج</code>). Byte for byte these do not match, so lexical search fires essentially never without normalization. The pipeline strips diacritics and tatweel and unifies alef variants on both sides, at index time and at query time.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">The risk</span>
-          <p>The same normalization function is duplicated in the index builder and the query path, with an explicit comment requiring the two to stay identical. <b>If they diverge, retrieval silently degrades rather than erroring.</b> Nothing crashes; answers just get worse. That is the most dangerous class of bug in a retrieval system.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Verified</span>
-          <p>I checked that SQLite FTS5's <code>remove_diacritics</code> tokenizer option does <b>not</b> handle Arabic tashkeel — it targets Latin-script diacritics — which is why normalization happens before insertion rather than being delegated to the tokenizer.</p>
-        </div>
-      </article>
-
-      <article class="story" style="--t:var(--coral)">
-        <h3>Things I built, measured, and deleted</h3>
-        <div class="beat">
-          <span class="btag">Deleted</span>
-          <p><b>Keyword-boost retrieval.</b> An exact-word matching layer to catch what embeddings miss. It worked, and it added roughly <b>78 seconds of latency per request</b>. Reverted two commits later. The capability was rebuilt properly as the disk-backed FTS5 index: same goal, viable implementation.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Narrowed</span>
-          <p><b>In-memory BM25.</b> Enabled across nine books, hastily narrowed to one when server RAM ran critically low, then replaced wholesale by FTS5. Three commits, each a smaller claim than the last, ending in a different architecture.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Removed</span>
-          <p>A Prometheus instrumentation library that raised an error on <b>every</b> request. I tried pinning one version, then downgrading to another; neither worked. The third commit dropped the middleware and mounted the client directly. Two failed version pins are still in the git history, and I would rather leave them visible than tidy them away.</p>
-        </div>
-      </article>
+        <div class="fitem"><b>Three things I built and deleted</b><span>A keyword-boost layer that worked and cost 78 seconds per request, reverted two commits later and rebuilt properly as an FTS5 index. In-memory BM25, narrowed from nine books to one when RAM ran out, then replaced entirely. A metrics library that errored on every request, dropped after two failed version pins &mdash; both still visible in the history.</span></div>
+      </div>
     </div>
   </section>
+
 
   <section class="p-section">
     <div class="wrap">

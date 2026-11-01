@@ -137,39 +137,13 @@
 
   <section class="p-section">
     <div class="wrap">
-      <h2>Problems I solved</h2>
-      <p class="p-lede">The constraint that shaped everything: a wheelchair cannot depend on a network.</p>
-      <article class="story" style="--t:var(--mint)">
-        <h3>Everything critical runs on the chair</h3>
-        <div class="beat">
-          <span class="btag">Constraint</span>
-          <p>A mobility device that stops responding when the connection drops is not a mobility device. Cloud speech recognition would be more accurate and completely unsuitable.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Decision</span>
-          <p>INT8-quantized speech recognition running locally on a Raspberry Pi 5, and a three-tier control stack that converts a spoken command into motor movement in <b>under 20ms</b> without leaving the device.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Cost of the decision</span>
-          <p>87% command accuracy, lower than a cloud model would reach on the same audio. That is the right trade for this device: a command that works without a network beats a more accurate one that only works with signal.</p>
-        </div>
-      </article>
+      <h2>Two constraints that drove the design</h2>
 
-      <article class="story" style="--t:var(--amber)">
-        <h3>Cost as a design constraint, not an afterthought</h3>
-        <div class="beat">
-          <span class="btag">Problem</span>
-          <p>The target user cannot pay for an imported smart wheelchair. A cheaper version of the same architecture is still too expensive.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Approach</span>
-          <p>Retrofit rather than replace: the kit upgrades a chair the family already owns. Hardware cost was cut further by <b>repurposing hoverboard motors</b> rather than sourcing purpose-built drives.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Result</span>
-          <p>A target retail price 60 to 70% below imported alternatives, and a $1,600 grant from Egypt's Ministry of Higher Education, selected from projects across all Egyptian universities.</p>
-        </div>
-      </article>
+      <div class="fgrid">
+        <div class="fitem"><b>Everything critical runs on the chair</b><span>A mobility device that stops responding when the connection drops is not a mobility device, so cloud speech recognition would be more accurate and completely unsuitable. INT8-quantized recognition runs locally on a Raspberry Pi 5, with a three-tier control stack converting a spoken command to motor movement in under 20&nbsp;ms without leaving the device. The cost is 87% accuracy instead of what a cloud model would reach &mdash; the right trade, because a command that works without a network beats a better one that needs signal.</span></div>
+
+        <div class="fitem"><b>Cost as a design constraint</b><span>The target user cannot pay for an imported smart wheelchair, and a cheaper version of the same architecture is still too expensive. So the kit retrofits a chair the family already owns, and hardware cost came down further by repurposing hoverboard motors rather than sourcing purpose-built drives. Target retail is 60&ndash;70% below imported alternatives.</span></div>
+      </div>
     </div>
   </section>
 

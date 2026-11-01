@@ -89,43 +89,13 @@
 
   <section class="p-section">
     <div class="wrap">
-      <h2>Problems I solved</h2>
-      <p class="p-lede">The most valuable thing here was distrusting a good result.</p>
-      <article class="story" style="--t:var(--coral)">
-        <h3>A validation score that was too good to be true</h3>
-        <div class="beat">
-          <span class="btag">What I saw</span>
-          <p>An early model reported a validation RMSE of 0.79 kW. That looked strong.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">What it was</span>
-          <p>An artifact. The feature set was leaking the answer — information from the target window was reachable at prediction time.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Fix</span>
-          <p>Rebuilt with honest lags from the previous day and rolling statistics over windows of at least a day. The new number was <b>worse and real</b>.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Principle</span>
-          <p>A forecasting result that beats expectations should be treated as a bug report until proven otherwise.</p>
-        </div>
-      </article>
+      <h2>Two things worth the write-up</h2>
 
-      <article class="story" style="--t:var(--amber)">
-        <h3>Measuring the forecast in money, not error</h3>
-        <div class="beat">
-          <span class="btag">Problem</span>
-          <p>Forecast error metrics do not tell you what a forecast is worth. A model can look worse on NRMSE and still schedule a battery better, because the optimizer cares about specific hours.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Approach</span>
-          <p>I built a <b>perfect-information oracle</b> — the same optimizer given the true future — as an upper bound, and measured the gap in euros. Forecast-driven MPC landed within <b>€0.33 in April and €0.56 in September</b> of that ceiling.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">What it proves</span>
-          <p>The remaining forecast error costs well under a euro a month. Further forecasting work on this site would be effort spent on a problem that is already solved.</p>
-        </div>
-      </article>
+      <div class="fgrid">
+        <div class="fitem"><b>A validation score too good to be true</b><span>An early model reported 0.79 kW validation RMSE. It was an artifact &mdash; the feature set was leaking the answer, with information from the target window reachable at prediction time. Rebuilt with honest lags from the previous day and rolling statistics over day-plus windows. The new number was worse and real. A forecasting result that beats expectations deserves to be treated as a bug report until proven otherwise.</span></div>
+
+        <div class="fitem"><b>Measuring the forecast in money, not error</b><span>Error metrics do not tell you what a forecast is worth: a model can look worse on NRMSE and still schedule a battery better, because the optimizer only cares about specific hours. So I built a perfect-information oracle &mdash; the same optimizer given the true future &mdash; and measured the gap in euros. Forecast-driven MPC landed within &euro;0.33 of that ceiling, which means the remaining error costs well under a euro a month and further forecasting work here would be effort on a solved problem.</span></div>
+      </div>
     </div>
   </section>
 

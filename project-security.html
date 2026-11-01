@@ -89,43 +89,13 @@
 
   <section class="p-section">
     <div class="wrap">
-      <h2>Problems I solved</h2>
-      <p class="p-lede">Two problems worth describing: one architectural, one that only the logs revealed.</p>
-      <article class="story" style="--t:var(--coral)">
-        <h3>A detector for recall, CLIP for precision</h3>
-        <div class="beat">
-          <span class="btag">Problem</span>
-          <p>A detector tuned for high recall on weapons fires on phones, pens and wallets — dark, hand-held, roughly rectangular objects in the same size range. Tuned for precision instead, it misses real weapons. <b>Both failure modes are unacceptable in a school:</b> false alarms destroy trust and get the system switched off; misses defeat the purpose.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Design</span>
-          <p>Separate the two concerns. The detector runs at a deliberately permissive <b>0.40 confidence threshold</b>, optimising for recall. Every proposed crop then goes to CLIP, scored against a prompt set containing both positive classes (weapon, gun, pistol, rifle, knife) and explicit <b>negative</b> classes (mobile phone, pen, eyeglasses, wallet). A detection is promoted only if the top-scoring prompt is positive.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Why the negatives matter</span>
-          <p>CLIP is being used as a <b>discriminative classifier, not a similarity scorer</b>. Adding the exact confusable objects as competing labels means a phone is not merely "less similar to a weapon" — it is actively assigned to a phone label that outranks the weapon labels. Without negatives, a softmax over positive prompts alone would confidently label a phone as whichever weapon it most resembled.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Bonus property</span>
-          <p>The detector can be retrained without retraining a classifier, and the confusable-object list extends by editing a list of strings. Adding "a water bottle" is a one-line change.</p>
-        </div>
-      </article>
+      <h2>Two problems worth the write-up</h2>
 
-      <article class="story" style="--t:var(--violet)">
-        <h3>The incident log revealed an alerting problem, not a detection problem</h3>
-        <div class="beat">
-          <span class="btag">What the logs showed</span>
-          <p>Reviewing incident timestamps showed the same event generating repeated alerts rather than one.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Diagnosis</span>
-          <p>Detection was working correctly. The <b>alerting policy</b> was wrong: without a cooldown keyed to the incident rather than the frame, a sustained threat in view produces an alert per detection cycle.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Why it matters</span>
-          <p>An operator who receives twelve alerts for one event learns to ignore alerts. The failure was in how the system communicated, not in what it saw.</p>
-        </div>
-      </article>
+      <div class="fgrid">
+        <div class="fitem"><b>A detector for recall, CLIP for precision</b><span>Tuned for recall, a weapon detector fires on phones, pens and wallets &mdash; dark, hand-held, roughly rectangular. Tuned for precision, it misses real weapons. In a school both are unacceptable: false alarms get the system switched off, misses defeat the purpose. So the detector runs deliberately permissive at 0.40 and every crop goes to CLIP, scored against positive classes <i>and</i> explicit negatives (mobile phone, pen, eyeglasses, wallet). A detection is promoted only if the top prompt is positive &mdash; so a phone is actively assigned to a phone label that outranks the weapon labels, rather than merely being "less similar" to a weapon. Adding a confusable object is a one-line change.</span></div>
+
+        <div class="fitem"><b>The logs showed an alerting problem, not a detection one</b><span>The same event was generating repeated alerts. Detection was fine; the alerting policy had no cooldown keyed to the incident rather than the frame, so a sustained threat produced one alert per detection cycle. An operator who gets twelve alerts for one event learns to ignore alerts &mdash; the failure was in how the system communicated, not in what it saw.</span></div>
+      </div>
     </div>
   </section>
 

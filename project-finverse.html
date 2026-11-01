@@ -90,35 +90,13 @@
 
   <section class="p-section">
     <div class="wrap">
-      <h2>Problems I solved</h2>
-      <p class="p-lede">One architectural decision carries most of the result.</p>
-      <article class="story" style="--t:var(--violet)">
-        <h3>Fifteen adapters on one model, not fifteen models</h3>
-        <div class="beat">
-          <span class="btag">Problem</span>
-          <p>Specialisation usually means one fine-tuned model per task. Fifteen tasks would mean fifteen deployments, fifteen sets of weights in memory, and fifteen things to keep in sync.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Decision</span>
-          <p>One frozen 4-bit base with fifteen LoRA adapters attached to the key projection layers. All adapters stay <b>pre-loaded in memory</b> so switching is cheap, and a routing cache keyed on query embeddings reuses decisions for repeated or semantically similar queries.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Result</span>
-          <p>Specialisation without paying for fifteen deployments. On CFA Level I the adapters reach 93.07% against GPT-4o's 88.10%, and on NER 97.24 F1 against BloombergGPT's 60.82.</p>
-        </div>
-      </article>
+      <h2>Two decisions that shaped it</h2>
 
-      <article class="story" style="--t:var(--amber)">
-        <h3>A Verifier, because a confident wrong number is the failure mode</h3>
-        <div class="beat">
-          <span class="btag">Problem</span>
-          <p>In financial reasoning, a fluent answer in the wrong format or with an implausible magnitude is worse than a refusal, because it looks usable.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Design</span>
-          <p>The Verifier applies domain-specific constraints per task: exam answers must be a discrete option, calculations must be numerically plausible. Invalid outputs are re-routed to an alternate adapter rather than returned.</p>
-        </div>
-      </article>
+      <div class="fgrid">
+        <div class="fitem"><b>Fifteen adapters on one model, not fifteen models</b><span>Specialisation usually means one fine-tuned model per task &mdash; fifteen deployments, fifteen sets of weights, fifteen things to keep in sync. Instead: one frozen 4-bit base with fifteen LoRA adapters on the key projection layers, all pre-loaded so switching is cheap, plus a routing cache keyed on query embeddings. Specialisation without paying for fifteen deployments.</span></div>
+
+        <div class="fitem"><b>A Verifier, because a confident wrong number is the failure mode</b><span>In financial reasoning a fluent answer with an implausible magnitude is worse than a refusal, because it looks usable. The Verifier applies per-task constraints &mdash; exam answers must be a discrete option, calculations must be numerically plausible &mdash; and re-routes invalid outputs to another adapter rather than returning them.</span></div>
+      </div>
     </div>
   </section>
 

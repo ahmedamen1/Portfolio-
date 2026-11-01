@@ -91,56 +91,17 @@
 
   <section class="p-section">
     <div class="wrap">
-      <h2>Problems I solved</h2>
-      <p class="p-lede">On a dataset that is 96.6% one class, the headline metric is the thing most likely to mislead you.</p>
+      <h2>Three problems worth the write-up</h2>
+      <p class="p-lede">On a dataset that is 96.6% one class, the headline metric is the thing most
+         likely to mislead you.</p>
 
-      <article class="story" style="--t:var(--coral)">
-        <h3>The dataset had no target variable</h3>
-        <div class="beat">
-          <span class="btag">Problem</span>
-          <p>Neither table says whether a client is creditworthy. There is an applicant table and a table of monthly status codes, and nothing labelled good or bad.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Approach</span>
-          <p>I assigned weights to the status codes by severity, summed them per client into a <b>weighted_points</b> total, and set a threshold above which a client counts as bad.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Honest caveat</span>
-          <p>That threshold is a modelling choice, not ground truth. Move it and both the class balance and every score on this page move with it. A different analyst would draw the line somewhere else and get different numbers.</p>
-        </div>
-      </article>
+      <div class="fgrid">
+        <div class="fitem"><b>The dataset had no target variable</b><span>Neither table says whether a client is creditworthy &mdash; just applicants and monthly status codes. I weighted the codes by severity, summed them per client, and thresholded. That threshold is a modelling choice, not ground truth: move it and both the class balance and every score on this page move with it.</span></div>
 
-      <article class="story" style="--t:var(--amber)">
-        <h3>Why 95.6% accuracy is not the achievement</h3>
-        <div class="beat">
-          <span class="btag">What I saw</span>
-          <p>Only <b>1,401 of 41,449</b> clients are bad. Predicting "good" for everyone scores about 96.6% without learning anything at all.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">What it means</span>
-          <p>Accuracy alone cannot distinguish a working model from that constant baseline, so the comparison worth reporting is against a real learner: logistic regression managed <b>58.5%</b> on the balanced data, and the tuned XGBoost reached <b>95.6%</b>.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Fix</span>
-          <p>Applied SMOTE so the training distribution stops rewarding the lazy answer, and read precision, recall and F1 per class rather than the single accuracy figure.</p>
-        </div>
-      </article>
+        <div class="fitem"><b>Why 95.6% accuracy is not the achievement</b><span>Only 1,401 of 41,449 clients are bad, so predicting "good" for everyone scores about 96.6% while learning nothing. Accuracy cannot separate a working model from that constant, so the comparison worth reporting is against a real learner: logistic regression managed 58.5% on balanced data against XGBoost's 95.6%. SMOTE stops the training distribution rewarding the lazy answer, and the per-class precision and recall are what I actually read.</span></div>
 
-      <article class="story" style="--t:var(--violet)">
-        <h3>Picking a model that was not the top scorer</h3>
-        <div class="beat">
-          <span class="btag">Result</span>
-          <p>Random forest scored marginally higher on raw accuracy than the tuned XGBoost, at <b>96.0%</b> against <b>95.6%</b>.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Decision</span>
-          <p>I chose XGBoost anyway, on per-class precision and recall and on interpretability. Its feature importances were already driving the feature-pruning step, so the model explains which signals it is using.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Principle</span>
-          <p>A four-tenths-of-a-point gap on an imbalanced dataset is noise, not evidence. Picking on that margin alone would be fitting the decision to the test split.</p>
-        </div>
-      </article>
+        <div class="fitem"><b>Picking the model that was not the top scorer</b><span>Random forest beat the tuned XGBoost on raw accuracy, 96.0% to 95.6%. I chose XGBoost anyway, on per-class precision and recall and on interpretability &mdash; its feature importances were already driving the pruning step. A four-tenths gap on an imbalanced dataset is noise, and picking on it would be fitting the decision to the test split.</span></div>
+      </div>
     </div>
   </section>
 

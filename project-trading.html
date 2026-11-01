@@ -133,31 +133,13 @@
 
   <section class="p-section">
     <div class="wrap">
-      <h2>Problems I solved</h2>
-      <p class="p-lede">The core design question was which subsystem is allowed to answer which kind of question.</p>
-      <article class="story" style="--t:var(--mint)">
-        <h3>Routing between tools and retrieval, by kind of truth</h3>
-        <div class="beat">
-          <span class="btag">Problem</span>
-          <p>Live market data cannot go through a knowledge base: it is stale the moment it is indexed. Product facts cannot go through a live feed: the web does not know this firm's commission structure.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Decision</span>
-          <p>The assistant routes per question between <b>tool calls for market data and retrieval for product facts</b>, so each question is answered by the source that can actually be right about it. Getting this wrong in either direction produces a confident, plausible, wrong answer on a sales call.</p>
-        </div>
-      </article>
+      <h2>Two decisions that shaped it</h2>
 
-      <article class="story" style="--t:var(--sky)">
-        <h3>A dialect specification, not a dialect instruction</h3>
-        <div class="beat">
-          <span class="btag">Problem</span>
-          <p>Asking a model to "reply in Gulf Arabic" produces Modern Standard Arabic with a few dialect words sprinkled in. Native speakers spot it instantly, and on a sales call that costs trust.</p>
-        </div>
-        <div class="beat">
-          <span class="btag">Approach</span>
-          <p>A detailed prompt specification rather than an instruction: a vocabulary map, the correct pronouns, and <b>the specific grammatical tells that mark a non-native speaker</b>. Naming the failure modes explicitly works better than describing the target.</p>
-        </div>
-      </article>
+      <div class="fgrid">
+        <div class="fitem"><b>Routing by kind of truth</b><span>Live market data cannot go through a knowledge base &mdash; it is stale the moment it is indexed. Product facts cannot go through a live feed &mdash; the web does not know this firm's commission structure. The assistant routes per question between tool calls and retrieval, so each question is answered by the source that can actually be right about it. Getting this wrong in either direction produces a confident, plausible, wrong answer on a sales call.</span></div>
+
+        <div class="fitem"><b>A dialect specification, not a dialect instruction</b><span>Asking a model to "reply in Gulf Arabic" yields Modern Standard Arabic with a few dialect words sprinkled in, which native speakers spot instantly. Instead: a vocabulary map, the correct pronouns, and the specific grammatical tells that mark a non-native speaker. Naming the failure modes explicitly works better than describing the target.</span></div>
+      </div>
     </div>
   </section>
 
